@@ -634,7 +634,7 @@
         {
          "name":"script",
          "type":"string",
-         "value":"src\/samurai.ts"
+         "value":"src\/main.ts"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
