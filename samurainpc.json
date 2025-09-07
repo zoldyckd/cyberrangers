@@ -17,17 +17,17 @@
                         {
                             "name": "openWebsite",
                             "type": "string",
-                            "value": "https://www.workadventu.re/"
+                            "value": ""
                         },
                         {
                             "name": "openWebsiteTrigger",
                             "type": "string",
-                            "value": "onaction"
+                            "value": "onenter"
                         },
                         {
                             "name": "openWebsiteMessage",
                             "type": "string",
-                            "value": "Press SPACE to visit our website!"
+                            "value": "Welcome to the booth!"
                         }
                     ],
                     "rotation": 0,

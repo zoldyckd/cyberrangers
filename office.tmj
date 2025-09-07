@@ -600,6 +600,16 @@
                          "name":"openWebsite",
                          "type":"string",
                          "value":"https:\/\/www.google.com\n"
+                        }, 
+                        {
+                         "name":"openWebsiteMessage",
+                         "type":"string",
+                         "value":"Talk to the Defender (SPACE)"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onenter"
                         }],
                  "rotation":0,
                  "type":"area",
