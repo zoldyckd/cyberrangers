@@ -575,6 +575,7 @@
          "y":0
         }, 
         {
+         "class":"area",
          "draworder":"topdown",
          "id":67,
          "name":"Defender of Malware",
@@ -603,6 +604,31 @@
                 }],
          "opacity":1,
          "properties":[
+                {
+                 "name":"openWebsite ",
+                 "type":"string",
+                 "value":"www.google.com"
+                }, 
+                {
+                 "name":"openWebsiteHeight",
+                 "type":"string",
+                 "value":"70"
+                }, 
+                {
+                 "name":"openWebsiteTrigger",
+                 "type":"string",
+                 "value":"onaction"
+                }, 
+                {
+                 "name":"openWebsiteTriggerMessage",
+                 "type":"string",
+                 "value":"Talk to the defender (SPACE)"
+                }, 
+                {
+                 "name":"openWebsiteWidth",
+                 "type":"string",
+                 "value":"60"
+                }, 
                 {
                  "name":"waNpcMessage",
                  "type":"string",
