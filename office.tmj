@@ -748,17 +748,8 @@
          "tilewidth":32
         }, 
         {
-		  "firstgid": 2956,
-		  "columns": 30,
-		  "image": "tilesets/Samurai.png",
-		  "imageheight": 96,
-		  "imagewidth": 960,
-		  "margin": 0,
-		  "name": "Samurai",
-		  "spacing": 0,
-		  "tilecount": 90,
-		  "tileheight": 32,
-		  "tilewidth": 32
+         "firstgid":2956,
+         "source":"tilesets\/Samurai.tsx"
         }],
  "tilewidth":32,
  "type":"map",
