@@ -576,19 +576,30 @@
         }, 
         {
          "draworder":"topdown",
-         "id":65,
-         "name":"NPCsInteraction",
+         "id":67,
+         "name":"Welcome!",
          "objects":[
                 {
-                 "height":63.75,
-                 "id":23,
-                 "name":"Defender of Malware",
+                 "height":63.6666666666666,
+                 "id":29,
+                 "name":"Welcome! Cyber Rangers!",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":31.625,
-                 "x":224.125,
-                 "y":512.125
+                 "width":96.3333333333333,
+                 "x":223.666666666667,
+                 "y":511.666666666667
+                }, 
+                {
+                 "height":0,
+                 "id":30,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":256.333333333333,
+                 "y":619
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -596,8 +607,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":66,
- "nextobjectid":24,
+ "nextlayerid":68,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -623,7 +634,7 @@
         {
          "name":"script",
          "type":"string",
-         "value":"src\/main.ts"
+         "value":"src\/samurai.ts"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
