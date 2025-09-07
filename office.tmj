@@ -573,28 +573,6 @@
          "visible":true,
          "x":0,
          "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":64,
-         "name":"NPCsInteraction",
-         "objects":[
-                {
-                 "height":63.8181818181818,
-                 "id":22,
-                 "name":"Defender of Malware",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":223.818181818182,
-                 "y":511.818181818182
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
         }],
  "nextlayerid":65,
  "nextobjectid":23,
