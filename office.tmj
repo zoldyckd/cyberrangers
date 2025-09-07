@@ -577,38 +577,44 @@
         {
          "draworder":"topdown",
          "id":67,
-         "name":"Welcome!",
+         "name":"Defender of Malware",
          "objects":[
                 {
-                 "height":63.6666666666666,
+                 "height":48.6666666666666,
                  "id":29,
                  "name":"Welcome! Cyber Rangers!",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":96.3333333333333,
-                 "x":223.666666666667,
-                 "y":511.666666666667
+                 "width":46,
+                 "x":115.333333333334,
+                 "y":523.666666666667
                 }, 
                 {
-                 "height":0,
-                 "id":30,
-                 "name":"",
+                 "height":63,
+                 "id":31,
+                 "name":"Defender of Malware",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":256.333333333333,
-                 "y":619
+                 "width":32.6666666666666,
+                 "x":224.333333333333,
+                 "y":512
                 }],
          "opacity":1,
+         "properties":[
+                {
+                 "name":"waNPCmessage",
+                 "type":"string",
+                 "value":"Hello! Do you have what it takes to spot the red flags of malware?"
+                }],
          "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
         }],
  "nextlayerid":68,
- "nextobjectid":31,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "properties":[
         {
