@@ -15,16 +15,9 @@ WA.onInit().then(() => {
         const today = new Date();
         const time = today.getHours() + ":" + today.getMinutes();
         currentPopup = WA.ui.openPopup("clockPopup", "It's " + time, []);
-    });
+    })
 
     WA.room.area.onLeave('clock').subscribe(closePopup)
-	
-	// Add this INSIDE the WA.onInit().then(() => { ... }) block, after your clock code
-
-	WA.room.area.onInteract('DefenderofMalware').subscribe(() => {
-	  WA.nav.openTab('https://seahyr.github.io/ICT302-Story/');
-	});
-
 
     // The line below bootstraps the Scripting API Extra library that adds a number of advanced properties/features to WorkAdventure
     bootstrapExtra().then(() => {
@@ -41,4 +34,3 @@ function closePopup(){
 }
 
 export {};
-d
