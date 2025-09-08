@@ -1,35 +1,47 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
-let popup: any;
-
 WA.onInit().then(() => {
-  // When player enters the zone, show the SPACE prompt
-  WA.room.area.onEnter("DefenderOfMalware").subscribe(() => {
-    WA.ui.displayActionMessage({
-      message: "Press SPACE to talk to the Defender of Malware",
+  console.log("Scripting API ready");
+
+  let popup: any;
+  let action: any;
+
+  // When player enters the AssassinOfIDTheft area
+  WA.room.area.onEnter("AssassinOfIDTheft").subscribe(() => {
+    // Show the SPACE interaction prompt
+    action = WA.ui.displayActionMessage({
+      message: "Press SPACE to talk to the Assassin of ID Theft",
       callback: () => {
-        // Open a popup with buttons (no explicit ButtonDescriptor type needed)
-        popup = WA.ui.openPopup("defenderPopup", "Welcome, traveler!", [
+        popup = WA.ui.openPopup("npcPopup", "I guard against ID Theft!", [
           {
-            label: "Open website",
+            label: "Learn more",
             callback: () => {
               WA.nav.openTab("https://example.com");
-              WA.ui.closePopup(); // optional
+              popup.close();
             },
           },
           {
             label: "Close",
-            callback: () => WA.ui.closePopup(),
+            callback: () => popup.close(),
           },
         ]);
       },
     });
   });
 
-  // Clean up when leaving the zone
-  WA.room.area.onLeave("DefenderOfMalware").subscribe(() => {
-    WA.ui.removeActionMessage();
-    if (popup) WA.ui.closePopup();
+  // When player leaves the area
+  WA.room.area.onLeave("AssassinOfIDTheft").subscribe(() => {
+    if (action) {
+      action.close(); // closes the action message
+      action = undefined;
+    }
+    if (popup) {
+      popup.close(); // closes popup if still open
+      popup = undefined;
+    }
   });
+
+  // Optional: enable extra API features
+  bootstrapExtra().then(() => console.log("Extra API ready"));
 });
