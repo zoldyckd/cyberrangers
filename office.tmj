@@ -488,6 +488,11 @@
                          "name":"openWebsiteTrigger",
                          "type":"string",
                          "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to talk to the Defender of Malware."
                         }],
                  "rotation":0,
                  "type":"area",
