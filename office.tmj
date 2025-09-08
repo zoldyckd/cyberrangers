@@ -67,76 +67,6 @@
          "y":0
         }, 
         {
-         "class":"area",
-         "draworder":"topdown",
-         "id":67,
-         "name":"NPC Defender of Malware",
-         "objects":[
-                {
-                 "height":63,
-                 "id":31,
-                 "name":"Defender of Malware",
-                 "properties":[
-                        {
-                         "name":"openWebsite",
-                         "type":"string",
-                         "value":"https:\/\/www.google.com\n"
-                        }, 
-                        {
-                         "name":"openWebsiteMessage",
-                         "type":"string",
-                         "value":"Talk to the Defender (SPACE)"
-                        }, 
-                        {
-                         "name":"openWebsiteTrigger",
-                         "type":"string",
-                         "value":"onenter"
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32.6666666666666,
-                 "x":224.333333333333,
-                 "y":512
-                }],
-         "opacity":1,
-         "properties":[
-                {
-                 "name":"openWebsite ",
-                 "type":"string",
-                 "value":"www.google.com"
-                }, 
-                {
-                 "name":"openWebsiteHeight",
-                 "type":"string",
-                 "value":"70"
-                }, 
-                {
-                 "name":"openWebsiteTrigger",
-                 "type":"string",
-                 "value":"onaction"
-                }, 
-                {
-                 "name":"openWebsiteTriggerMessage",
-                 "type":"string",
-                 "value":"Talk to the defender (SPACE)"
-                }, 
-                {
-                 "name":"openWebsiteWidth",
-                 "type":"string",
-                 "value":"60"
-                }, 
-                {
-                 "name":"waNpcMessage",
-                 "type":"string",
-                 "value":"Hello! Do you have what it takes to spot the red flags of malware?"
-                }],
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "id":55,
          "layers":[
                 {
@@ -539,6 +469,35 @@
          "y":0
         }, 
         {
+         "class":"area",
+         "draworder":"topdown",
+         "id":67,
+         "name":"NPC_Zones",
+         "objects":[
+                {
+                 "height":67.3333333333334,
+                 "id":31,
+                 "name":"DefenderofMalware",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/seahyr.github.io\/ICT302-Story\/"
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":36.7499999999999,
+                 "x":477.333333333333,
+                 "y":509
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "id":51,
          "layers":[
                 {
@@ -558,8 +517,8 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 2987, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 3017, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2987, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3017, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -645,7 +604,7 @@
          "y":0
         }],
  "nextlayerid":68,
- "nextobjectid":32,
+ "nextobjectid":39,
  "orientation":"orthogonal",
  "properties":[
         {
