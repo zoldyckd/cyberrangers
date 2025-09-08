@@ -500,6 +500,28 @@
                  "width":36.7499999999999,
                  "x":477.333333333333,
                  "y":509
+                }, 
+                {
+                 "height":71.3333333333333,
+                 "id":39,
+                 "name":"AssassinOfIDTheft",
+                 "properties":[
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onenter"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to talk to the Assassin of ID Theft"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":31.3333333333333,
+                 "x":192,
+                 "y":63.3333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -513,8 +535,8 @@
                 {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 3047, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 3071, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -614,7 +636,7 @@
          "y":0
         }],
  "nextlayerid":68,
- "nextobjectid":39,
+ "nextobjectid":41,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -796,6 +818,19 @@
          "name":"Samurai",
          "spacing":0,
          "tilecount":90,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":24,
+         "firstgid":3046,
+         "image":"tilesets\/Assassin.png",
+         "imageheight":80,
+         "imagewidth":768,
+         "margin":0,
+         "name":"Assassin",
+         "spacing":0,
+         "tilecount":48,
          "tileheight":32,
          "tilewidth":32
         }],
