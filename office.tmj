@@ -177,7 +177,7 @@
                 }, 
                 {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 1827, 1828, 1829, 1830, 1831, 1832, 0, 0, 90, 0, 0, 0, 0, 187, 0, 0, 0, 0, 0, 90, 0, 0, 19, 20, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 90, 0, 0, 0, 0, 187, 0, 0, 0, 0, 0, 90, 0, 0, 19, 20, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 102, 0, 0, 31, 32, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -204,6 +204,49 @@
                  "type":"tilelayer",
                  "visible":true,
                  "width":31,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":68,
+                 "name":"CyberRangers",
+                 "objects":[
+                        {
+                         "height":28.828125,
+                         "id":45,
+                         "name":"",
+                         "properties":[
+                                {
+                                 "name":"font-family",
+                                 "type":"string",
+                                 "value":"\"Press Start 2P\""
+                                }],
+                         "rotation":0,
+                         "text":
+                            {
+                             "fontfamily":"Forte",
+                             "halign":"center",
+                             "pixelsize":24,
+                             "text":"Cyber Rangers",
+                             "valign":"center",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":154.5,
+                         "x":52.9765625,
+                         "y":38.3359375
+                        }],
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"font-family",
+                         "type":"string",
+                         "value":"\"Cyber Rangers\""
+                        }],
+                 "type":"objectgroup",
+                 "visible":true,
                  "x":0,
                  "y":0
                 }],
@@ -624,8 +667,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":68,
- "nextobjectid":41,
+ "nextlayerid":69,
+ "nextobjectid":47,
  "orientation":"orthogonal",
  "properties":[
         {
