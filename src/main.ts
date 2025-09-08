@@ -19,7 +19,7 @@ WA.onInit().then(() => {
     closePopup();
   });
 
-  // ASSASSIN — anchored to NPCforIDTheft_Dialogue, auto-close on leave
+  // ASSASSIN — anchored to NPCforIDTheft_Dialogue
   WA.room.area.onEnter("AssassinOfIDTheft").subscribe(() => {
     console.log("[assassin] enter");
     closePopup();
@@ -52,6 +52,7 @@ WA.onInit().then(() => {
       ]
     );
   });
+
   WA.room.area.onLeave("AssassinOfIDTheft").subscribe(() => {
     console.log("[assassin] leave");
     closePopup();
