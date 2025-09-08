@@ -517,15 +517,15 @@
          "name":"dialogues",
          "objects":[
                 {
-                 "height":82.6666666666667,
+                 "height":61.6673,
                  "id":49,
                  "name":"NPCforIDTheft_Dialogue",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":136.666666666667,
-                 "x":816.1419,
-                 "y":86.16635
+                 "width":93.7162,
+                 "x":846.1419,
+                 "y":104.499683333333
                 }],
          "opacity":1,
          "type":"objectgroup",
