@@ -5,7 +5,7 @@ let popup: any | undefined;
 WA.onInit().then(() => {
   console.log("[WA] ready");
 
-  // ---- CLOCK (no Close button; closes on leave) ----
+  // CLOCK — open on enter, close on leave
   WA.room.area.onEnter("clock").subscribe(() => {
     console.log("[clock] enter");
     closePopup();
@@ -19,11 +19,38 @@ WA.onInit().then(() => {
     closePopup();
   });
 
-  // ---- ASSASSIN (STEP A: prove the zone fires with a centered test popup) ----
+  // ASSASSIN — anchored to NPCforIDTheft_Dialogue, auto-close on leave
   WA.room.area.onEnter("AssassinOfIDTheft").subscribe(() => {
     console.log("[assassin] enter");
     closePopup();
-    popup = WA.ui.openPopup("assassinTest", "HELLO from Assassin zone (test)", []);
+    popup = WA.ui.openPopup(
+      "NPCforIDTheft_Dialogue",
+      "Which of the following is a common sign of identity theft?",
+      [
+        {
+          label: "Unauthorized charges on your card",
+          callback: () => {
+            closePopup();
+            popup = WA.ui.openPopup(
+              "NPCforIDTheft_Dialogue",
+              "✅ Correct! Always review your statements.",
+              []
+            );
+          },
+        },
+        {
+          label: "Free pizza delivered to your door",
+          callback: () => {
+            closePopup();
+            popup = WA.ui.openPopup(
+              "NPCforIDTheft_Dialogue",
+              "❌ Not quite. Look for suspicious financial activity.",
+              []
+            );
+          },
+        },
+      ]
+    );
   });
   WA.room.area.onLeave("AssassinOfIDTheft").subscribe(() => {
     console.log("[assassin] leave");
@@ -32,7 +59,10 @@ WA.onInit().then(() => {
 }).catch(console.error);
 
 function closePopup() {
-  if (popup) { popup.close(); popup = undefined; }
+  if (popup) {
+    popup.close();
+    popup = undefined;
+  }
 }
 
 export {};
