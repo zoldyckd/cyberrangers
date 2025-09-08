@@ -1,30 +1,33 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
-console.log("Script started successfully");
+let currentPopup: any | undefined;
 
-let currentPopup: any = undefined;
+WA.onInit().then(async () => {
+  console.log("WA ready. Player tags:", WA.player.tags);
 
-WA.onInit().then(() => {
-  console.log("Scripting API ready");
-  console.log("Player tags: ", WA.player.tags);
+  // (Optional) avoid unused import warning
+  try { await bootstrapExtra(); } catch {}
 
-  /** ---------- CLOCK (unchanged) ---------- **/
+  /** ---------- CLOCK (open-on-enter, close-on-leave) ---------- **/
   WA.room.area.onEnter("clock").subscribe(() => {
     const now = new Date();
     const hh = String(now.getHours()).padStart(2, "0");
     const mm = String(now.getMinutes()).padStart(2, "0");
+    closePopup();
     currentPopup = WA.ui.openPopup("clockPopup", `It's ${hh}:${mm}`, []);
   });
   WA.room.area.onLeave("clock").subscribe(closePopup);
 
-  /** ----- NPC DIALOGUE (clock-style: open on enter, close on leave) ----- **/
-  // Enter area named exactly "AssassinOfIDTheft"
-  // Anchor popup to object named exactly "NPCforIDTheft_Dialogue"
-  WA.room.area.onEnter("AssassinOfIDTheft").subscribe(() => {
-    closePopup(); // ensure only one popup at a time
+  /** ---------- NPC: AssassinOfIDTheft (same pattern as clock) ---------- **/
+  const AREA = "AssassinOfIDTheft";              // your trigger area
+  const ANCHOR = "NPCforIDTheft_Dialogue";       // your popup anchor
+
+  WA.room.area.onEnter(AREA).subscribe(() => {
+    console.log("[Assassin] onEnter");
+    closePopup();
     currentPopup = WA.ui.openPopup(
-      "NPCforIDTheft_Dialogue",
+      ANCHOR,
       "Which of the following is a common sign of identity theft?",
       [
         {
@@ -32,7 +35,7 @@ WA.onInit().then(() => {
           callback: () => {
             closePopup();
             currentPopup = WA.ui.openPopup(
-              "NPCforIDTheft_Dialogue",
+              ANCHOR,
               "✅ Correct! Always review your statements.",
               [{ label: "Close", callback: closePopup }]
             );
@@ -43,7 +46,7 @@ WA.onInit().then(() => {
           callback: () => {
             closePopup();
             currentPopup = WA.ui.openPopup(
-              "NPCforIDTheft_Dialogue",
+              ANCHOR,
               "❌ Not quite. Look for suspicious financial activity.",
               [{ label: "Try again", callback: closePopup }]
             );
@@ -53,13 +56,11 @@ WA.onInit().then(() => {
     );
   });
 
-  WA.room.area.onLeave("AssassinOfIDTheft").subscribe(closePopup);
-
-  // Optional
-  bootstrapExtra().then(() => {
-    console.log("Scripting API Extra ready");
-  }).catch(e => console.error(e));
-}).catch(e => console.error(e));
+  WA.room.area.onLeave(AREA).subscribe(() => {
+    console.log("[Assassin] onLeave");
+    closePopup();
+  });
+}).catch(console.error);
 
 function closePopup() {
   if (currentPopup) {
