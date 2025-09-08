@@ -504,17 +504,6 @@
                  "width":32,
                  "x":64,
                  "y":544
-                }, 
-                {
-                 "height":61.6673,
-                 "id":48,
-                 "name":"NPCforIDTheft_Dialogue",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":93.7162,
-                 "x":839.1419,
-                 "y":106.66635
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -526,7 +515,18 @@
          "draworder":"topdown",
          "id":69,
          "name":"dialogues",
-         "objects":[],
+         "objects":[
+                {
+                 "height":82.6666666666667,
+                 "id":49,
+                 "name":"NPCforIDTheft_Dialogue",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":136.666666666667,
+                 "x":816.1419,
+                 "y":86.16635
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -695,7 +695,7 @@
          "y":0
         }],
  "nextlayerid":70,
- "nextobjectid":49,
+ "nextobjectid":50,
  "orientation":"orthogonal",
  "properties":[
         {

@@ -3,67 +3,52 @@
 let popup: any | undefined;
 
 WA.onInit().then(() => {
-  console.log("[WA] ready");
-
-  /* ---------- CLOCK ---------- */
+  // CLOCK — open on enter, close on leave
   WA.room.area.onEnter("clock").subscribe(() => {
-    console.log("[clock] enter");
-    closePopup();
     const now = new Date();
     const hh = String(now.getHours()).padStart(2, "0");
     const mm = String(now.getMinutes()).padStart(2, "0");
-    popup = WA.ui.openPopup("clockPopup", `It's ${hh}:${mm}`, []); // no buttons
-  });
-  WA.room.area.onLeave("clock").subscribe(() => {
-    console.log("[clock] leave");
     closePopup();
+    popup = WA.ui.openPopup("clockPopup", `It's ${hh}:${mm}`, []);
   });
+  WA.room.area.onLeave("clock").subscribe(closePopup);
 
-  /* ---------- ASSASSIN ---------- */
+  // ASSASSIN — anchored to NPCforIDTheft_Dialogue
   WA.room.area.onEnter("AssassinOfIDTheft").subscribe(() => {
-    console.log("[assassin] enter");
-    openNpcPopup(
+    closePopup();
+    popup = WA.ui.openPopup(
+      "NPCforIDTheft_Dialogue",
       "Which of the following is a common sign of identity theft?",
       [
         {
-          label: "Unauthorized charges on your card",
+          label: "Unauthorized charges",
           callback: () => {
-            openNpcPopup("✅ Correct! Always review your statements.", []);
+            closePopup();
+            popup = WA.ui.openPopup(
+              "NPCforIDTheft_Dialogue",
+              "✅ Correct! Always review your statements.",
+              []
+            );
           },
         },
         {
-          label: "Free pizza delivered to your door",
+          label: "Free pizza delivery",
           callback: () => {
-            openNpcPopup("❌ Not quite. Look for suspicious financial activity.", []);
+            closePopup();
+            popup = WA.ui.openPopup(
+              "NPCforIDTheft_Dialogue",
+              "❌ Not quite. Look for suspicious financial activity.",
+              []
+            );
           },
         },
       ]
     );
   });
-
-  WA.room.area.onLeave("AssassinOfIDTheft").subscribe(() => {
-    console.log("[assassin] leave");
-    closePopup();
-  });
+  WA.room.area.onLeave("AssassinOfIDTheft").subscribe(closePopup);
 }).catch(console.error);
 
-function openNpcPopup(text: string, buttons: any[]) {
-  closePopup();
-  try {
-    // Try anchored popup first (requires a rectangle named exactly NPCforIDTheft_Dialogue)
-    popup = WA.ui.openPopup("NPCforIDTheft_Dialogue", text, buttons);
-  } catch (e) {
-    console.warn("Anchor not found; opening centered popup instead.", e);
-    // Fallback: centered popup so you can keep testing even if the anchor is missing
-    popup = WA.ui.openPopup("assassinCentered", text, buttons);
-  }
-}
-
 function closePopup() {
-  if (popup) {
-    popup.close();
-    popup = undefined;
-  }
+  if (popup) { popup.close(); popup = undefined; }
 }
-
 export {};
