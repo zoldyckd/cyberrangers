@@ -492,7 +492,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to talk to the Defender of Malware."
+                         "value":"Press SPACE to talk to the Defender of Malware.\nDo you have what it takes to defend yourself against Malwares?"
                         }],
                  "rotation":0,
                  "type":"area",
