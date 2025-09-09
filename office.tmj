@@ -517,15 +517,15 @@
          "name":"dialogues",
          "objects":[
                 {
-                 "height":159.333966666667,
+                 "height":113.333966666667,
                  "id":49,
                  "name":"NPCforIDTheft_Dialogue",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":261.382866666667,
-                 "x":678.475233333333,
-                 "y":6.83301666666667
+                 "width":303.382866666667,
+                 "x":625.808566666666,
+                 "y":133.499683333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -572,8 +572,8 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":45.4242424242424,
-                 "x":922.606060606061,
+                 "width":59.4242424242424,
+                 "x":908.606060606061,
                  "y":155.89393939394
                 }],
          "opacity":1,
