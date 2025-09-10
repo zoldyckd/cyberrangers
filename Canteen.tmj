@@ -334,19 +334,6 @@
         {
          "firstgid":2812,
          "source":"tilesets\/CakePack.tsx"
-        }, 
-        {
-         "columns":16,
-         "firstgid":2821,
-         "image":"tilesets\/Structures1.1.png",
-         "imageheight":512,
-         "imagewidth":512,
-         "margin":0,
-         "name":"structures",
-         "spacing":0,
-         "tilecount":256,
-         "tileheight":32,
-         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
