@@ -299,8 +299,17 @@
  "tileheight":32,
  "tilesets":[
         {
+         "columns":28,
          "firstgid":1,
-         "source":"tilesets\/Longcat Cafe Floors01 by ArloAnimation.tsx"
+         "image":"tilesets\/Longcat Cafe Floors01 by ArloAnimation.png",
+         "imageheight":722,
+         "imagewidth":907,
+         "margin":0,
+         "name":"Longcat Cafe Floors01 by ArloAnimation",
+         "spacing":0,
+         "tilecount":616,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
          "firstgid":617,
