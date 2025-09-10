@@ -433,8 +433,17 @@
  "tileheight":32,
  "tilesets":[
         {
+         "columns":17,
          "firstgid":1,
-         "source":"tilesets\/Room_Builder_free_32x32.tsx"
+         "image":"tilesets\/Room_Builder_free_32x32.png",
+         "imageheight":736,
+         "imagewidth":544,
+         "margin":0,
+         "name":"Room_Builder_free_32x32",
+         "spacing":0,
+         "tilecount":391,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
          "firstgid":392,
