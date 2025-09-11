@@ -299,20 +299,56 @@
  "tileheight":32,
  "tilesets":[
         {
+         "columns":48,
          "firstgid":1,
-         "source":"tilesets\/atlas_32x.tsx"
+         "image":"tilesets\/atlas_32x.png",
+         "imageheight":512,
+         "imagewidth":1536,
+         "margin":0,
+         "name":"atlas_32x",
+         "spacing":0,
+         "tilecount":768,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":16,
          "firstgid":769,
-         "source":"tilesets\/inside.tsx"
+         "image":"tilesets\/inside.png",
+         "imageheight":336,
+         "imagewidth":512,
+         "margin":0,
+         "name":"inside",
+         "spacing":0,
+         "tilecount":160,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":16,
          "firstgid":929,
-         "source":"tilesets\/Interiors_free_32x32.tsx"
+         "image":"tilesets\/Interiors_free_32x32.png",
+         "imageheight":2848,
+         "imagewidth":512,
+         "margin":0,
+         "name":"Interiors_free_32x32",
+         "spacing":0,
+         "tilecount":1424,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":1,
          "firstgid":2353,
-         "source":"tilesets\/Computer.tsx"
+         "image":"tilesets\/Computer.gif",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"Computer",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",

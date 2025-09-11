@@ -312,28 +312,82 @@
          "tilewidth":32
         }, 
         {
+         "columns":48,
          "firstgid":617,
-         "source":"tilesets\/atlas_32x.tsx"
+         "image":"tilesets\/atlas_32x.png",
+         "imageheight":512,
+         "imagewidth":1536,
+         "margin":0,
+         "name":"atlas_32x",
+         "spacing":0,
+         "tilecount":768,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":16,
          "firstgid":1385,
-         "source":"tilesets\/Interiors_free_32x32.tsx"
+         "image":"tilesets\/Interiors_free_32x32.png",
+         "imageheight":2848,
+         "imagewidth":512,
+         "margin":0,
+         "name":"Interiors_free_32x32",
+         "spacing":0,
+         "tilecount":1424,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":1,
          "firstgid":2809,
-         "source":"tilesets\/16_burger_dish.tsx"
+         "image":"tilesets\/16_burger_dish.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"16_burger_dish",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":1,
          "firstgid":2810,
-         "source":"tilesets\/94_spaghetti.tsx"
+         "image":"tilesets\/94_spaghetti.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"94_spaghetti",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":1,
          "firstgid":2811,
-         "source":"tilesets\/05_apple_pie.tsx"
+         "image":"tilesets\/05_apple_pie.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"05_apple_pie",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":3,
          "firstgid":2812,
-         "source":"tilesets\/CakePack.tsx"
+         "image":"tilesets\/CakePack.png",
+         "imageheight":100,
+         "imagewidth":100,
+         "margin":0,
+         "name":"CakePack",
+         "spacing":0,
+         "tilecount":9,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",

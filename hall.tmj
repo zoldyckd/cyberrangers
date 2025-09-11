@@ -237,12 +237,56 @@
  "tileheight":32,
  "tilesets":[
         {
+         "columns":17,
          "firstgid":1,
-         "source":"tilesets\/Room_Builder_free_32x32.tsx"
+         "image":"tilesets\/Room_Builder_free_32x32.png",
+         "imageheight":736,
+         "imagewidth":544,
+         "margin":0,
+         "name":"Room_Builder_free_32x32",
+         "spacing":0,
+         "tilecount":391,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":48,
          "firstgid":392,
-         "source":"tilesets\/atlas_32x.tsx"
+         "image":"tilesets\/atlas_32x.png",
+         "imageheight":512,
+         "imagewidth":1536,
+         "margin":0,
+         "name":"atlas_32x",
+         "spacing":0,
+         "tilecount":768,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":30,
+         "firstgid":1160,
+         "image":"tilesets\/Walls 1.1.png",
+         "imageheight":512,
+         "imagewidth":960,
+         "margin":0,
+         "name":"Walls 1.1",
+         "spacing":0,
+         "tilecount":480,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":8,
+         "firstgid":1640,
+         "image":"tilesets\/Grounds 1.1.png",
+         "imageheight":256,
+         "imagewidth":256,
+         "margin":0,
+         "name":"Grounds 1.1",
+         "spacing":0,
+         "tilecount":64,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",

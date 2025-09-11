@@ -299,16 +299,43 @@
  "tileheight":32,
  "tilesets":[
         {
+         "columns":30,
          "firstgid":1,
-         "source":"tilesets\/Structures1.1.tsx"
+         "image":"tilesets\/Walls 1.1.png",
+         "imageheight":512,
+         "imagewidth":960,
+         "margin":0,
+         "name":"Walls 1.1",
+         "spacing":0,
+         "tilecount":480,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":8,
          "firstgid":481,
-         "source":"tilesets\/Grounds 1.1.tsx"
+         "image":"tilesets\/Grounds 1.1.png",
+         "imageheight":256,
+         "imagewidth":256,
+         "margin":0,
+         "name":"Grounds 1.1",
+         "spacing":0,
+         "tilecount":64,
+         "tileheight":32,
+         "tilewidth":32
         }, 
         {
+         "columns":13,
          "firstgid":545,
-         "source":"tilesets\/Props 1.1.tsx"
+         "image":"tilesets\/Props 1.1.png",
+         "imageheight":512,
+         "imagewidth":416,
+         "margin":0,
+         "name":"Props 1.1",
+         "spacing":0,
+         "tilecount":208,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
