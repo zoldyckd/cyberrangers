@@ -446,23 +446,28 @@
          "tilewidth":32
         }, 
         {
+         "columns":16,
          "firstgid":392,
-         "source":"tilesets\/Interiors_free_32x32.tsx"
-        }, 
-        {
-         "firstgid":1816,
-         "source":"tilesets\/post apoc office furniture set updated.tsx"
-        }, 
-        {
-         "columns":48,
-         "firstgid":1970,
-         "image":"tilesets\/atlas_32x.png",
-         "imageheight":512,
-         "imagewidth":1536,
+         "image":"tilesets\/Interiors_free_32x32.png",
+         "imageheight":2848,
+         "imagewidth":512,
          "margin":0,
-         "name":"atlas_32x",
+         "name":"Interiors_free_32x32",
          "spacing":0,
-         "tilecount":768,
+         "tilecount":1424,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":11,
+         "firstgid":1816,
+         "image":"tilesets\/post apoc office furniture set updated.png",
+         "imageheight":448,
+         "imagewidth":352,
+         "margin":0,
+         "name":"post apoc office furniture set updated",
+         "spacing":0,
+         "tilecount":154,
          "tileheight":32,
          "tilewidth":32
         }],
