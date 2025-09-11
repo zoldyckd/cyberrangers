@@ -1,6 +1,106 @@
 {
   "layers": [
     {
+      "name": "collisions",
+      "objects": [
+        {
+          "id": 1,
+          "name": "",
+          "visible": true,
+          "x": 96,
+          "y": 128,
+          "height": 0,
+          "rotation": 0,
+          "type": "",
+          "width": 0
+        },
+        {
+          "id": 2,
+          "name": "",
+          "visible": true,
+          "x": 128,
+          "y": 128,
+          "height": 0,
+          "rotation": 0,
+          "type": "",
+          "width": 0
+        },
+        {
+          "id": 4,
+          "name": "",
+          "visible": true,
+          "x": 32,
+          "y": 32,
+          "height": 0,
+          "rotation": 0,
+          "type": "",
+          "width": 608
+        },
+        {
+          "id": 6,
+          "name": "",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "height": 32,
+          "rotation": 0,
+          "type": "",
+          "width": 640
+        },
+        {
+          "id": 10,
+          "name": "",
+          "visible": true,
+          "x": 256,
+          "y": 32,
+          "height": 256,
+          "rotation": 0,
+          "type": "",
+          "width": 192
+        },
+        {
+          "id": 11,
+          "name": "",
+          "visible": true,
+          "x": 0,
+          "y": 32,
+          "height": 480,
+          "rotation": 0,
+          "type": "",
+          "width": 64
+        },
+        {
+          "id": 12,
+          "name": "",
+          "visible": true,
+          "x": 0,
+          "y": 512,
+          "height": 128,
+          "rotation": 0,
+          "type": "",
+          "width": 640
+        },
+        {
+          "id": 14,
+          "name": "",
+          "visible": true,
+          "x": 576,
+          "y": 32,
+          "height": 480,
+          "rotation": 0,
+          "type": "",
+          "width": 64
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "draworder": "topdown",
+      "id": 11,
+      "x": 0,
+      "y": 0
+    },
+    {
       "data": [
         0,
         0,
@@ -3734,7 +3834,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-062bd8d6.png",
+      "image": "computerlab-chunk-1-aed034b3.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
@@ -3751,8 +3851,8 @@
   "compressionlevel": -1,
   "height": 20,
   "infinite": false,
-  "nextlayerid": 11,
-  "nextobjectid": 1,
+  "nextlayerid": 12,
+  "nextobjectid": 15,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tileheight": 32,
