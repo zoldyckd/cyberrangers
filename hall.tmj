@@ -2484,7 +2484,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": false
+              "value": true
             }
           ],
           "x": 0,
@@ -2915,7 +2915,7 @@
     {
       "columns": 6,
       "firstgid": 1,
-      "image": "hall-chunk-1-a487fc24.png",
+      "image": "hall-chunk-1-eb0f35c0.png",
       "imageheight": 192,
       "imagewidth": 192,
       "margin": 0,
