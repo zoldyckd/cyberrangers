@@ -229,6 +229,12 @@
          "id":7,
          "name":"Shelfs",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"collides",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":20,
@@ -260,6 +266,12 @@
          "id":8,
          "name":"Tables",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"collides",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":20,
