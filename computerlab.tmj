@@ -212,8 +212,8 @@
         0,
         0,
         0,
-        0,
-        0,
+        1,
+        1,
         0,
         0,
         0,
@@ -1248,6 +1248,13 @@
           "type": "tilelayer",
           "visible": true,
           "width": 20,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": true
+            }
+          ],
           "x": 0,
           "y": 0
         },
@@ -4168,7 +4175,7 @@
     {
       "columns": 6,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-b3bdae86.png",
+      "image": "computerlab-chunk-1-26ea264a.png",
       "imageheight": 192,
       "imagewidth": 192,
       "margin": 0,
