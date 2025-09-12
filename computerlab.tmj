@@ -354,12 +354,6 @@
          "id":9,
          "name":"Computer",
          "opacity":1,
-         "properties":[
-                {
-                 "name":"collisions",
-                 "type":"bool",
-                 "value":true
-                }],
          "type":"tilelayer",
          "visible":true,
          "width":20,
@@ -451,6 +445,12 @@
          "imagewidth":32,
          "margin":0,
          "name":"Computer",
+         "properties":[
+                {
+                 "name":"collisions",
+                 "type":"bool",
+                 "value":true
+                }],
          "spacing":0,
          "tilecount":1,
          "tileheight":32,
