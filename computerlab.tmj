@@ -396,7 +396,7 @@
                  "id":0,
                  "properties":[
                         {
-                         "name":"collisions",
+                         "name":"collides",
                          "type":"bool",
                          "value":true
                         }]
