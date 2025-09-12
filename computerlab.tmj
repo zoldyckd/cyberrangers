@@ -4154,7 +4154,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-9931cc0d.png",
+      "image": "computerlab-chunk-1-798ebf90.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
@@ -4194,7 +4194,7 @@
               "value": true
             },
             {
-              "name": "collisions",
+              "name": "collides",
               "type": "bool",
               "value": true
             }
