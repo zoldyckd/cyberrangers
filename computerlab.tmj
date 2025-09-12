@@ -408,7 +408,7 @@
       "name": "collisions",
       "opacity": 1,
       "type": "tilelayer",
-      "visible": true,
+      "visible": false,
       "width": 20,
       "properties": [
         {
@@ -505,7 +505,7 @@
         0,
         0,
         2,
-        2,
+        1,
         2,
         2,
         2,
@@ -3333,13 +3333,6 @@
       "type": "tilelayer",
       "visible": true,
       "width": 20,
-      "properties": [
-        {
-          "name": "collides",
-          "type": "bool",
-          "value": true
-        }
-      ],
       "x": 0,
       "y": 0
     },
@@ -3753,6 +3746,13 @@
       "type": "tilelayer",
       "visible": true,
       "width": 20,
+      "properties": [
+        {
+          "name": "collides",
+          "type": "bool",
+          "value": true
+        }
+      ],
       "x": 0,
       "y": 0
     },
@@ -4175,7 +4175,7 @@
     {
       "columns": 6,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-26ea264a.png",
+      "image": "computerlab-chunk-1-4a2a3c3c.png",
       "imageheight": 192,
       "imagewidth": 192,
       "margin": 0,
