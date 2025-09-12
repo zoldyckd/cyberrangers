@@ -2906,6 +2906,13 @@
       "type": "tilelayer",
       "visible": true,
       "width": 20,
+      "properties": [
+        {
+          "name": "collides",
+          "type": "bool",
+          "value": true
+        }
+      ],
       "x": 0,
       "y": 0
     },
@@ -3319,6 +3326,13 @@
       "type": "tilelayer",
       "visible": true,
       "width": 20,
+      "properties": [
+        {
+          "name": "collides",
+          "type": "bool",
+          "value": true
+        }
+      ],
       "x": 0,
       "y": 0
     },
@@ -4154,7 +4168,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-a52d2eb9.png",
+      "image": "computerlab-chunk-1-5027b3fe.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
