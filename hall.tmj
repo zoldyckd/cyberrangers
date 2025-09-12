@@ -185,6 +185,12 @@
                  "id":5,
                  "name":"Border",
                  "opacity":1,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":false
+                        }],
                  "type":"tilelayer",
                  "visible":true,
                  "width":20,
