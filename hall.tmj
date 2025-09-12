@@ -2480,6 +2480,13 @@
           "type": "tilelayer",
           "visible": true,
           "width": 20,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": false
+            }
+          ],
           "x": 0,
           "y": 0
         },
@@ -2908,7 +2915,7 @@
     {
       "columns": 6,
       "firstgid": 1,
-      "image": "hall-chunk-1-74b63148.png",
+      "image": "hall-chunk-1-a487fc24.png",
       "imageheight": 192,
       "imagewidth": 192,
       "margin": 0,
