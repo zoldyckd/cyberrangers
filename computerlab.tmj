@@ -3412,13 +3412,6 @@
       "type": "tilelayer",
       "visible": true,
       "width": 20,
-      "properties": [
-        {
-          "name": "collisions",
-          "type": "bool",
-          "value": true
-        }
-      ],
       "x": 0,
       "y": 0
     },
@@ -3841,7 +3834,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-c98a00e4.png",
+      "image": "computerlab-chunk-1-6085bd96.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
@@ -3851,7 +3844,18 @@
       "tilecount": 43,
       "tileheight": 32,
       "tilewidth": 32,
-      "tiles": []
+      "tiles": [
+        {
+          "id": 38,
+          "properties": [
+            {
+              "name": "collisions",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
     }
   ],
   "type": "map",
