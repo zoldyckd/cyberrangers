@@ -384,7 +384,7 @@
          "name":"Computer",
          "properties":[
                 {
-                 "name":"collisions",
+                 "name":"collides",
                  "type":"bool",
                  "value":true
                 }],
