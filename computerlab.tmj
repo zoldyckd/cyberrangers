@@ -97,6 +97,12 @@
                  "y":672
                 }],
          "opacity":1,
+         "properties":[
+                {
+                 "name":"collides",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"objectgroup",
          "visible":true,
          "x":0,
