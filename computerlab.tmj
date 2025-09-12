@@ -97,6 +97,13 @@
       "visible": true,
       "draworder": "topdown",
       "id": 11,
+      "properties": [
+        {
+          "name": "collides",
+          "type": "bool",
+          "value": true
+        }
+      ],
       "x": 0,
       "y": 0
     },
@@ -3834,7 +3841,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-28e4db79.png",
+      "image": "computerlab-chunk-1-91b53639.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
