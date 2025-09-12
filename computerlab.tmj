@@ -3834,7 +3834,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-5a19bcfb.png",
+      "image": "computerlab-chunk-1-28e4db79.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
@@ -3849,7 +3849,7 @@
           "id": 38,
           "properties": [
             {
-              "name": "collisions",
+              "name": "collides",
               "type": "bool",
               "value": true
             }
@@ -3859,7 +3859,7 @@
           "id": 38,
           "properties": [
             {
-              "name": "collisions",
+              "name": "collides",
               "type": "bool",
               "value": true
             }
