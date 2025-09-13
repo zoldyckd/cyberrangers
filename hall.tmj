@@ -293,6 +293,19 @@
          "tilecount":64,
          "tileheight":32,
          "tilewidth":32
+        }, 
+        {
+         "columns":6,
+         "firstgid":1704,
+         "image":"tilesets\/WA_Special_Zones.png",
+         "imageheight":64,
+         "imagewidth":192,
+         "margin":0,
+         "name":"WA_Special_Zones",
+         "spacing":0,
+         "tilecount":12,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
