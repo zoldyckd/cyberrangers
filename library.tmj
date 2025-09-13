@@ -2502,7 +2502,7 @@
       "name": "collisions",
       "opacity": 1,
       "type": "tilelayer",
-      "visible": true,
+      "visible": false,
       "width": 20,
       "x": 0,
       "y": 0
@@ -4589,7 +4589,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "library-chunk-1-10fc6eb8.png",
+      "image": "library-chunk-1-590a6244.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
@@ -4772,26 +4772,6 @@
         },
         {
           "id": 27,
-          "properties": [
-            {
-              "name": "collides",
-              "type": "bool",
-              "value": true
-            }
-          ]
-        },
-        {
-          "id": 28,
-          "properties": [
-            {
-              "name": "collides",
-              "type": "bool",
-              "value": true
-            }
-          ]
-        },
-        {
-          "id": 28,
           "properties": [
             {
               "name": "collides",
