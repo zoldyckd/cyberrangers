@@ -7395,7 +7395,7 @@
     {
       "columns": 8,
       "firstgid": 1,
-      "image": "classroom-chunk-1-758ea6c2.png",
+      "image": "classroom-chunk-1-3d062f8a.png",
       "imageheight": 256,
       "imagewidth": 256,
       "margin": 0,
@@ -7872,7 +7872,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": false
+              "value": true
             }
           ]
         },
@@ -7882,7 +7882,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": false
+              "value": true
             }
           ]
         }
