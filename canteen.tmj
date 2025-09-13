@@ -408,7 +408,7 @@
       "name": "collisions",
       "opacity": 1,
       "type": "tilelayer",
-      "visible": true,
+      "visible": false,
       "width": 20,
       "x": 0,
       "y": 0
@@ -4169,7 +4169,7 @@
     {
       "columns": 10,
       "firstgid": 1,
-      "image": "canteen-chunk-1-c746a2dc.png",
+      "image": "canteen-chunk-1-6ca25df3.png",
       "imageheight": 320,
       "imagewidth": 320,
       "margin": 0,
