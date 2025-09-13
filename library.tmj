@@ -164,6 +164,12 @@
                  "id":3,
                  "name":"Border",
                  "opacity":1,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "type":"tilelayer",
                  "visible":true,
                  "width":20,
@@ -267,12 +273,6 @@
                  "id":8,
                  "name":"Bookshelf",
                  "opacity":1,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }],
                  "type":"tilelayer",
                  "visible":true,
                  "width":20,
@@ -304,12 +304,6 @@
                  "id":9,
                  "name":"Table",
                  "opacity":1,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }],
                  "type":"tilelayer",
                  "visible":true,
                  "width":20,
@@ -455,33 +449,6 @@
          "tileheight":32,
          "tiles":[
                 {
-                 "id":204,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":205,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":206,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":252,
                  "properties":[
                         {
@@ -501,33 +468,6 @@
                 }, 
                 {
                  "id":254,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":300,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":301,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":302,
                  "properties":[
                         {
                          "name":"collides",
@@ -564,6 +504,24 @@
                 }, 
                 {
                  "id":537,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":653,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":701,
                  "properties":[
                         {
                          "name":"collides",
