@@ -408,7 +408,7 @@
       "name": "collisions",
       "opacity": 1,
       "type": "tilelayer",
-      "visible": true,
+      "visible": false,
       "width": 20,
       "x": 0,
       "y": 0
@@ -6658,7 +6658,7 @@
     {
       "columns": 10,
       "firstgid": 1,
-      "image": "office-chunk-1-2aa135c3.png",
+      "image": "office-chunk-1-3393e40d.png",
       "imageheight": 320,
       "imagewidth": 320,
       "margin": 0,
