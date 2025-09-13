@@ -267,6 +267,12 @@
                  "id":8,
                  "name":"Bookshelf",
                  "opacity":1,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "type":"tilelayer",
                  "visible":true,
                  "width":20,
@@ -298,6 +304,12 @@
                  "id":9,
                  "name":"Table",
                  "opacity":1,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "type":"tilelayer",
                  "visible":true,
                  "width":20,
