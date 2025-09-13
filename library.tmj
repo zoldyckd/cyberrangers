@@ -3328,6 +3328,13 @@
           "type": "tilelayer",
           "visible": true,
           "width": 20,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": true
+            }
+          ],
           "x": 0,
           "y": 0
         },
@@ -3741,6 +3748,13 @@
           "type": "tilelayer",
           "visible": true,
           "width": 20,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": true
+            }
+          ],
           "x": 0,
           "y": 0
         },
@@ -4582,7 +4596,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "library-chunk-1-f158c7dd.png",
+      "image": "library-chunk-1-8394a889.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
