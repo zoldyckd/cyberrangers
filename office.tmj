@@ -6658,7 +6658,7 @@
     {
       "columns": 10,
       "firstgid": 1,
-      "image": "office-chunk-1-f6986a14.png",
+      "image": "office-chunk-1-f617af85.png",
       "imageheight": 320,
       "imagewidth": 320,
       "margin": 0,
@@ -6815,7 +6815,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6825,7 +6825,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6835,7 +6835,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6845,7 +6845,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6855,7 +6855,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6865,7 +6865,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6875,7 +6875,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6885,7 +6885,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6895,7 +6895,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6905,7 +6905,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6915,7 +6915,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6925,7 +6925,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6935,7 +6935,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
@@ -6945,7 +6945,7 @@
             {
               "name": "collides",
               "type": "bool",
-              "value": true
+              "value": false
             }
           ]
         },
