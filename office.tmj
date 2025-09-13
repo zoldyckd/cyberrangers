@@ -6658,7 +6658,7 @@
     {
       "columns": 10,
       "firstgid": 1,
-      "image": "office-chunk-1-1800eb3d.png",
+      "image": "office-chunk-1-ac108096.png",
       "imageheight": 320,
       "imagewidth": 320,
       "margin": 0,
@@ -7021,6 +7021,46 @@
         },
         {
           "id": 44,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 45,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 45,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "properties": [
+            {
+              "name": "collides",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 46,
           "properties": [
             {
               "name": "collides",
