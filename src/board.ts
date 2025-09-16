@@ -31,3 +31,5 @@ Choose carefully. Each portal leads to trials of awareness—and the power of pr
       boardPopupRef.close();
       boardPopupRef = undefined;
     }
+  });
+} // 👈 make sure this closing brace is here
