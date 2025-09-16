@@ -4,12 +4,14 @@ export function initBoard() {
   WA.room.area.onEnter("board").subscribe(() => {
     if (boardPopupRef) boardPopupRef.close();
 
-    const text = `<strong>Choose a portal to learn</strong><br/><br/>
-💜 <b>Malware</b> — corrupt/spy/destroy<br/>
-🔵 <b>Phishing</b> — fake messages steal secrets<br/>
-🔴 <b>Identity Theft</b> — someone uses your identity<br/>
-🟡 <b>Quishing</b> — QR codes leading to traps<br/>
-💚 <b>Password Security</b> — strong & unique, add MFA`;
+    const text = [
+      "Choose a portal to learn:",
+      "💜 Malware — corrupt / spy / destroy",
+      "🔵 Phishing — fake messages steal secrets",
+      "🔴 Identity Theft — someone uses your identity",
+      "🟡 Quishing — QR-code traps",
+      "💚 Passwords — strong & unique, add MFA"
+    ].join("\n"); // exactly one \n between lines
 
     boardPopupRef = WA.ui.openPopup("boardPopup", text, []);
   });
