@@ -358,7 +358,7 @@
                  "visible":true,
                  "width":32,
                  "x":160,
-                 "y":128
+                 "y":160
                 }, 
                 {
                  "height":32,
@@ -429,7 +429,7 @@
                  "visible":true,
                  "width":32,
                  "x":224,
-                 "y":128
+                 "y":160
                 }, 
                 {
                  "height":19.328125,
@@ -466,7 +466,7 @@
                  "visible":true,
                  "width":32,
                  "x":288,
-                 "y":128
+                 "y":160
                 }, 
                 {
                  "height":32,
@@ -534,7 +534,7 @@
                  "visible":true,
                  "width":32,
                  "x":352,
-                 "y":128
+                 "y":160
                 }, 
                 {
                  "height":32,
@@ -551,7 +551,7 @@
                  "visible":true,
                  "width":32,
                  "x":416,
-                 "y":128
+                 "y":160
                 }, 
                 {
                  "height":19.3281,
@@ -1035,7 +1035,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1044,7 +1044,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1053,7 +1053,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1062,7 +1062,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1071,7 +1071,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1080,7 +1080,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1089,7 +1089,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }],
          "tilewidth":32
