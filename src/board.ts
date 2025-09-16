@@ -1,21 +1,23 @@
-let boardPop: any | undefined;
+let boardPopupRef: any | undefined;
 
 export function initBoard() {
-  const close = () => { boardPop?.close(); boardPop = undefined; };
-
   WA.room.area.onEnter("board").subscribe(() => {
-    boardPop?.close();
-    boardPop = WA.ui.openPopup("boardPopup",
-      "The bulletin board glows with strange energy.\nChoose your path:",
-      [
-        { label: "💜  Malware — corrupts, spies, destroys", callback: close },
-        { label: "🔵  Phishing — fake messages steal secrets", callback: close },
-        { label: "🔴  Identity Theft — your name gets stolen", callback: close },
-        { label: "🟡  Quishing — QR codes with hidden traps", callback: close },
-        { label: "💚  Password Security — weak keys fall", callback: close },
-      ]
-    );
+    if (boardPopupRef) boardPopupRef.close();
+
+    const text = `<strong>Choose a portal to learn</strong><br/><br/>
+💜 <b>Malware</b> — corrupt/spy/destroy<br/>
+🔵 <b>Phishing</b> — fake messages steal secrets<br/>
+🔴 <b>Identity Theft</b> — someone uses your identity<br/>
+🟡 <b>Quishing</b> — QR codes leading to traps<br/>
+💚 <b>Password Security</b> — strong & unique, add MFA`;
+
+    boardPopupRef = WA.ui.openPopup("boardPopup", text, []);
   });
 
-  WA.room.area.onLeave("board").subscribe(close);
+  WA.room.area.onLeave("board").subscribe(() => {
+    if (boardPopupRef) {
+      boardPopupRef.close();
+      boardPopupRef = undefined;
+    }
+  });
 }
