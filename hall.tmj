@@ -342,6 +342,16 @@
                          "name":"exitUrl",
                          "type":"string",
                          "value":"library.tmj#from-hall"
+                        }, 
+                        {
+                         "name":"exitUrlTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"exitUrlTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to enter the Library where the Defender of Malware resides."
                         }],
                  "rotation":0,
                  "type":"area",
