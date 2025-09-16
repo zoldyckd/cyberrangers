@@ -402,12 +402,6 @@
                  "height":32,
                  "id":6,
                  "name":"to-canteen",
-                 "properties":[
-                        {
-                         "name":"exitUrl",
-                         "type":"string",
-                         "value":"canteen.tmj#from-hall"
-                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -439,12 +433,6 @@
                  "height":32,
                  "id":9,
                  "name":"to-office",
-                 "properties":[
-                        {
-                         "name":"exitUrl",
-                         "type":"string",
-                         "value":"office.tmj#from-hall"
-                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -507,12 +495,6 @@
                  "height":32,
                  "id":15,
                  "name":"to-classroom",
-                 "properties":[
-                        {
-                         "name":"exitUrl",
-                         "type":"string",
-                         "value":"classroom.tmj#from-hall"
-                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -524,12 +506,6 @@
                  "height":32,
                  "id":16,
                  "name":"to-computerlab",
-                 "properties":[
-                        {
-                         "name":"exitUrl",
-                         "type":"string",
-                         "value":"computerlab.tmj#from-hall"
-                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,

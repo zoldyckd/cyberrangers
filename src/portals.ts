@@ -7,12 +7,12 @@ type Portal = {
 };
 
 const portals: Portal[] = [
-  { area: "to-library",     target: "library.tmj#from-hall",    message: "Press SPACE to enter the Library" },
-  { area: "to-hall",        target: "hall.tmj#from-library",    message: "Press SPACE to return to Hall" },
-  { area: "to-computerLab", target: "computerlab.tmj#from-hall",message: "Press SPACE to enter the Computer Lab" },
-  { area: "to-office",      target: "office.tmj#from-hall",     message: "Press SPACE to enter the Office" },
-  { area: "to-canteen",     target: "canteen.tmj#from-hall",    message: "Press SPACE to enter the Canteen" },
-  { area: "to-classroom",   target: "classroom.tmj#from-hall",  message: "Press SPACE to enter the Classroom" },
+  { area: "to-library",     target: "library.tmj#from-hall",    message: "Press SPACE to enter the Library where the Defender of Malware resides" },
+  { area: "to-hall",        target: "hall.tmj#from-library",    message: "Press SPACE to return to the Gathering Hall " },
+  { area: "to-computerLab", target: "computerlab.tmj#from-hall",message: "Press SPACE to enter the Computer Lab to learn about Password Security" },
+  { area: "to-office",      target: "office.tmj#from-hall",     message: "Press SPACE to enter the Office to uncover the dangers of Identity Theft" },
+  { area: "to-canteen",     target: "canteen.tmj#from-hall",    message: "Press SPACE to enter the Canteen and learn how to spot Phishing Scams" },
+  { area: "to-classroom",   target: "classroom.tmj#from-hall",  message: "Press SPACE to enter the Classroom to explore the risks of QR Code scams (Quishing)" },
 ];
 
 function clearActionMessage() {
