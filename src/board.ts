@@ -4,8 +4,7 @@ export function initBoard() {
   WA.room.area.onEnter("board").subscribe(() => {
     if (boardPopupRef) boardPopupRef.close();
 
-const text = 
-`The bulletin board before you hums with strange energy. 
+    const text = `The bulletin board before you hums with strange energy. 
 Five shimmering portals glow across its surface—paths of knowledge disguised as trials. 
 The choice is yours, traveler… 
 
@@ -31,10 +30,7 @@ Strong or weak, they decide your fate.
 
 Choose carefully. 
 Each portal leads to trials of awareness—
-and the power of protection.`;
-
-
-Choose carefully. Each portal leads to trials of awareness—and the power of protection.`;
+and the power of protection.`;   // 👈 CLOSES HERE
 
     boardPopupRef = WA.ui.openPopup("boardPopup", text, []);
   });
@@ -45,4 +41,4 @@ Choose carefully. Each portal leads to trials of awareness—and the power of pr
       boardPopupRef = undefined;
     }
   });
-} // 👈 make sure this closing brace is here
+}
