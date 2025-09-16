@@ -4621,6 +4621,28 @@
           "rotation": 0,
           "type": "area",
           "width": 32
+        },
+        {
+          "id": 18,
+          "name": "QRcode",
+          "visible": true,
+          "x": 448,
+          "y": 96,
+          "height": 32,
+          "rotation": 0,
+          "type": "area",
+          "width": 32
+        },
+        {
+          "id": 19,
+          "name": "QRcodePopup",
+          "visible": true,
+          "x": 339,
+          "y": 86,
+          "height": 66,
+          "rotation": 0,
+          "type": "",
+          "width": 104
         }
       ],
       "opacity": 1,
@@ -5474,7 +5496,7 @@
     {
       "columns": 7,
       "firstgid": 1,
-      "image": "library-chunk-1-fc18b391.png",
+      "image": "library-chunk-1-c0e778f8.png",
       "imageheight": 224,
       "imagewidth": 224,
       "margin": 0,
@@ -5753,7 +5775,7 @@
   "height": 20,
   "infinite": false,
   "nextlayerid": 23,
-  "nextobjectid": 18,
+  "nextobjectid": 20,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tileheight": 32,
