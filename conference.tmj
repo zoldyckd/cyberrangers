@@ -349,6 +349,17 @@
                  "width":32,
                  "x":640,
                  "y":128
+                }, 
+                {
+                 "height":0,
+                 "id":24,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":576,
+                 "y":-192
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -467,7 +478,7 @@
          "y":0
         }],
  "nextlayerid":62,
- "nextobjectid":24,
+ "nextobjectid":26,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -496,7 +507,7 @@
          "value":"src\/main.ts"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.10.2",
+ "tiledversion":"1.11.2",
  "tileheight":32,
  "tilesets":[
         {
