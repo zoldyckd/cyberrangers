@@ -4,34 +4,13 @@ export function initBoard() {
   WA.room.area.onEnter("board").subscribe(() => {
     if (boardPopupRef) boardPopupRef.close();
 
-    const text = `The bulletin board before you hums with strange energy.
-Five shimmering portals glow across its surface—paths of knowledge disguised as trials.
-The choice is yours, traveler…
-
-💜 Purple Portal — Malware
-Hidden programs that corrupt, spy, and destroy.
-Learn how shadows slip into your system.
-
-🔵 Blue Portal — Phishing
-Impostors mimic voices of trust
-to lure you into surrendering secrets.
-
-🔴 Red Portal — Identity Theft
-When your name, your life, your very self
-is stolen and worn by another.
-
-🟡 Yellow Portal — Quishing
-QR-code trickery that hides traps
-behind innocent squares.
-
-💚 Green Portal — Password Security
-The keys to your digital kingdom.
-Strong or weak, they decide your fate.
-
-Choose carefully.
-Each portal leads to trials of awareness—
-and the power of protection.`;
-;   // 👈 CLOSES HERE
+const text = "The bulletin board glows with strange energy.\nFive portals shimmer before you — choose your path:\n\n" +
+"💜 Purple — Malware\nCorrupts, spies, and destroys systems.\n\n" +
+"🔵 Blue — Phishing\nFake messages trick you into giving secrets.\n\n" +
+"🔴 Red — Identity Theft\nYour name and identity stolen by others.\n\n" +
+"🟡 Yellow — Quishing\nQR codes that lead to hidden traps.\n\n" +
+"💚 Green — Password Security\nWeak keys fall, strong keys protect.\n\n" +
+"Choose wisely, traveler — each portal is a lesson in awareness.";   // 👈 CLOSES HERE
 
     boardPopupRef = WA.ui.openPopup("boardPopup", text, []);
   });
