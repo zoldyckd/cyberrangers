@@ -2,6 +2,7 @@
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 import { initClock } from "./clock";
 import { initBoard } from "./board";   // 👈 import board feature
+import "./portals"; // registers the handlers on load
 
 console.log("Script started");
 
