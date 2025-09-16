@@ -1,12 +1,32 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-type Portal = {
-  area: string;    // Tiled object name (Class = area)
-  target: string;  // "map.tmj#spawnName"
-  message: string; // On-screen prompt
+/* ---------- POPUP SAFETY LAYER ---------- */
+// Track every popup that gets opened anywhere in your code.
+const _openPopups: Array<ReturnType<typeof WA.ui.openPopup>> = [];
+const _origOpenPopup = WA.ui.openPopup.bind(WA.ui);
+
+// Monkey-patch openPopup so we can close everything later.
+(WA.ui.openPopup as any) = (...args: Parameters<typeof WA.ui.openPopup>) => {
+  const p = _origOpenPopup(...args);
+  _openPopups.push(p);
+  return p;
 };
 
-// --- YOUR PORTALS ---
+function closeAllPopups() {
+  for (const p of _openPopups) {
+    try { p.close(); } catch {}
+  }
+  _openPopups.length = 0;
+}
+
+function clearActionMessage() {
+  // typings require callback
+  WA.ui.displayActionMessage({ message: "", callback: () => {} });
+}
+
+/* ---------- PORTALS ---------- */
+type Portal = { area: string; target: string; message: string };
+
 const portals: Portal[] = [
   { area: "to-library",     target: "library.tmj#from-hall",    message: "Press SPACE to enter the Library where the Defender of Malware resides" },
   { area: "to-hall",        target: "hall.tmj#from-library",    message: "Press SPACE to return to the Gathering Hall" },
@@ -16,42 +36,22 @@ const portals: Portal[] = [
   { area: "to-classroom",   target: "classroom.tmj#from-hall",  message: "Press SPACE to enter the Classroom (Quishing / QR-code scams)" },
 ];
 
-// --- SAFETY HELPERS ---
-let openPopupRef: ReturnType<typeof WA.ui.openPopup> | undefined;
-function closeAnyPopup() {
-  try { openPopupRef?.close(); } catch {}
-  openPopupRef = undefined;
-}
-
-function clearActionMessage() {
-  // typings require a callback
-  WA.ui.displayActionMessage({ message: "", callback: () => {} });
-}
-
-// If you also use openPopup elsewhere, export a helper they can call:
-export function registerExternalPopup(p: ReturnType<typeof WA.ui.openPopup>) {
-  // track external popups so portals can close them on enter
-  openPopupRef = p;
-}
-
-// --- PORTAL WIRING ---
 WA.onInit().then(() => {
-  let armedArea: string | null = null; // avoid stacking prompts
+  let armedArea: string | null = null; // prevent stacking when moving between areas quickly
 
   portals.forEach(({ area, target, message }) => {
     WA.room.area.onEnter(area).subscribe(() => {
-      // prevent overlap with other UI
-      closeAnyPopup();
+      // Make sure nothing else is showing underneath
+      closeAllPopups();
       clearActionMessage();
 
       armedArea = area;
       WA.ui.displayActionMessage({
         message,
         callback: () => {
-          if (armedArea !== area) return; // ignore if player already left
+          if (armedArea !== area) return; // user already walked out
           clearActionMessage();
-          // extra safety: close popups before teleport
-          closeAnyPopup();
+          closeAllPopups();
           WA.nav.goToRoom(target);
         },
       });
@@ -60,6 +60,8 @@ WA.onInit().then(() => {
     WA.room.area.onLeave(area).subscribe(() => {
       if (armedArea === area) armedArea = null;
       clearActionMessage();
+      // also close any accidental popups that might have opened at the edge
+      closeAllPopups();
     });
   });
 });
