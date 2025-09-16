@@ -704,7 +704,7 @@
         {
          "name":"script",
          "type":"string",
-         "value":"src\/entries\/hall.ts"
+         "value":"src\/main.ts"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
