@@ -1,5 +1,24 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
+/* ---------- POPUP GUARD (only during portal prompts) ---------- */
+const _origOpenPopup = WA.ui.openPopup.bind(WA.ui);
+let portalArmed: string | null = null;
+
+// If a portal message is active, immediately close any popup that
+// some other script tries to open (prevents the “Close” bar).
+(WA.ui.openPopup as any) = (...args: Parameters<typeof WA.ui.openPopup>) => {
+  const p = _origOpenPopup(...args);
+  if (portalArmed) {
+    try { p.close(); } catch {}
+    return p;
+  }
+  return p;
+};
+
+function clearActionMessage() {
+  WA.ui.displayActionMessage({ message: "", callback: () => {} });
+}
+
 /* ---------- PORTALS (action message only) ---------- */
 type Portal = { area: string; target: string; message: string };
 
@@ -12,38 +31,33 @@ const portals: Portal[] = [
   { area: "to-classroom",   target: "classroom.tmj#from-hall",   message: "Press SPACE to enter the Classroom (Quishing / QR-code scams)" },
 ];
 
-function clearActionMessage() {
-  WA.ui.displayActionMessage({ message: "", callback: () => {} });
-}
-
 WA.onInit().then(() => {
-  let armedArea: string | null = null;
   let lastEnter = 0;
   const ENTER_DEBOUNCE_MS = 200;
 
   portals.forEach(({ area, target, message }) => {
     WA.room.area.onEnter(area).subscribe(() => {
       const now = Date.now();
-      if (now - lastEnter < ENTER_DEBOUNCE_MS) return;  // avoid double-fires on overlap
+      if (now - lastEnter < ENTER_DEBOUNCE_MS) return;
       lastEnter = now;
 
-      armedArea = area;
+      portalArmed = area;                     // guard ON
       WA.ui.displayActionMessage({
         message,
         callback: () => {
-          if (armedArea !== area) return;   // walked out already
+          if (portalArmed !== area) return;   // walked out already
           clearActionMessage();
+          portalArmed = null;                 // guard OFF before nav
           WA.nav.goToRoom(target);
         },
       });
     });
 
     WA.room.area.onLeave(area).subscribe(() => {
-      if (armedArea === area) armedArea = null;
-      clearActionMessage();                 // walking away hides the prompt
+      if (portalArmed === area) portalArmed = null; // guard OFF
+      clearActionMessage();
     });
   });
 });
 
 export {};
-
