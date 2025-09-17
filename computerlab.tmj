@@ -693,8 +693,8 @@
         0,
         0,
         0,
-        2,
         0,
+        2,
         0,
         2,
         0,
@@ -6306,7 +6306,7 @@
     {
       "columns": 8,
       "firstgid": 1,
-      "image": "computerlab-chunk-1-c436b792.png",
+      "image": "computerlab-chunk-1-41f791f5.png",
       "imageheight": 256,
       "imagewidth": 256,
       "margin": 0,

@@ -1182,8 +1182,8 @@
         0,
         0,
         0,
-        1,
         0,
+        1,
         0,
         0,
         0,
@@ -8052,7 +8052,7 @@
     {
       "columns": 8,
       "firstgid": 1,
-      "image": "classroom-chunk-1-cfea2042.png",
+      "image": "classroom-chunk-1-bbf5fb06.png",
       "imageheight": 256,
       "imagewidth": 256,
       "margin": 0,
