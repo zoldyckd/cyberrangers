@@ -2,7 +2,7 @@
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 import { initClock } from "./clock";
 import { initBoard } from "./board";
-import { initMarvie } from "./malware";   // <-- new
+import { initMarvie } from "./marvie";   // <-- new
 
 console.log("Script started");
 
