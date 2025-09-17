@@ -1,31 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-/* ---------- POPUP SAFETY LAYER ---------- */
-const _openPopups: Array<ReturnType<typeof WA.ui.openPopup>> = [];
-const _origOpenPopup = WA.ui.openPopup.bind(WA.ui);
-
-// Monkey-patch: always close before opening a new popup
-(WA.ui.openPopup as any) = (...args: Parameters<typeof WA.ui.openPopup>) => {
-  closeAllPopups();
-  const p = _origOpenPopup(...args);
-  _openPopups.push(p);
-  return p;
-};
-
-function closeAllPopups() {
-  for (const p of _openPopups) {
-    try {
-      p.close();
-    } catch {}
-  }
-  _openPopups.length = 0;
-}
-
-function clearActionMessage() {
-  WA.ui.displayActionMessage({ message: "", callback: () => {} });
-}
-
-/* ---------- PORTALS ---------- */
+/* ---------- PORTALS (action message only) ---------- */
 type Portal = { area: string; target: string; message: string };
 
 const portals: Portal[] = [
@@ -37,6 +12,10 @@ const portals: Portal[] = [
   { area: "to-classroom",   target: "classroom.tmj#from-hall",   message: "Press SPACE to enter the Classroom (Quishing / QR-code scams)" },
 ];
 
+function clearActionMessage() {
+  WA.ui.displayActionMessage({ message: "", callback: () => {} });
+}
+
 WA.onInit().then(() => {
   let armedArea: string | null = null;
   let lastEnter = 0;
@@ -45,19 +24,15 @@ WA.onInit().then(() => {
   portals.forEach(({ area, target, message }) => {
     WA.room.area.onEnter(area).subscribe(() => {
       const now = Date.now();
-      if (now - lastEnter < ENTER_DEBOUNCE_MS) return; // ignore rapid double triggers
+      if (now - lastEnter < ENTER_DEBOUNCE_MS) return;  // avoid double-fires on overlap
       lastEnter = now;
-
-      closeAllPopups();
-      clearActionMessage();
 
       armedArea = area;
       WA.ui.displayActionMessage({
         message,
         callback: () => {
-          if (armedArea !== area) return; // already walked out
+          if (armedArea !== area) return;   // walked out already
           clearActionMessage();
-          closeAllPopups();
           WA.nav.goToRoom(target);
         },
       });
@@ -65,8 +40,7 @@ WA.onInit().then(() => {
 
     WA.room.area.onLeave(area).subscribe(() => {
       if (armedArea === area) armedArea = null;
-      clearActionMessage();
-      closeAllPopups();
+      clearActionMessage();                 // walking away hides the prompt
     });
   });
 });
