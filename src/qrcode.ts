@@ -40,7 +40,7 @@ function askQuestion() {
 
 function explainYes() {
   openPopupFn(
-    "⚠️ Quishing (QR phishing): Scanning unknown QR codes can send you to fake login pages, trigger malicious downloads, or open payment requests.\n\nExamples:\n• Fake \"Campus Wi-Fi\" login that steals your credentials\n• \"Free voucher\" QR that asks you to install a dodgy app\n\nSafer habit: Only scan trusted QRs, preview the link, or type the official URL yourself.",
+    "⚠️ Quishing (QR phishing): Scanning unknown QR codes can send you to fake login pages, trigger malicious downloads, or open payment requests.\n\nExamples:\n• Fake \"Campus Wi-Fi\" login that steals your credentials\n• \"Free voucher\" QR that asks you to install a dodgy app.\n\nSafer habit: Only scan trusted QRs, preview the link, or type the official URL yourself.",
     [
       { label: "Back", callback: askQuestion },
       { label: "OK",  callback: safeClose }
