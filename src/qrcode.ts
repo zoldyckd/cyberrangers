@@ -1,100 +1,62 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-// Toggle this to quickly confirm the script is loaded on this map.
-const DEBUG_SHOW_LOADED_ONCE = true;
+// Tell TypeScript about your global helper (no runtime impact).
+declare const openNpcPopup: (
+  text: string,
+  buttons: { label: string; callback: () => void }[]
+) => { close?: () => void } | any;
 
-let qrPopupRef: any | undefined;
-let shownLoadedFlag = false;
+let qrRef: any | undefined;
+const safeClose = () => { try { qrRef?.close?.(); } catch {} qrRef = undefined; };
 
-function closeQrPopup() {
-  try { qrPopupRef?.close?.(); } catch {}
-  qrPopupRef = undefined;
-}
-
-function openQuestion() {
-  closeQrPopup();
-  console.log("[QRcode] openQuestion()");
-  const html =
-    "<h3>QR code on the wall</h3>" +
-    "<p>You see a QR code stuck on the wall. Do you scan it?</p>";
-
-  qrPopupRef = WA.ui.openPopup(
-    "QRcodePopup",
-    html,
+function askQuestion() {
+  safeClose();
+  qrRef = openNpcPopup(
+    "You saw a QR code on the wall. Do you scan it?",
     [
-      { label: "Yes — scan it", callback: showYes },
-      { label: "No — don’t scan", callback: showNo },
-      { label: "Close", callback: closeQrPopup }
+      { label: "Yes — scan it", callback: explainYes },
+      { label: "No — don’t scan", callback: explainNo },
+      { label: "What is quishing?", callback: moreInfo }
     ]
   );
 }
 
-function showYes() {
-  closeQrPopup();
-  console.log("[QRcode] chose YES");
-  const html =
-    "<h3>Quishing (QR phishing)</h3>" +
-    "<p><strong>Careful:</strong> scanning unknown QR codes can send you to a fake site to steal your logins, " +
-    "trigger malicious downloads, or open payment pages. This technique is called <em>quishing</em>.</p>" +
-    "<p><strong>Examples:</strong></p>" +
-    "<ul>" +
-      "<li>\"Campus Wi-Fi\" page that actually steals your credentials.</li>" +
-      "<li>\"Free voucher\" QR that asks you to install a malicious app.</li>" +
-    "</ul>" +
-    "<p><strong>Safer habit:</strong> only scan trusted QRs, preview the URL, or type the official address yourself.</p>";
-
-  qrPopupRef = WA.ui.openPopup(
-    "QRcodeYes",
-    html,
+function explainYes() {
+  safeClose();
+  qrRef = openNpcPopup(
+    "⚠️ Quishing (QR phishing): Scanning unknown QR codes can send you to fake login pages, trigger malicious downloads, or open payment requests.\n\nExamples:\n• Fake “Campus Wi-Fi” login that steals your credentials\n• “Free voucher” QR that asks to install a dodgy app\n\nSafer habit: Only scan trusted QRs, preview the link, or type the official URL yourself.",
     [
-      { label: "Back", callback: openQuestion },
-      { label: "OK", callback: closeQrPopup }
+      { label: "Back", callback: askQuestion },
+      { label: "OK",  callback: safeClose }
     ]
   );
 }
 
-function showNo() {
-  closeQrPopup();
-  console.log("[QRcode] chose NO");
-  const html =
-    "<h3>Good call</h3>" +
-    "<p><strong>Correct.</strong> This kind of phishing via QR codes is called <em>quishing</em>. " +
-    "If a code looks suspicious (or was stuck over an existing poster), don’t scan it. Navigate to the site yourself instead.</p>";
-
-  qrPopupRef = WA.ui.openPopup(
-    "QRcodeNo",
-    html,
+function explainNo() {
+  safeClose();
+  qrRef = openNpcPopup(
+    "✅ Correct! Avoid scanning random QR codes. This method of phishing is called “quishing”. If a code looks suspicious or is a sticker placed over a poster, don’t scan it—navigate to the site yourself.",
     [
-      { label: "Back", callback: openQuestion },
-      { label: "OK", callback: closeQrPopup }
+      { label: "Back", callback: askQuestion },
+      { label: "OK",  callback: safeClose }
+    ]
+  );
+}
+
+function moreInfo() {
+  safeClose();
+  qrRef = openNpcPopup(
+    "Quishing = QR + phishing. Attackers plant QR codes in public places or messages to lure you to malicious sites.\n\nTips:\n• Preview the URL before opening\n• Check the exact domain (not just the logo)\n• Never enter credentials after scanning an unknown QR",
+    [
+      { label: "Back",  callback: askQuestion },
+      { label: "Close", callback: safeClose }
     ]
   );
 }
 
 export function initQRCode() {
   WA.onInit().then(() => {
-    console.log("[QRcode] WA ready. Subscribing to area 'QRcode'.");
-
-    // Optional one-time "loaded" popup so you instantly know this script is running on this map.
-    if (DEBUG_SHOW_LOADED_ONCE && !shownLoadedFlag) {
-      shownLoadedFlag = true;
-      try {
-        WA.ui.openPopup("QRCodeLoaded", "QR script loaded ✔", [
-          { label: "OK", callback: () => { try { WA.ui.closePopup("QRCodeLoaded"); } catch {} } }
-        ]);
-      } catch (e) {
-        console.warn("[QRcode] test popup failed:", e);
-      }
-    }
-
-    // Trigger on enter / close on leave
-    WA.room.area.onEnter("QRcode").subscribe(() => {
-      console.log("[QRcode] onEnter fired");
-      openQuestion();
-    });
-    WA.room.area.onLeave("QRcode").subscribe(() => {
-      console.log("[QRcode] onLeave fired");
-      closeQrPopup();
-    });
+    WA.room.area.onEnter("QRcode").subscribe(askQuestion);
+    WA.room.area.onLeave("QRcode").subscribe(safeClose);
   });
 }
