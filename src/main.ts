@@ -4,7 +4,7 @@ import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
 import { initQRCode } from "./qrcode";   // 👈 add this
-import { initMurdochEmail } from "./qrcode";   // 👈 add this
+import { initMurdochEmail } from "./murdochemail";   // 👈 add this
 
 
 console.log("Script started");
