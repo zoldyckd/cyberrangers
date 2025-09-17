@@ -25,7 +25,7 @@ function getMessageForZone(): string {
   return [
     "👋 Hi — I'm Marvie.",
     "",
-    "Welcome to the Room of Malware",
+    "Welcome to the Room of Malware.",
 	"Do you think you can find the 3 easter eggs around the map?",
     "Tip: Check the walls, the chairs or the floor for suspicious objects.",
   ].join("\n");
