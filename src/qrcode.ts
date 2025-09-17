@@ -29,10 +29,10 @@ const openPopupFn: (text: string, buttons: Btn[]) => any =
 
 function askQuestion() {
   openPopupFn(
-    "You saw a QR code on the wall. Do you scan it?",
+    "You saw a QR code on the wall. CLAIM YOUR FREE POKEMON PACKS HERE!! Do you scan it?",
     [
-      { label: "Yes — scan it",  callback: explainYes },
-      { label: "No — don’t scan", callback: explainNo },
+      { label: "Yes",  callback: explainYes },
+      { label: "No", callback: explainNo },
       { label: "What is quishing?", callback: moreInfo }
     ]
   );
