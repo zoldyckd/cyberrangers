@@ -371,6 +371,23 @@
                  "width":32,
                  "x":544,
                  "y":96
+                }, 
+                {
+                 "height":32,
+                 "id":33,
+                 "name":"from-garden",
+                 "properties":[
+                        {
+                         "name":"start",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":160,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -396,15 +413,15 @@
                  "y":448
                 }, 
                 {
-                 "height":16.125,
+                 "height":118.1875,
                  "id":22,
                  "name":"marviePopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":30.4375,
+                 "width":203.375,
                  "x":244.625,
-                 "y":454.0625
+                 "y":352
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -485,7 +502,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":32,
+ "nextobjectid":34,
  "orientation":"orthogonal",
  "properties":[
         {
