@@ -388,6 +388,28 @@
                  "width":32,
                  "x":160,
                  "y":448
+                }, 
+                {
+                 "height":32,
+                 "id":34,
+                 "name":"suspiciouslink",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":544,
+                 "y":192
+                }, 
+                {
+                 "height":76,
+                 "id":35,
+                 "name":"suspiciouslinkPopuip",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":113.75,
+                 "x":430.25,
+                 "y":116
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -502,7 +524,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":34,
+ "nextobjectid":37,
  "orientation":"orthogonal",
  "properties":[
         {
