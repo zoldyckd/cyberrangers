@@ -413,15 +413,15 @@
                  "y":286.5
                 }, 
                 {
-                 "height":66,
+                 "height":142,
                  "id":19,
                  "name":"QRcodePopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":104,
-                 "x":297,
-                 "y":226.5
+                 "width":188.5,
+                 "x":293.5,
+                 "y":206.5
                 }, 
                 {
                  "height":32,
