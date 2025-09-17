@@ -42,7 +42,7 @@
                     0, 0, 0, 0, 358, 358, 358, 358, 358, 358, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 358, 358, 358, 358, 358, 358, 0, 0, 358, 358, 358, 358, 358, 0, 0, 0,
                     0, 0, 0, 0, 358, 358, 358, 358, 358, 358, 0, 0, 358, 358, 358, 358, 358, 0, 0, 0,
-                    0, 0, 0, 0, 358, 358, 358, 358, 358, 358, 0, 0, 358, 358, 358, 358, 1164, 0, 0, 0,
+                    0, 0, 0, 0, 358, 358, 358, 358, 358, 358, 0, 0, 358, 358, 358, 358, 1156, 0, 0, 0,
                     0, 0, 0, 0, 358, 358, 358, 358, 358, 358, 0, 0, 358, 358, 358, 358, 358, 0, 0, 0,
                     0, 0, 0, 0, 358, 358, 358, 358, 358, 358, 0, 0, 358, 358, 358, 358, 358, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -208,7 +208,7 @@
                  "y":0
                 }, 
                 {
-                 "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 852, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                 "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 1909, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -685,98 +685,8 @@
          "tilewidth":32
         }, 
         {
-         "columns":7,
-         "firstgid":845,
-         "image":"tilesets\/portals.png",
-         "imageheight":32,
-         "imagewidth":224,
-         "margin":0,
-         "name":"portals",
-         "spacing":0,
-         "tilecount":7,
-         "tileheight":32,
-         "tiles":[
-                {
-                 "id":0,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":1,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":2,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":3,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":4,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":5,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":6,
-                 "properties":[
-                        {
-                         "name":"collides",
-                         "type":"bool",
-                         "value":false
-                        }]
-                }],
-         "tilewidth":32
-        }, 
-        {
-         "columns":1,
-         "firstgid":852,
-         "image":"tilesets\/QRCode.png",
-         "imageheight":32,
-         "imagewidth":32,
-         "margin":0,
-         "name":"QRCode",
-         "spacing":0,
-         "tilecount":1,
-         "tileheight":32,
-         "tilewidth":32
-        }, 
-        {
          "columns":8,
-         "firstgid":853,
+         "firstgid":845,
          "image":"tilesets\/Pipoya RPG Tileset 32x32\/[Base]BaseChip_pipo.png",
          "imageheight":4256,
          "imagewidth":256,
@@ -784,6 +694,19 @@
          "name":"[Base]BaseChip_pipo",
          "spacing":0,
          "tilecount":1064,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":1,
+         "firstgid":1909,
+         "image":"tilesets\/QRCode.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"QRCode",
+         "spacing":0,
+         "tilecount":1,
          "tileheight":32,
          "tilewidth":32
         }],
