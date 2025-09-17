@@ -358,7 +358,7 @@
                 {
                  "height":32,
                  "id":31,
-                 "name":"",
+                 "name":"to-library",
                  "properties":[
                         {
                          "name":"exitUrl",
@@ -366,7 +366,7 @@
                          "value":"library.tmj#from-hall"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"area",
                  "visible":true,
                  "width":32,
                  "x":608,
