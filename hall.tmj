@@ -74,7 +74,7 @@
             783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783,
             783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783,
             783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783,
-            783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783,
+            783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 2124,
             783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783,
             783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783,
             783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783, 783,
@@ -232,8 +232,8 @@
                     48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
                     48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
                     48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
-                    48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
-                    48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
+                    48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8,
                     48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
                     48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
                     48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46,
@@ -302,7 +302,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 1716, 0, 1717, 0, 1718, 0, 1719, 0, 1720, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -334,206 +334,6 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":32,
-                 "id":1,
-                 "name":"to-library",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":160,
-                 "y":160
-                }, 
-                {
-                 "height":32,
-                 "id":2,
-                 "name":"from-library",
-                 "properties":[
-                        {
-                         "name":"start",
-                         "type":"bool",
-                         "value":true
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":128,
-                 "y":192
-                }, 
-                {
-                 "height":19.328125,
-                 "id":4,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "fontfamily":"Segoe UI",
-                     "halign":"center",
-                     "pixelsize":7,
-                     "text":"Malware",
-                     "valign":"center",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":49.046875,
-                 "x":161,
-                 "y":155
-                }, 
-                {
-                 "height":32,
-                 "id":5,
-                 "name":"from-canteen",
-                 "properties":[
-                        {
-                         "name":"start",
-                         "type":"bool",
-                         "value":true
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":128,
-                 "y":192
-                }, 
-                {
-                 "height":32,
-                 "id":6,
-                 "name":"to-canteen",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":224,
-                 "y":160
-                }, 
-                {
-                 "height":19.328125,
-                 "id":8,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "fontfamily":"Segoe UI",
-                     "halign":"center",
-                     "pixelsize":7,
-                     "text":"Phishing",
-                     "valign":"center",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":49.046875,
-                 "x":224,
-                 "y":156
-                }, 
-                {
-                 "height":32,
-                 "id":9,
-                 "name":"to-office",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":288,
-                 "y":160
-                }, 
-                {
-                 "height":32,
-                 "id":10,
-                 "name":"from-office",
-                 "properties":[
-                        {
-                         "name":"start",
-                         "type":"bool",
-                         "value":true
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":128,
-                 "y":192
-                }, 
-                {
-                 "height":32,
-                 "id":11,
-                 "name":"from-classroom",
-                 "properties":[
-                        {
-                         "name":"start",
-                         "type":"bool",
-                         "value":true
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":128,
-                 "y":192
-                }, 
-                {
-                 "height":32,
-                 "id":12,
-                 "name":"from-computerlab",
-                 "properties":[
-                        {
-                         "name":"start",
-                         "type":"bool",
-                         "value":true
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":128,
-                 "y":192
-                }, 
-                {
-                 "height":32,
-                 "id":15,
-                 "name":"to-classroom",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":352,
-                 "y":160
-                }, 
-                {
-                 "height":32,
-                 "id":16,
-                 "name":"to-computerlab",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":416,
-                 "y":160
-                }, 
-                {
-                 "height":19.3281,
-                 "id":17,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "fontfamily":"Segoe UI",
-                     "halign":"center",
-                     "pixelsize":7,
-                     "text":"ID Theft",
-                     "valign":"center",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":49.0469,
-                 "x":288,
-                 "y":156
-                }, 
-                {
                  "height":39.25,
                  "id":24,
                  "name":"clock",
@@ -556,26 +356,21 @@
                  "y":26
                 }, 
                 {
-                 "height":41.3333333333333,
-                 "id":26,
-                 "name":"board",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":76,
-                 "x":218.666666666667,
-                 "y":60.6666666666667
-                }, 
-                {
-                 "height":113.333333333333,
-                 "id":27,
-                 "name":"boardPopup",
+                 "height":32,
+                 "id":31,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"exitUrl",
+                         "type":"string",
+                         "value":"library.tmj#from-hall"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":364.666666666666,
-                 "x":138.666666666667,
-                 "y":95.3333333333334
+                 "width":32,
+                 "x":608,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -690,7 +485,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":30,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -1599,6 +1394,19 @@
                          "value":true
                         }]
                 }],
+         "tilewidth":32
+        }, 
+        {
+         "columns":8,
+         "firstgid":1813,
+         "image":"tilesets\/Pipoya RPG Tileset 32x32\/[Base]BaseChip_pipo.png",
+         "imageheight":4256,
+         "imagewidth":256,
+         "margin":0,
+         "name":"[Base]BaseChip_pipo",
+         "spacing":0,
+         "tilecount":1064,
+         "tileheight":32,
          "tilewidth":32
         }],
  "tilewidth":32,
