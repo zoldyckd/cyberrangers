@@ -1,20 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-/* ---------- POPUP GUARD (only during portal prompts) ---------- */
-const _origOpenPopup = WA.ui.openPopup.bind(WA.ui);
-let portalArmed: string | null = null;
-
-// If a portal message is active, immediately close any popup that
-// some other script tries to open (prevents the “Close” bar).
-(WA.ui.openPopup as any) = (...args: Parameters<typeof WA.ui.openPopup>) => {
-  const p = _origOpenPopup(...args);
-  if (portalArmed) {
-    try { p.close(); } catch {}
-    return p;
-  }
-  return p;
-};
-
+/* ---------- UTIL ---------- */
 function clearActionMessage() {
   WA.ui.displayActionMessage({ message: "", callback: () => {} });
 }
@@ -32,32 +18,11 @@ const portals: Portal[] = [
 ];
 
 WA.onInit().then(() => {
+  // Track whether the player is currently inside any portal area.
+  let insidePortal = false;
+  let armedArea: string | null = null;
   let lastEnter = 0;
   const ENTER_DEBOUNCE_MS = 200;
 
-  portals.forEach(({ area, target, message }) => {
-    WA.room.area.onEnter(area).subscribe(() => {
-      const now = Date.now();
-      if (now - lastEnter < ENTER_DEBOUNCE_MS) return;
-      lastEnter = now;
-
-      portalArmed = area;                     // guard ON
-      WA.ui.displayActionMessage({
-        message,
-        callback: () => {
-          if (portalArmed !== area) return;   // walked out already
-          clearActionMessage();
-          portalArmed = null;                 // guard OFF before nav
-          WA.nav.goToRoom(target);
-        },
-      });
-    });
-
-    WA.room.area.onLeave(area).subscribe(() => {
-      if (portalArmed === area) portalArmed = null; // guard OFF
-      clearActionMessage();
-    });
-  });
-});
-
-export {};
+  // --- Hard kill-switch: if we are not inside a portal, auto-close any popups that other code opened.
+  // Runs very lightly; only acts when needed.
