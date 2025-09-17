@@ -16,7 +16,7 @@ class C{constructor(e){this.properties=e??[]}get(e){const n=this.properties.filt
 
 Examples:
 • Fake "Campus Wi-Fi" login that steals your credentials
-• "Free voucher" QR that asks you to install a dodgy app
+• "Free voucher" QR that asks you to install a dodgy app.
 
 Safer habit: Only scan trusted QRs, preview the link, or type the official URL yourself.`,[{label:"Back",callback:Q},{label:"OK",callback:W}])}function Ze(){V('✅ Correct! Avoid scanning random QR codes. This method of phishing is called "quishing". If a code looks suspicious or is a sticker placed over a poster, don’t scan it—navigate to the site yourself.',[{label:"Back",callback:Q},{label:"OK",callback:W}])}function et(){V(`Quishing = QR + phishing. Attackers plant QR codes in public places or messages to lure you to malicious sites.
 
@@ -24,4 +24,4 @@ Tips:
 • Preview the URL before opening
 • Check the exact domain (not just the logo)
 • Never enter credentials after scanning an unknown QR`,[{label:"Back",callback:Q},{label:"Close",callback:W}])}function tt(){WA.onInit().then(()=>{console.log("[qrcode] ready, listening for area 'QRcode'"),WA.room.area.onEnter("QRcode").subscribe(Q),WA.room.area.onLeave("QRcode").subscribe(W)})}console.log("Script started");WA.onInit().then(async()=>{console.log("Scripting API ready"),await $e(),Fe(),He(),ze(),tt()});
-//# sourceMappingURL=main-f8799550.js.map
+//# sourceMappingURL=main-86765ab3.js.map
