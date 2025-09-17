@@ -470,6 +470,28 @@
                  "width":32,
                  "x":544,
                  "y":160
+                }, 
+                {
+                 "height":32,
+                 "id":21,
+                 "name":"MurdochEmail",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":256,
+                 "y":416
+                }, 
+                {
+                 "height":101,
+                 "id":22,
+                 "name":"MurdochEmailPopup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":222,
+                 "x":287,
+                 "y":360
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -550,7 +572,7 @@
          "y":0
         }],
  "nextlayerid":24,
- "nextobjectid":21,
+ "nextobjectid":23,
  "orientation":"orthogonal",
  "properties":[
         {
