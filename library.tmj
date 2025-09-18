@@ -519,6 +519,44 @@
                  "width":95.2727272727273,
                  "x":160,
                  "y":32
+                }, 
+                {
+                 "height":34.75,
+                 "id":28,
+                 "name":"BrockZone",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/ppt\/auto-slideshow.html?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fppt%2FPhishing.mp4\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open the Black Bible."
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":35.5,
+                 "x":390,
+                 "y":163.5
+                }, 
+                {
+                 "height":77,
+                 "id":30,
+                 "name":"BrockZonePopup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":117.333333333333,
+                 "x":412,
+                 "y":103.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -529,6 +567,37 @@
         {
          "id":19,
          "layers":[
+                {
+                 "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1947, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 "height":20,
+                 "id":24,
+                 "name":"npcs",
+                 "opacity":1,
+                 "type":"tilelayer",
+                 "visible":true,
+                 "width":20,
+                 "x":0,
+                 "y":0
+                }, 
                 {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -598,8 +667,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":24,
- "nextobjectid":27,
+ "nextlayerid":25,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -883,6 +952,19 @@
          "name":"qr_design_8x8",
          "spacing":0,
          "tilecount":1,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":12,
+         "firstgid":1910,
+         "image":"tilesets\/Characters_free\/Adam_16x16.png",
+         "imageheight":224,
+         "imagewidth":384,
+         "margin":0,
+         "name":"Adam_16x16",
+         "spacing":0,
+         "tilecount":84,
          "tileheight":32,
          "tilewidth":32
         }],
