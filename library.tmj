@@ -492,6 +492,33 @@
                  "width":222,
                  "x":287,
                  "y":360
+                }, 
+                {
+                 "height":32,
+                 "id":25,
+                 "name":"blackbibleppt",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/embed.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fppt%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open the Black Bible."
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":160,
+                 "y":32
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -572,7 +599,7 @@
          "y":0
         }],
  "nextlayerid":24,
- "nextobjectid":23,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "properties":[
         {
