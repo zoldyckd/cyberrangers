@@ -1,76 +1,62 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let mailPopupRef: any | undefined;
+// IMPORTANT: In Tiled you must have ONE rectangle object named "MurdochEmailPopup".
+// We reuse that same anchor for all dialog steps.
+const POPUP_ANCHOR = "MurdochEmailPopup";
 
-function closeMail() {
-  try {
-    if (mailPopupRef && typeof mailPopupRef.close === "function") {
-      mailPopupRef.close();
-    }
-  } catch {}
-  mailPopupRef = undefined;
-}
-
-function openMail(id: string, text: string, buttons: { label: string; callback: () => void }[]) {
-  closeMail();
-  mailPopupRef = WA.ui.openPopup(id, text, buttons);
-}
-
-// ----- branches -----
 function askEmail() {
   console.log("[MurdochEmail] askEmail()");
-  openMail(
-    "MurdochEmailPopup",
+  WA.ui.openPopup(
+    POPUP_ANCHOR,
     "📧 Email says: \"Your university fees are overdue. Click here to pay immediately.\" What do you do?",
     [
-      { label: "Click the link and pay", callback: clickedLink },
-      { label: "Verify first (don't click)", callback: verifyFirst },
-      { label: "See red flags", callback: showRedFlags },
-      { label: "Close", callback: closeMail }
+      { label: "Click the link and pay",      callback: showClicked },
+      { label: "Verify first (don't click)",  callback: showVerify  },
+      { label: "See red flags",               callback: showFlags   },
+      { label: "Close",                       callback: () => WA.ui.openPopup(POPUP_ANCHOR, "", []) }
     ]
   );
 }
 
-function clickedLink() {
-  console.log("[MurdochEmail] clickedLink()");
-  openMail(
-    "MurdochEmailClicked",
+function showClicked() {
+  console.log("[MurdochEmail] clicked()");
+  WA.ui.openPopup(
+    POPUP_ANCHOR,
     "⚠️ Risky. Classic phishing.\n\nWhat can happen?\n• Fake payment page steals your login or card\n• Malware prompts\n• \"Update details\" forms that harvest personal info\n\nSafer: never pay from email links. Open the official portal yourself.",
     [
-      { label: "How to verify safely", callback: verifyFirst },
-      { label: "Back", callback: askEmail },
-      { label: "OK", callback: closeMail }
+      { label: "How to verify safely", callback: showVerify },
+      { label: "Back",                 callback: askEmail   },
+      { label: "OK",                   callback: () => WA.ui.openPopup(POPUP_ANCHOR, "", []) }
     ]
   );
 }
 
-function verifyFirst() {
-  console.log("[MurdochEmail] verifyFirst()");
-  openMail(
-    "MurdochEmailVerify",
+function showVerify() {
+  console.log("[MurdochEmail] verify()");
+  WA.ui.openPopup(
+    POPUP_ANCHOR,
     "✅ Correct.\n\nVerify steps:\n• Check the sender domain carefully\n• Preview the real link (hover/long-press)\n• Type the official portal URL or use your bookmark\n• Check balance inside the portal (not via the email link)\n• If unsure, contact the uni via the official helpdesk",
     [
-      { label: "See red flags", callback: showRedFlags },
-      { label: "Back", callback: askEmail },
-      { label: "Close", callback: closeMail }
+      { label: "See red flags", callback: showFlags },
+      { label: "Back",          callback: askEmail  },
+      { label: "Close",         callback: () => WA.ui.openPopup(POPUP_ANCHOR, "", []) }
     ]
   );
 }
 
-function showRedFlags() {
-  console.log("[MurdochEmail] showRedFlags()");
-  openMail(
-    "MurdochEmailFlags",
+function showFlags() {
+  console.log("[MurdochEmail] flags()");
+  WA.ui.openPopup(
+    POPUP_ANCHOR,
     "Common red flags:\n• Urgent language / threats (\"immediately\", \"final notice\")\n• Look-alike sender domains\n• Links that don't match the uni's real domain\n• Attachments/QRs to \"pay faster\"\n• Requests for card/bank info or passwords via email",
     [
-      { label: "Verify safely", callback: verifyFirst },
-      { label: "Back", callback: askEmail },
-      { label: "Close", callback: closeMail }
+      { label: "Verify safely", callback: showVerify },
+      { label: "Back",          callback: askEmail   },
+      { label: "Close",         callback: () => WA.ui.openPopup(POPUP_ANCHOR, "", []) }
     ]
   );
 }
 
-// ----- init -----
 export function initMurdochEmail() {
   WA.onInit().then(() => {
     console.log("[MurdochEmail] ready → listening for area 'MurdochEmail'");
@@ -80,7 +66,8 @@ export function initMurdochEmail() {
     });
     WA.room.area.onLeave("MurdochEmail").subscribe(() => {
       console.log("[MurdochEmail] onLeave");
-      closeMail();
+      // hide by replacing with an empty popup on the same anchor
+      WA.ui.openPopup(POPUP_ANCHOR, "", []);
     });
   });
 }
