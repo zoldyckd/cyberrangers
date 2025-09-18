@@ -501,7 +501,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/docs.google.com\/gview?embedded=1&url=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fppt%2FPhishing.pptx\n"
+                         "value":"https:\/\/view.officeapps.live.com\/op\/embed.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fppt%2FPhishing.pptx\n"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
