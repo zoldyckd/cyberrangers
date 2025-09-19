@@ -3,6 +3,8 @@
 let brockPopupRef: any | undefined;
 
 export function initBrockZone() {
+  const ANCHOR = "BrockZonePopup"; // 👈 must match the rectangle object name in Tiled
+
   const close = () => {
     if (brockPopupRef) {
       brockPopupRef.close();
@@ -10,15 +12,12 @@ export function initBrockZone() {
     }
   };
 
-  // Auto popup when player enters BrockZone
   WA.room.area.onEnter("BrockZone").subscribe(() => {
     close();
     const text =
-      "Brock: Hey there, ranger!\n" +
-      "I’ve opened a panel with extra info. Have a look — and come back if you need help.";
-    brockPopupRef = WA.ui.openPopup("brockPopup", text, []);
+      "Brock: Hey there! Please don't go! Are you sure you have all things about phishing understood?";
+    brockPopupRef = WA.ui.openPopup(ANCHOR, text, []); // 👈 use the anchor
   });
 
-  // Close popup when leaving the zone
   WA.room.area.onLeave("BrockZone").subscribe(close);
 }
