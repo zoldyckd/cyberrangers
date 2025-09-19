@@ -559,7 +559,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":""
+                         "value":"https:\/\/seahyr.github.io\/ICT302-Story\/"
                         }, 
                         {
                          "name":"openWebsiteTrigger",

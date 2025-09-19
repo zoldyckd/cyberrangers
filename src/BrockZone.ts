@@ -1,29 +1,31 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
+let brockPopup: any | undefined;
+
 export function initBrockZone() {
-  console.log("[BrockZone] init");
-
-  // --- GLOBAL TEST (should show immediately anywhere) ---
-  WA.ui.displayActionMessage({
-    message: "Press SPACE (global test) → should open a popup",
-    callback: () => {
-      WA.ui.openPopup("debug", "Global SPACE works ✅", []);
-    },
-  });
-
-  // --- AREA TEST (only inside BrockZone) ---
   WA.room.area.onEnter("BrockZone").subscribe(() => {
-    console.log("[BrockZone] enter");
-    WA.ui.displayActionMessage({
-      message: "Press SPACE to talk to Brock 🧑‍💻",
-      callback: () => {
-        WA.ui.openPopup("brockDialogue", "Hello! I’m Brock. 🚀", []);
-      },
-    });
+    console.log("[BrockZone] entered");
+
+    // Close previous popup if still open
+    closeBrockPopup();
+
+    // Show dialogue popup
+    brockPopup = WA.ui.openPopup(
+      "brockPopup",
+      "Hey there! I’m Brock.\nCheck out the panel on the side for more info.",
+      []
+    );
   });
 
   WA.room.area.onLeave("BrockZone").subscribe(() => {
-    console.log("[BrockZone] leave");
-    WA.ui.closeActionMessage();
+    console.log("[BrockZone] left");
+    closeBrockPopup();
   });
+}
+
+function closeBrockPopup() {
+  if (brockPopup) {
+    brockPopup.close();
+    brockPopup = undefined;
+  }
 }
