@@ -1,31 +1,24 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let brockPopup: any | undefined;
+let brockPopupRef: any | undefined;
 
 export function initBrockZone() {
+  const close = () => {
+    if (brockPopupRef) {
+      brockPopupRef.close();
+      brockPopupRef = undefined;
+    }
+  };
+
+  // Auto popup when player enters BrockZone
   WA.room.area.onEnter("BrockZone").subscribe(() => {
-    console.log("[BrockZone] entered");
-
-    // Close previous popup if still open
-    closeBrockPopup();
-
-    // Show dialogue popup
-    brockPopup = WA.ui.openPopup(
-      "brockPopup",
-      "Hey there! I’m Brock.\nCheck out the panel on the side for more info.",
-      []
-    );
+    close();
+    const text =
+      "Brock: Hey there, ranger!\n" +
+      "I’ve opened a panel with extra info. Have a look — and come back if you need help.";
+    brockPopupRef = WA.ui.openPopup("brockPopup", text, []);
   });
 
-  WA.room.area.onLeave("BrockZone").subscribe(() => {
-    console.log("[BrockZone] left");
-    closeBrockPopup();
-  });
-}
-
-function closeBrockPopup() {
-  if (brockPopup) {
-    brockPopup.close();
-    brockPopup = undefined;
-  }
+  // Close popup when leaving the zone
+  WA.room.area.onLeave("BrockZone").subscribe(close);
 }
