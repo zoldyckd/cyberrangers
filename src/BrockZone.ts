@@ -3,7 +3,7 @@
 let brockPopupRef: any | undefined;
 
 export function initBrockZone() {
-  const ANCHOR = "BrockZonePopup"; // must match the rectangle object in Tiled
+  const ANCHOR = "BrockZonePopup"; // 👈 must match the rectangle object name in Tiled
 
   const close = () => {
     if (brockPopupRef) {
@@ -12,22 +12,12 @@ export function initBrockZone() {
     }
   };
 
-  // Debug: confirm this file actually ran
-  console.log("[BrockZone] init");
-
   WA.room.area.onEnter("BrockZone").subscribe(() => {
-    console.log("[BrockZone] enter");
     close();
     const text =
-      "👋 I’m Brock — the NPC in charge of **Phishing & Quishing** here.\n\n" +
-      "Phishing = fake emails/links/messages.\n" +
-      "Quishing = phishing through QR codes.\n\n" +
-      "Press **SPACE** to open my guide in the side panel.";
-    brockPopupRef = WA.ui.openPopup(ANCHOR, text, []);
+      "Brock: Hey there! Please don't go! Are you sure you have all things about phishing understood?";
+    brockPopupRef = WA.ui.openPopup(ANCHOR, text, []); // 👈 use the anchor
   });
 
-  WA.room.area.onLeave("BrockZone").subscribe(() => {
-    console.log("[BrockZone] leave");
-    close();
-  });
+  WA.room.area.onLeave("BrockZone").subscribe(close);
 }
