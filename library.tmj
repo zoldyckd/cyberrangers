@@ -501,7 +501,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/ppt\/auto-slideshow.html?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fppt%2FPhishing.mp4\n"
+                         "value":"https:\/\/view.officeapps.live.com\/op\/embed.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fppt%2FPhishing.pptx\n"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
@@ -528,7 +528,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/ppt\/auto-slideshow.html?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fppt%2FPhishing.mp4\n"
+                         "value":""
                         }, 
                         {
                          "name":"openWebsiteTrigger",
@@ -538,7 +538,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to open the Black Bible."
+                         "value":"Press SPACE to talk to Brock."
                         }],
                  "rotation":0,
                  "type":"area",
@@ -966,6 +966,16 @@
          "spacing":0,
          "tilecount":84,
          "tileheight":32,
+         "tiles":[
+                {
+                 "id":37,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }],
          "tilewidth":32
         }],
  "tilewidth":32,
