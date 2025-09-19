@@ -552,7 +552,7 @@
                  "y":32
                 }, 
                 {
-                 "height":34.75,
+                 "height":38.75,
                  "id":28,
                  "name":"BrockZone",
                  "properties":[
@@ -574,7 +574,7 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":35.5,
+                 "width":40,
                  "x":390,
                  "y":163.5
                 }, 
