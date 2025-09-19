@@ -25,6 +25,6 @@ export function initBrockZone() {
     }
   };
 
-  WA.room.area.onEnter("BrockZone").subscribe(open);
-  WA.room.area.onLeave("BrockZone").subscribe(close);
+  WA.room.area.onEnter("BrockZonePopup").subscribe(open);
+  WA.room.area.onLeave("BrockZonePopup").subscribe(close);
 }
