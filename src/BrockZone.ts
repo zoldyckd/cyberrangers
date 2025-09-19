@@ -3,28 +3,41 @@
 let brockPopup: ReturnType<typeof WA.ui.openPopup> | undefined;
 
 export function initBrockZone() {
-  console.log("[BrockZone] init");
+  console.log("[BrockZone] init (SPACE to talk)");
 
-  const open = () => {
-    close();
-    brockPopup = WA.ui.openPopup(
-      "brockDialogue",
-      "Psst! I’m Brock, your cyber sidekick! 🕵️‍♂️\n\n" +
-      "People get phished when they rush…\n" +
-      "Free bubble tea for life? 🍵👀 Tempting.\n" +
-      "A text that you’ve won a spaceship? 🚀 Even more tempting.\n\n" +
-      "Rule #1: If it sounds too good to be true, it probably is!",
-      []
-    );
+  const lines = [
+    "Psst! I’m Brock, your cyber sidekick! 🕵️‍♂️\n\nFree bubble tea for life? 🍵👀 Tempting.\nA text saying you’ve won a spaceship? 🚀 Even more tempting.\n\nRule #1: If it sounds too good to be true, it probably is!",
+    "Heads up! 🎣 Phishers love urgency:\n“Verify in 10 minutes or lose access!”\nBreathe. Hover links. Check the sender. Then decide.",
+    "Mini-quiz: Which is safer?\nA) bit.ly/freestuff\nB) Go to the official site yourself.\n(Answer: Always B 😎)"
+  ];
+
+  const openDialogue = () => {
+    closeDialogue();
+    const text = lines[Math.floor(Math.random() * lines.length)];
+    brockPopup = WA.ui.openPopup("brockDialogue", text, []);
   };
 
-  const close = () => {
+  const closeDialogue = () => {
     if (brockPopup) {
       brockPopup.close();
       brockPopup = undefined;
     }
   };
 
-  WA.room.area.onEnter("BrockZonePopup").subscribe(open);
-  WA.room.area.onLeave("BrockZonePopup").subscribe(close);
+  // When player steps into BrockZone, show SPACE prompt
+  WA.room.area.onEnter("BrockZone").subscribe(() => {
+    WA.ui.displayActionMessage({
+      message: "Press SPACE to talk to Brock 🧑‍💻",
+      callback: () => {
+        console.log("[BrockZone] SPACE pressed → talk");
+        openDialogue();
+      },
+    });
+  });
+
+  // Remove prompt + close popup when leaving
+  WA.room.area.onLeave("BrockZone").subscribe(() => {
+    WA.ui.removeActionMessage();
+    closeDialogue();
+  });
 }
