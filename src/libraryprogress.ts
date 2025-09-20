@@ -3,7 +3,7 @@
 type Goals = {
   blackbibleppt: boolean;
   MurdochEmail: boolean;
-  QRcode: boolean;   // 👈 matches Tiled
+  QRcode: boolean;   // matches Tiled
   BrockZone: boolean;
 };
 
@@ -17,38 +17,27 @@ const goals: Goals = {
 const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
-let gatePopupRef: any | undefined;       // “Hold up!” popup
-let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
+let gatePopupRef: any | undefined;         // “Hold up!” popup
+let progressPopupRef: any | undefined;     // persistent checklist (only opened after first tick)
 
 /* ============ INIT ============ */
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
 
-    // Eggs
+    // --- Eggs ---
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
-      WA.room.area.onEnter(egg).subscribe(() => {
-        if (!goals[egg as keyof Goals]) {
-          goals[egg as keyof Goals] = true;
-          notifyProgress();
-        }
-      });
+      WA.room.area.onEnter(egg).subscribe(() => markDone(egg as keyof Goals));
     });
 
-    // NPC
-    WA.room.area.onEnter("BrockZone").subscribe(() => {
-      if (!goals.BrockZone) {
-        goals.BrockZone = true;
-        notifyProgress();
-      }
-    });
+    // --- NPC ---
+    WA.room.area.onEnter("BrockZone").subscribe(() => markDone("BrockZone"));
 
-    // Exit (enter)
+    // --- Exit (enter) ---
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        // 🔒 close any lingering UI before teleport
         closeGatePopup();
-        closeProgressPopup();
+        closeProgressPopup();   // ensure it disappears before next map
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -60,17 +49,42 @@ export function initLibraryProgress() {
       }
     });
 
-    // Exit (leave) → auto-dismiss the “Hold up!” popup
+    // --- Exit (leave) → auto-dismiss the “Hold up!” popup ---
     WA.room.area.onLeave(EXIT_AREA_NAME).subscribe(() => {
       closeGatePopup();
     });
 
-    // Safety: if the page unloads (room change, refresh), close popups
+    // Safety: if the page unloads (room change/refresh), close popups
     window.addEventListener("beforeunload", closeAllUi);
   });
 }
 
-/* ============ HELPERS ============ */
+/* ============ Progress handling ============ */
+function markDone(key: keyof Goals) {
+  if (goals[key]) return;
+  goals[key] = true;
+  openOrUpdateChecklist();
+}
+
+function openOrUpdateChecklist() {
+  const lines = [
+    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
+    goals.BrockZone     ? "✅ Brock (NPC)"  : "⬜ Brock (NPC)",
+  ];
+  const body = `Phishing Room Progress
+
+${lines.join("\n")}
+
+Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
+
+  // Only create the popup after the first tick so it won't appear in other maps
+  try { progressPopupRef?.close?.(); } catch {}
+  progressPopupRef = WA.ui.openPopup("phishing_progress_popup", body, []);
+}
+
+/* ============ Close helpers ============ */
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
@@ -86,6 +100,7 @@ function closeAllUi() {
   closeProgressPopup();
 }
 
+/* ============ Logic helpers ============ */
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
@@ -97,14 +112,4 @@ function missingList(): string[] {
   if (!goals.QRcode)        out.push("QR Code Easter Egg");
   if (!goals.BrockZone)     out.push("Talk to Brock (NPC)");
   return out;
-}
-
-function notifyProgress() {
-  const done = [
-    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
-    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-    goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
-  ].join("   ");
-  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
 }
