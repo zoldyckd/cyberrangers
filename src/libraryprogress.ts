@@ -18,24 +18,23 @@ const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
 let gatePopupRef: any | undefined;       // “Hold up!” popup
-let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
+let progressPopupRef: any | undefined;   // (reserved if you later use a popup)
+let isTeleporting = false;               // NEW: block new UI during room change
+
+/* ===== NEW: action message dedupe/debounce ===== */
+let lastActionMessage = "";
+let notifyTimer: number | undefined;
 
 /* ===== helper to hide the bottom action panel (displayActionMessage) =====
-   WorkAdventure sometimes leaves a visual residue on room change.
-   We clear it now, on the next frame, and again after a short delay. */
+   Some WA builds leave a visual residue. We clear it now, next frame,
+   and after a short delay to force a repaint. */
 function hideActionMessage() {
   const nuke = () => {
     try { (WA.ui as any).removeActionMessage?.(); } catch {}
     try { WA.ui.displayActionMessage({ message: "", callback: () => {} }); } catch {}
   };
-
-  // immediate
   nuke();
-
-  // next paint
   try { (window as any).requestAnimationFrame?.(nuke); } catch {}
-
-  // safety after a tick or two (covers slower transitions)
   setTimeout(nuke, 60);
   setTimeout(nuke, 250);
 }
@@ -66,10 +65,10 @@ export function initLibraryProgress() {
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        // 🔒 close any lingering UI before teleport
+        isTeleporting = true;           // NEW: freeze any new UI
         closeGatePopup();
         closeProgressPopup();
-        hideActionMessage();          // kill the panel (and any residue)
+        hideActionMessage();            // kill action bar cleanly
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -108,6 +107,7 @@ function closeAllUi() {
   hideActionMessage(); // also clear on unload/refresh
 }
 
+/* unchanged */
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
@@ -121,12 +121,28 @@ function missingList(): string[] {
   return out;
 }
 
+/* ===== NEW: safe, deduped progress HUD ===== */
 function notifyProgress() {
-  const done = [
-    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
-    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-    goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
-  ].join("   ");
-  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
+  if (isTeleporting) return; // don’t spawn UI while leaving the room
+
+  const msg =
+    `Progress: ${
+      [
+        goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+        goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+        goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
+        goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
+      ].join("   ")
+    }`;
+
+  // dedupe: if nothing changed, don’t re-render a new HUD
+  if (msg === lastActionMessage) return;
+  lastActionMessage = msg;
+
+  // debounce: collapse rapid successive updates into one render
+  if (notifyTimer) clearTimeout(notifyTimer);
+  notifyTimer = setTimeout(() => {
+    try { (WA.ui as any).removeActionMessage?.(); } catch {}
+    try { WA.ui.displayActionMessage({ message: msg, callback: () => {} }); } catch {}
+  }, 0) as unknown as number;
 }
