@@ -9,6 +9,7 @@ import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initInstructions } from "./instructions";   // 👈 add this
 import { initPhishingInstructions } from "./instructions_phishingPopup";   // 👈 add this
+import { initLibraryProgress } from "./libraryprogress";   // 👈 add this
 
 
 
@@ -28,5 +29,7 @@ WA.onInit().then(async () => {
   initBillboard();
   initInstructions();
   initPhishingInstructions();
+  initLibraryProgress();
+
 
 });
