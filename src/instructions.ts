@@ -16,10 +16,10 @@ function showInstructions() {
   closePopup(); // close any existing popup
   instructionsPopupRef = WA.ui.openPopup(
     "instructionsPopup",
-    "👋 Welcome Ranger!\n\nHere are your instructions:\n\n1️⃣ Explore the garden\n2️⃣ Read the billboard\n3️⃣ Interact with objects\n\nPress SPACE near signs or boards to learn more!",
+    "👋 Welcome Ranger! Use the Arrow Keys or WASD to move around. Walk close to objects such as signs, boards, or NPCs to interact with them. Sometimes you will need to press SPACE to open a dialogue or a side panel with more details. Explore the garden and see what you can discover!",
     [
       {
-        label: "Got it!",
+        label: "Let’s go!",
         className: "primary",
         callback: (popup) => {
           popup.close();
