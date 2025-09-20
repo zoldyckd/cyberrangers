@@ -1,47 +1,44 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let popupRef: any | undefined;
-let shownOnce = false;
+let phishingPopupRef: any | undefined;
 
 export function initPhishingInstructions() {
   WA.onInit().then(() => {
-    console.log("[WA] Library spawn popup ready");
+    console.log("[WA] Phishing Instructions ready");
 
-    // Spawn tile (1x1)
-    WA.room.area.onEnter("from-garden").subscribe(() => {
-      if (!shownOnce) openPopup();
-    });
-    WA.room.area.onLeave("from-garden").subscribe(closePopup);
+    // Open immediately if spawning inside the start zone
+    openPhishingPopup();
 
-    // Larger info zone as fallback
+    // If they walk back into the zone later, reopen
     WA.room.area.onEnter("instructions_phishingPopup").subscribe(() => {
-      if (!shownOnce && !popupRef) openPopup();
+      openPhishingPopup();
     });
-    WA.room.area.onLeave("instructions_phishingPopup").subscribe(closePopup);
+
+    // Close when leaving the zone
+    WA.room.area.onLeave("instructions_phishingPopup").subscribe(() => {
+      closePhishingPopup();
+    });
   });
 }
 
-function openPopup() {
-  closePopup(); // safety
-  popupRef = WA.ui.openPopup(
+function openPhishingPopup() {
+  closePhishingPopup(); // avoid duplicates
+  phishingPopupRef = WA.ui.openPopup(
     "instructions_phishingPopup",
-    "This room has 3 easter eggs. Explore the objects and talk to the NPC for more phishing insights before moving on.",
+    "🔎 This room hides 3 easter eggs. Explore the objects and see what you can find. Speak with the NPC for more in-depth details about phishing before moving on to the next map.",
     [
       {
         label: "Got it!",
         className: "primary",
-        callback: (p) => {
-          shownOnce = true; // only once per session
-          p.close();
-        },
+        callback: (popup) => popup.close(),
       },
     ]
   );
 }
 
-function closePopup() {
-  if (popupRef) {
-    popupRef.close();
-    popupRef = undefined;
+function closePhishingPopup() {
+  if (phishingPopupRef) {
+    phishingPopupRef.close();
+    phishingPopupRef = undefined;
   }
 }
