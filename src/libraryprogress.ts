@@ -1,24 +1,9 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-/**
- * libraryprogress.ts
- * Gates the exit until all tasks are done and shows a permanent progress checklist.
- *
- * Areas on the map (Class = area, Name must match exactly):
- *  - blackbibleppt   (egg)
- *  - MurdochEmail    (egg)
- *  - QRcode          (egg)
- *  - BrockZone       (NPC)
- *  - to-canteen      (exit gate area)
- *
- * Popup objects (Rectangle objects you add in Tiled):
- *  - phishing_gate_popup   (for the "Hold up!" message at the stairs)
- */
-
 type Goals = {
   blackbibleppt: boolean;
   MurdochEmail: boolean;
-  QRcode: boolean;
+  QRcode: boolean;   // matches your Tiled name exactly
   BrockZone: boolean;
 };
 
@@ -29,24 +14,20 @@ const goals: Goals = {
   BrockZone: false,
 };
 
-const EXIT_AREA_NAME = "to-canteen";
-const NEXT_ROOM = "canteen.tmj#spawn";
+const EXIT_AREA_NAME = "to-canteen";         // MUST be a Class=area, not a Portal
+const NEXT_ROOM = "canteen.tmj#spawn";       // adjust if your spawn name differs
 
-const PROG_PANEL_ID = "phishing_progress_panel"; // panel id (no need to exist in Tiled)
-const GATE_POPUP_ID = "phishing_gate_popup";     // must exist in Tiled as a rectangle object
+let progressPopupRef: any | undefined;       // persistent checklist popup
+let gatePopupRef: any | undefined;           // reuse gate popup so it doesn't stack
 
-let progressPanelRef: any | undefined;  // permanent checklist
-let gatePopupRef: any | undefined;      // "Hold up!" popup (reused)
-
-/* -------------------- Public init -------------------- */
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
 
-    // Show the permanent checklist once at start
+    // Open the persistent checklist once
     openOrUpdateChecklist();
 
-    /* ---- Eggs ---- */
+    // --- Easter Eggs ---
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
@@ -56,7 +37,7 @@ export function initLibraryProgress() {
       });
     });
 
-    /* ---- NPC ---- */
+    // --- NPC ---
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
         goals.BrockZone = true;
@@ -64,81 +45,56 @@ export function initLibraryProgress() {
       }
     });
 
-    /* ---- Exit gate ---- */
+    // --- Exit gate at the stairs ---
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
         closeGatePopup();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
+        // Show a single “Hold up” popup (reused, not stacked)
         const text = `🚧 Hold up!
 
 You still need to complete:
 • ${missingList().join("\n• ")}
 
 Find all 3 easter eggs and talk to Brock before leaving.`;
-
-        // Reuse the same popup (no stacking)
         closeGatePopup();
-        gatePopupRef = WA.ui.openPopup(GATE_POPUP_ID, text, [
-          { label: "OK", className: "primary", callback: (p: any) => p.close() },
+        gatePopupRef = WA.ui.openPopup("phishing_gate_popup", text, [
+          { label: "OK", className: "primary", callback: (p) => p.close() },
         ]);
       }
-    });
-
-    // Auto-dismiss the gate popup when the player steps away from the stairs
-    WA.room.area.onLeave(EXIT_AREA_NAME).subscribe(() => {
-      closeGatePopup();
     });
   });
 }
 
-/* -------------------- Checklist panel -------------------- */
+/* ---------- Checklist popup ---------- */
+
 function openOrUpdateChecklist() {
+  // Build compact checklist text
   const lines = [
-    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
-    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-    goals.BrockZone     ? "✅ Brock (NPC)"  : "⬜ Brock (NPC)",
+    goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
+    goals.MurdochEmail  ? "✅ MurdochEmail"  : "⬜ MurdochEmail",
+    goals.QRcode        ? "✅ QRcode"        : "⬜ QRcode",
+    goals.BrockZone     ? "✅ Brock (NPC)"   : "⬜ Brock (NPC)",
   ];
 
-  const html = `
-    <div style="font-family: system-ui, Arial, sans-serif; font-size: 14px; color: white; padding: 10px;">
-      <div style="font-weight:600; margin-bottom:6px;">Progress</div>
-      ${lines.map((l) => `<div>${l}</div>`).join("")}
-      <div style="margin-top:8px; opacity:.8;">
-        Visit all 3 easter eggs and talk to Brock to unlock the exit.
-      </div>
-    </div>
-  `;
+  const body = `Phishing Room Progress
 
-  try {
-    if (!progressPanelRef) {
-      // Prefer panel (persistent). If your WA version only supports URL, keep using popup fallback below.
-      progressPanelRef = (WA.ui as any).openPanel?.(PROG_PANEL_ID, html);
-      if (!progressPanelRef) throw new Error("openPanel unavailable");
-    } else {
-      // Update content without creating a new UI element
-      (progressPanelRef.update ?? progressPanelRef.setContent ?? (() => { throw new Error("no update method"); }))(html);
-    }
-  } catch {
-    // Fallback: keep a single popup open and refresh it when goals change
-    try { (progressPanelRef as any)?.close?.(); } catch {}
-    progressPanelRef = WA.ui.openPopup("phishing_progress_popup", stripHtml(html), []);
-  }
+${lines.join("\n")}
+
+Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
+
+  // Close and reopen with updated text so it doesn't stack
+  try { progressPopupRef?.close?.(); } catch {}
+  progressPopupRef = WA.ui.openPopup("phishing_progress_popup", body, []);
 }
 
-// Very small helper to strip tags if we fall back to popup text
-function stripHtml(s: string) {
-  return s.replace(/<[^>]*>/g, "");
-}
-
-/* -------------------- Gate popup helpers -------------------- */
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
 }
 
-/* -------------------- Logic helpers -------------------- */
+/* ---------- Helpers ---------- */
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
