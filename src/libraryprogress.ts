@@ -20,16 +20,24 @@ const NEXT_ROOM = "canteen.tmj#spawn";
 let gatePopupRef: any | undefined;       // “Hold up!” popup
 let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
 
-/* ===== NEW: helper to hide the bottom action panel (displayActionMessage) ===== */
+/* ===== helper to hide the bottom action panel (displayActionMessage) =====
+   WorkAdventure sometimes leaves a visual residue on room change.
+   We clear it now, on the next frame, and again after a short delay. */
 function hideActionMessage() {
-  try {
-    // If available on your WA version:
-    (WA.ui as any).removeActionMessage?.();
-  } catch { /* ignore */ }
-  try {
-    // Fallback: overwrite with empty text to clear it.
-    WA.ui.displayActionMessage({ message: "", callback: () => {} });
-  } catch { /* ignore */ }
+  const nuke = () => {
+    try { (WA.ui as any).removeActionMessage?.(); } catch {}
+    try { WA.ui.displayActionMessage({ message: "", callback: () => {} }); } catch {}
+  };
+
+  // immediate
+  nuke();
+
+  // next paint
+  try { (window as any).requestAnimationFrame?.(nuke); } catch {}
+
+  // safety after a tick or two (covers slower transitions)
+  setTimeout(nuke, 60);
+  setTimeout(nuke, 250);
 }
 
 /* ============ INIT ============ */
@@ -61,7 +69,7 @@ export function initLibraryProgress() {
         // 🔒 close any lingering UI before teleport
         closeGatePopup();
         closeProgressPopup();
-        hideActionMessage(); // NEW: kill the action panel before changing map
+        hideActionMessage();          // kill the panel (and any residue)
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -97,7 +105,7 @@ function closeProgressPopup() {
 function closeAllUi() {
   closeGatePopup();
   closeProgressPopup();
-  hideActionMessage(); // NEW: also clear on unload/refresh just in case
+  hideActionMessage(); // also clear on unload/refresh
 }
 
 function allDone(): boolean {
