@@ -478,7 +478,7 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":64,
+                 "height":32,
                  "id":16,
                  "name":"from-garden",
                  "properties":[
@@ -490,9 +490,9 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":64,
-                 "x":256,
-                 "y":576
+                 "width":32,
+                 "x":192,
+                 "y":608
                 }, 
                 {
                  "height":32,
@@ -624,6 +624,17 @@
                  "width":128,
                  "x":320,
                  "y":480
+                }, 
+                {
+                 "height":64,
+                 "id":33,
+                 "name":"instructions_phishing",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":96,
+                 "x":256,
+                 "y":576
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -704,7 +715,7 @@
          "y":0
         }],
  "nextlayerid":27,
- "nextobjectid":33,
+ "nextobjectid":34,
  "orientation":"orthogonal",
  "properties":[
         {
