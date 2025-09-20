@@ -20,16 +20,39 @@ const NEXT_ROOM = "canteen.tmj#spawn";
 let gatePopupRef: any | undefined;      // “Hold up!” popup
 let progressPopupRef: any | undefined;    // progress popup (if you open one elsewhere)
 
-/* ===== NEW: helper to hide the bottom action panel (displayActionMessage) ===== */
+// NEW: This flag will prevent teleporting if we're already in the process of doing so.
+let isTeleporting = false;
+
 function hideActionMessage() {
   try {
-    // If available on your WA version:
     (WA.ui as any).removeActionMessage?.();
   } catch { /* ignore */ }
   try {
-    // Fallback: overwrite with empty text to clear it.
     WA.ui.displayActionMessage({ message: "", callback: () => {} });
   } catch { /* ignore */ }
+}
+
+async function closeAllUi() {
+  closeGatePopup();
+  closeProgressPopup();
+  hideActionMessage();
+  // We can add a small delay to ensure the UI elements have time to fully close.
+  await new Promise(resolve => setTimeout(resolve, 100));
+}
+
+// NEW: Centralized function for handling the teleport
+async function handleTeleport() {
+  if (isTeleporting) {
+    return; // Prevent duplicate teleport attempts
+  }
+  isTeleporting = true;
+  console.log("Starting teleport process...");
+  
+  // Await the UI closure to ensure it's complete before navigating
+  await closeAllUi();
+  
+  // Now, safely navigate to the next room
+  WA.nav.goToRoom(NEXT_ROOM);
 }
 
 /* ============ INIT ============ */
@@ -58,9 +81,8 @@ export function initLibraryProgress() {
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        // 🔒 close any lingering UI before teleport
-        closeAllUi();
-        WA.nav.goToRoom(NEXT_ROOM);
+        // NEW: Call the dedicated teleport handler
+        handleTeleport();
       } else {
         closeGatePopup(); // avoid stacking
         gatePopupRef = WA.ui.openPopup(
@@ -90,12 +112,6 @@ function closeGatePopup() {
 function closeProgressPopup() {
   try { progressPopupRef?.close?.(); } catch {}
   progressPopupRef = undefined;
-}
-
-function closeAllUi() {
-  closeGatePopup();
-  closeProgressPopup();
-  hideActionMessage(); // NEW: also clear on unload/refresh just in case
 }
 
 function allDone(): boolean {
