@@ -74,7 +74,7 @@ function notifyProgress() {
   const done = [
     goals.blackbibleppt ? "✅ BlackBible" : "⬜ BlackBible",
     goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRCode        ? "✅ QRCode" : "⬜ QRCode",
+    goals.QRcode        ? "✅ QRCode" : "⬜ QRCode",
     goals.BrockZone     ? "✅ Brock" : "⬜ Brock",
   ].join("   ");
 
