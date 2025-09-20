@@ -25,7 +25,7 @@ function openPhishingInstructions() {
   closePhishingInstructions(); // safety: avoid duplicates
   instructionsPhishingPopupRef = WA.ui.openPopup(
     "instructions_phishingPopup",
-    "🎣 Welcome to the Phishing Room!\n\nThere are 3 hidden easter eggs in this room — can you find them all?\n\nBefore you leave, talk to the NPC to learn more in-depth about phishing:\n- How attackers trick you\n- How to spot scams\n- Simple steps to stay safe\n\nGood luck and stay curious!",
+    "🎣 Welcome to the Phishing Room!There are 3 hidden easter eggs in this room — can you find them all? Before you leave, talk to the NPC to learn more in-depth about phishing:- How attackers trick you, How to spot scams, Simple steps to stay safe. Good luck and stay curious!",
     [
       {
         label: "Got it!",
