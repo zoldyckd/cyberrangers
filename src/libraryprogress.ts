@@ -20,6 +20,18 @@ const NEXT_ROOM = "canteen.tmj#spawn";
 let gatePopupRef: any | undefined;       // “Hold up!” popup
 let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
 
+/* ===== NEW: helper to hide the bottom action panel (displayActionMessage) ===== */
+function hideActionMessage() {
+  try {
+    // If available on your WA version:
+    (WA.ui as any).removeActionMessage?.();
+  } catch { /* ignore */ }
+  try {
+    // Fallback: overwrite with empty text to clear it.
+    WA.ui.displayActionMessage({ message: "", callback: () => {} });
+  } catch { /* ignore */ }
+}
+
 /* ============ INIT ============ */
 export function initLibraryProgress() {
   WA.onInit().then(() => {
@@ -49,6 +61,7 @@ export function initLibraryProgress() {
         // 🔒 close any lingering UI before teleport
         closeGatePopup();
         closeProgressPopup();
+        hideActionMessage(); // NEW: kill the action panel before changing map
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -84,6 +97,7 @@ function closeProgressPopup() {
 function closeAllUi() {
   closeGatePopup();
   closeProgressPopup();
+  hideActionMessage(); // NEW: also clear on unload/refresh just in case
 }
 
 function allDone(): boolean {
