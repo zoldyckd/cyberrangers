@@ -18,11 +18,14 @@ const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
 let gatePopupRef: any | undefined;
-// REVISED: Renaming to progressUiRef for clarity, as it will now be a popup
-let progressUiRef: any | undefined;
+let progressPopupRef: any | undefined;
 
-// Use a debounce flag to prevent multiple triggers
+// Use a debounce flag to prevent multiple teleport triggers
 let isTransitioning = false;
+
+// NEW: Variable to debounce the progress message
+let lastNotificationTime = 0;
+const NOTIFICATION_DEBOUNCE_TIME = 500; // in milliseconds
 
 function hideActionMessage() {
   try {
@@ -38,16 +41,14 @@ function closeGatePopup() {
   gatePopupRef = undefined;
 }
 
-// REVISED: Now closes the progress popup
-function closeProgressUi() {
-  try { progressUiRef?.close?.(); } catch {}
-  progressUiRef = undefined;
+function closeProgressPopup() {
+  try { progressPopupRef?.close?.(); } catch {}
+  progressPopupRef = undefined;
 }
 
 function closeAllUi() {
   closeGatePopup();
-  closeProgressUi();
-  // We can leave this here as a fallback
+  closeProgressPopup();
   hideActionMessage();
 }
 
@@ -69,8 +70,8 @@ export function initLibraryProgress() {
     // NPC
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
-      goals.BrockZone = true;
-      notifyProgress();
+        goals.BrockZone = true;
+        notifyProgress();
       }
     });
 
@@ -79,7 +80,6 @@ export function initLibraryProgress() {
       if (isTransitioning) {
         return;
       }
-
       if (allDone()) {
         isTransitioning = true;
         closeAllUi();
@@ -118,22 +118,19 @@ function missingList(): string[] {
   return out;
 }
 
-// REVISED: This function now uses a popup to display the progress
+// REVISED: This function is now debounced
 function notifyProgress() {
+  const now = Date.now();
+  if (now - lastNotificationTime < NOTIFICATION_DEBOUNCE_TIME) {
+    return; // Don't notify if called too soon
+  }
+  lastNotificationTime = now;
+
   const done = [
     goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
     goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
     goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
     goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
   ].join("    ");
-
-  // First, close any existing progress popup to prevent stacking.
-  closeProgressUi();
-  
-  // Then, open a new popup with the updated progress.
-  progressUiRef = WA.ui.openPopup(
-    "progress_popup",
-    `Progress: ${done}`,
-    [{ label: "Close", className: "primary", callback: (p: any) => p.close() }]
-  );
+  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
 }
