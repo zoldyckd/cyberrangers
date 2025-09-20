@@ -87,7 +87,7 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 1082, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  "height":20,
                  "id":7,
                  "name":"Carpet",
@@ -447,7 +447,7 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":32,
+                 "height":64,
                  "id":16,
                  "name":"from-garden",
                  "properties":[
@@ -459,8 +459,8 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":32,
-                 "x":320,
+                 "width":96,
+                 "x":256,
                  "y":576
                 }, 
                 {
@@ -592,7 +592,7 @@
                 {
                  "height":128,
                  "id":31,
-                 "name":"instructions_phishing",
+                 "name":"instructions_phishingPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -679,7 +679,7 @@
          "y":0
         }],
  "nextlayerid":25,
- "nextobjectid":32,
+ "nextobjectid":33,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -951,6 +951,16 @@
          "spacing":0,
          "tilecount":1064,
          "tileheight":32,
+         "tiles":[
+                {
+                 "id":237,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }],
          "tilewidth":32
         }, 
         {
