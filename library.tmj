@@ -626,37 +626,15 @@
                  "y":448
                 }, 
                 {
-                 "height":32,
+                 "height":64,
                  "id":33,
                  "name":"instructions_phishing",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":32,
+                 "width":96,
                  "x":256,
-                 "y":608
-                }, 
-                {
-                 "height":32,
-                 "id":34,
-                 "name":"instructions_phishing",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":288,
                  "y":576
-                }, 
-                {
-                 "height":32,
-                 "id":35,
-                 "name":"instructions_phishing",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":320,
-                 "y":608
                 }],
          "opacity":1,
          "type":"objectgroup",
