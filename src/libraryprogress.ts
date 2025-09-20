@@ -17,11 +17,11 @@ const goals: Goals = {
 const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
-let gatePopupRef: any | undefined;      // “Hold up!” popup
-let progressPopupRef: any | undefined;    // progress popup (if you open one elsewhere)
+let gatePopupRef: any | undefined;
+let progressPopupRef: any | undefined;
 
-// NEW: This flag will prevent teleporting if we're already in the process of doing so.
-let isTeleporting = false;
+// NEW: Use a debounce flag to prevent multiple triggers
+let isTransitioning = false;
 
 function hideActionMessage() {
   try {
@@ -32,27 +32,20 @@ function hideActionMessage() {
   } catch { /* ignore */ }
 }
 
-async function closeAllUi() {
+function closeGatePopup() {
+  try { gatePopupRef?.close?.(); } catch {}
+  gatePopupRef = undefined;
+}
+
+function closeProgressPopup() {
+  try { progressPopupRef?.close?.(); } catch {}
+  progressPopupRef = undefined;
+}
+
+function closeAllUi() {
   closeGatePopup();
   closeProgressPopup();
   hideActionMessage();
-  // We can add a small delay to ensure the UI elements have time to fully close.
-  await new Promise(resolve => setTimeout(resolve, 100));
-}
-
-// NEW: Centralized function for handling the teleport
-async function handleTeleport() {
-  if (isTeleporting) {
-    return; // Prevent duplicate teleport attempts
-  }
-  isTeleporting = true;
-  console.log("Starting teleport process...");
-  
-  // Await the UI closure to ensure it's complete before navigating
-  await closeAllUi();
-  
-  // Now, safely navigate to the next room
-  WA.nav.goToRoom(NEXT_ROOM);
 }
 
 /* ============ INIT ============ */
@@ -80,9 +73,15 @@ export function initLibraryProgress() {
 
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
+      // NEW: Check the debounce flag
+      if (isTransitioning) {
+        return; // Exit early if we're already in the process
+      }
+
       if (allDone()) {
-        // NEW: Call the dedicated teleport handler
-        handleTeleport();
+        isTransitioning = true; // Set the flag to true
+        closeAllUi();
+        WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
         gatePopupRef = WA.ui.openPopup(
@@ -104,16 +103,6 @@ export function initLibraryProgress() {
 }
 
 /* ============ HELPERS ============ */
-function closeGatePopup() {
-  try { gatePopupRef?.close?.(); } catch {}
-  gatePopupRef = undefined;
-}
-
-function closeProgressPopup() {
-  try { progressPopupRef?.close?.(); } catch {}
-  progressPopupRef = undefined;
-}
-
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
