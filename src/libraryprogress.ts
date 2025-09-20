@@ -3,7 +3,7 @@
 type Goals = {
   blackbibleppt: boolean;
   MurdochEmail: boolean;
-  QRcode: boolean;   // 👈 matches Tiled
+  QRcode: boolean;   // matches your Tiled name exactly
   BrockZone: boolean;
 };
 
@@ -14,26 +14,79 @@ const goals: Goals = {
   BrockZone: false,
 };
 
-const EXIT_AREA_NAME = "to-canteen";
-const NEXT_ROOM = "canteen.tmj#spawn";
+const EXIT_AREA_NAME = "to-canteen";         // MUST be a Class=area, not a Portal
+const NEXT_ROOM = "canteen.tmj#spawn";       // adjust if your spawn name differs
 
-let gatePopupRef: any | undefined;
-let progressPopupRef: any | undefined;
+let progressPopupRef: any | undefined;       // persistent checklist popup
+let gatePopupRef: any | undefined;           // reuse gate popup so it doesn't stack
 
-// Use a debounce flag to prevent multiple teleport triggers
-let isTransitioning = false;
+export function initLibraryProgress() {
+  WA.onInit().then(() => {
+    console.log("[LibraryProgress] ready");
 
-// NEW: Variable to debounce the progress message
-let lastNotificationTime = 0;
-const NOTIFICATION_DEBOUNCE_TIME = 500; // in milliseconds
+    // Open the persistent checklist once
+    openOrUpdateChecklist();
 
-function hideActionMessage() {
-  try {
-    (WA.ui as any).removeActionMessage?.();
-  } catch { /* ignore */ }
-  try {
-    WA.ui.displayActionMessage({ message: "", callback: () => {} });
-  } catch { /* ignore */ }
+    // --- Easter Eggs ---
+    ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
+      WA.room.area.onEnter(egg).subscribe(() => {
+        if (!goals[egg as keyof Goals]) {
+          goals[egg as keyof Goals] = true;
+          openOrUpdateChecklist();
+        }
+      });
+    });
+
+    // --- NPC ---
+    WA.room.area.onEnter("BrockZone").subscribe(() => {
+      if (!goals.BrockZone) {
+        goals.BrockZone = true;
+        openOrUpdateChecklist();
+      }
+    });
+
+    // --- Exit gate at the stairs ---
+    WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
+      if (allDone()) {
+        closeGatePopup();
+        WA.nav.goToRoom(NEXT_ROOM);
+      } else {
+        // Show a single “Hold up” popup (reused, not stacked)
+        const text = `🚧 Hold up!
+
+You still need to complete:
+• ${missingList().join("\n• ")}
+
+Find all 3 easter eggs and talk to Brock before leaving.`;
+        closeGatePopup();
+        gatePopupRef = WA.ui.openPopup("phishing_gate_popup", text, [
+          { label: "OK", className: "primary", callback: (p) => p.close() },
+        ]);
+      }
+    });
+  });
+}
+
+/* ---------- Checklist popup ---------- */
+
+function openOrUpdateChecklist() {
+  // Build compact checklist text
+  const lines = [
+    goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
+    goals.MurdochEmail  ? "✅ MurdochEmail"  : "⬜ MurdochEmail",
+    goals.QRcode        ? "✅ QRcode"        : "⬜ QRcode",
+    goals.BrockZone     ? "✅ Brock (NPC)"   : "⬜ Brock (NPC)",
+  ];
+
+  const body = `Phishing Room Progress
+
+${lines.join("\n")}
+
+Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
+
+  // Close and reopen with updated text so it doesn't stack
+  try { progressPopupRef?.close?.(); } catch {}
+  progressPopupRef = WA.ui.openPopup("phishing_progress_popup", body, []);
 }
 
 function closeGatePopup() {
@@ -41,70 +94,7 @@ function closeGatePopup() {
   gatePopupRef = undefined;
 }
 
-function closeProgressPopup() {
-  try { progressPopupRef?.close?.(); } catch {}
-  progressPopupRef = undefined;
-}
-
-function closeAllUi() {
-  closeGatePopup();
-  closeProgressPopup();
-  hideActionMessage();
-}
-
-/* ============ INIT ============ */
-export function initLibraryProgress() {
-  WA.onInit().then(() => {
-    console.log("[LibraryProgress] ready");
-
-    // Eggs
-    ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
-      WA.room.area.onEnter(egg).subscribe(() => {
-        if (!goals[egg as keyof Goals]) {
-          goals[egg as keyof Goals] = true;
-          notifyProgress();
-        }
-      });
-    });
-
-    // NPC
-    WA.room.area.onEnter("BrockZone").subscribe(() => {
-      if (!goals.BrockZone) {
-        goals.BrockZone = true;
-        notifyProgress();
-      }
-    });
-
-    // Exit (enter)
-    WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
-      if (isTransitioning) {
-        return;
-      }
-      if (allDone()) {
-        isTransitioning = true;
-        closeAllUi();
-        WA.nav.goToRoom(NEXT_ROOM);
-      } else {
-        closeGatePopup(); // avoid stacking
-        gatePopupRef = WA.ui.openPopup(
-          "phishing_gate_popup",
-          `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 easter eggs and talk to Brock before leaving.`,
-          [{ label: "OK", className: "primary", callback: (p: any) => p.close() }]
-        );
-      }
-    });
-
-    // Exit (leave) → auto-dismiss the “Hold up!” popup
-    WA.room.area.onLeave(EXIT_AREA_NAME).subscribe(() => {
-      closeGatePopup();
-    });
-
-    // Safety: if the page unloads (room change, refresh), close popups
-    window.addEventListener("beforeunload", closeAllUi);
-  });
-}
-
-/* ============ HELPERS ============ */
+/* ---------- Helpers ---------- */
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
@@ -116,21 +106,4 @@ function missingList(): string[] {
   if (!goals.QRcode)        out.push("QR Code Easter Egg");
   if (!goals.BrockZone)     out.push("Talk to Brock (NPC)");
   return out;
-}
-
-// REVISED: This function is now debounced
-function notifyProgress() {
-  const now = Date.now();
-  if (now - lastNotificationTime < NOTIFICATION_DEBOUNCE_TIME) {
-    return; // Don't notify if called too soon
-  }
-  lastNotificationTime = now;
-
-  const done = [
-    goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
-    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-    goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
-  ].join("    ");
-  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
 }
