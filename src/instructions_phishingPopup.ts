@@ -1,29 +1,29 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-
-let phishingPopupRef: any | undefined;
+import { openPopupOnce, closePopup } from "./popupManager";
 
 export function initPhishingInstructions() {
   WA.onInit().then(() => {
     console.log("[WA] Phishing Instructions ready");
 
     // Open immediately if spawning inside the start zone
-    openPhishingPopup();
+    if (WA.player.state?.currentArea === "instructions_phishingPopup") {
+      openInstructionPopup();
+    }
 
-    // If they walk back into the zone later, reopen
+    // Enter zone → open
     WA.room.area.onEnter("instructions_phishingPopup").subscribe(() => {
-      openPhishingPopup();
+      openInstructionPopup();
     });
 
-    // Close when leaving the zone
+    // Leave zone → close
     WA.room.area.onLeave("instructions_phishingPopup").subscribe(() => {
-      closePhishingPopup();
+      closePopup();
     });
   });
 }
 
-function openPhishingPopup() {
-  closePhishingPopup(); // avoid duplicates
-  phishingPopupRef = WA.ui.openPopup(
+function openInstructionPopup() {
+  openPopupOnce(
     "instructions_phishingPopup",
     "🔎 This room hides 3 easter eggs. Explore the objects and see what you can find. Speak with the NPC for more in-depth details about phishing before moving on to the next map.",
     [
@@ -34,11 +34,4 @@ function openPhishingPopup() {
       },
     ]
   );
-}
-
-function closePhishingPopup() {
-  if (phishingPopupRef) {
-    phishingPopupRef.close();
-    phishingPopupRef = undefined;
-  }
 }
