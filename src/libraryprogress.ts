@@ -51,7 +51,6 @@ export function initLibraryProgress() {
         closeGatePopup();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
-        // Show a single “Hold up” popup (reused, not stacked)
         const text = `🚧 Hold up!
 
 You still need to complete:
@@ -64,18 +63,21 @@ Find all 3 easter eggs and talk to Brock before leaving.`;
         ]);
       }
     });
+
+    // NEW: auto-dismiss the "Hold up!" message when leaving the stairs area
+    WA.room.area.onLeave(EXIT_AREA_NAME).subscribe(() => {
+      closeGatePopup();
+    });
   });
 }
 
 /* ---------- Checklist popup ---------- */
-
 function openOrUpdateChecklist() {
-  // Build compact checklist text
   const lines = [
-    goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
-    goals.MurdochEmail  ? "✅ MurdochEmail"  : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRcode"        : "⬜ QRcode",
-    goals.BrockZone     ? "✅ Brock (NPC)"   : "⬜ Brock (NPC)",
+    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
+    goals.BrockZone     ? "✅ Brock (NPC)"  : "⬜ Brock (NPC)",
   ];
 
   const body = `Phishing Room Progress
@@ -84,7 +86,6 @@ ${lines.join("\n")}
 
 Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
 
-  // Close and reopen with updated text so it doesn't stack
   try { progressPopupRef?.close?.(); } catch {}
   progressPopupRef = WA.ui.openPopup("phishing_progress_popup", body, []);
 }
