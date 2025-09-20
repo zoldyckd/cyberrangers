@@ -18,31 +18,23 @@ const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
 let gatePopupRef: any | undefined;       // “Hold up!” popup
-let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
-
-/* ===== NEW: helper to hide the bottom action panel (displayActionMessage) ===== */
-function hideActionMessage() {
-  try {
-    // If available on your WA version:
-    (WA.ui as any).removeActionMessage?.();
-  } catch { /* ignore */ }
-  try {
-    // Fallback: overwrite with empty text to clear it.
-    WA.ui.displayActionMessage({ message: "", callback: () => {} });
-  } catch { /* ignore */ }
-}
+let progressPopupRef: any | undefined;   // ✅ singleton progress panel
 
 /* ============ INIT ============ */
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
 
+    // arrive super clean
+    closeGatePopup();
+    closeProgressPopup();
+
     // Eggs
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
           goals[egg as keyof Goals] = true;
-          notifyProgress();
+          notifyProgress();  // open/update the ONE progress panel
         }
       });
     });
@@ -51,7 +43,7 @@ export function initLibraryProgress() {
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
         goals.BrockZone = true;
-        notifyProgress();
+        notifyProgress();    // open/update the ONE progress panel
       }
     });
 
@@ -60,8 +52,7 @@ export function initLibraryProgress() {
       if (allDone()) {
         // 🔒 close any lingering UI before teleport
         closeGatePopup();
-        closeProgressPopup();
-        hideActionMessage(); // NEW: kill the action panel before changing map
+        closeProgressPopup();     // ✅ ensure progress panel is gone
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -80,6 +71,7 @@ export function initLibraryProgress() {
 
     // Safety: if the page unloads (room change, refresh), close popups
     window.addEventListener("beforeunload", closeAllUi);
+    window.addEventListener("unload", closeAllUi);
   });
 }
 
@@ -96,8 +88,7 @@ function closeProgressPopup() {
 
 function closeAllUi() {
   closeGatePopup();
-  closeProgressPopup();
-  hideActionMessage(); // NEW: also clear on unload/refresh just in case
+  closeProgressPopup();  // ✅ guarantees no carry-over
 }
 
 function allDone(): boolean {
@@ -113,12 +104,31 @@ function missingList(): string[] {
   return out;
 }
 
-function notifyProgress() {
-  const done = [
+/* ============ PROGRESS PANEL (singleton) ============ */
+// We use ONE popup with a constant id ("progress_panel").
+// Re-opening with the same id replaces the content instead of stacking.
+function progressText(): string {
+  return [
+    "Progress:",
     goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
     goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
     goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
     goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
   ].join("   ");
-  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
+}
+
+function notifyProgress() {
+  // Close any previous instance (extra safety), then open the ONE panel.
+  closeProgressPopup();
+
+  // Option (1): make it appear permanently; no buttons; we close it ourselves
+  // on room change or when you want.
+  progressPopupRef = WA.ui.openPopup(
+    "progress_panel",                // constant id → no stacking
+    progressText(),
+    []                               // no buttons → persistent
+  );
+
+  // If you’d rather it be closable by players, replace [] with:
+  // [{ label: "Close", className: "primary", callback: (p:any) => p.close() }]
 }
