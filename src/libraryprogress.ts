@@ -22,7 +22,7 @@ export function initLibraryProgress() {
     console.log("[LibraryProgress] ready");
 
     // --- Easter Eggs ---
-    ["blackbibleppt", "MurdochEmail", "QRCode"].forEach((egg) => {
+    ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
           goals[egg as keyof Goals] = true;
