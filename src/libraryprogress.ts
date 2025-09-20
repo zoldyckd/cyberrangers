@@ -17,13 +17,15 @@ const goals: Goals = {
 const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
-let gatePopupRef: any | undefined; // ← keep a handle so we can close it
+let gatePopupRef: any | undefined;       // “Hold up!” popup
+let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
 
+/* ============ INIT ============ */
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
 
-    // --- Eggs ---
+    // Eggs
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
@@ -33,7 +35,7 @@ export function initLibraryProgress() {
       });
     });
 
-    // --- NPC ---
+    // NPC
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
         goals.BrockZone = true;
@@ -41,13 +43,15 @@ export function initLibraryProgress() {
       }
     });
 
-    // --- Exit (enter) ---
+    // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
+        // 🔒 close any lingering UI before teleport
         closeGatePopup();
+        closeProgressPopup();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
-        closeGatePopup(); // ensure no stacking
+        closeGatePopup(); // avoid stacking
         gatePopupRef = WA.ui.openPopup(
           "phishing_gate_popup",
           `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 easter eggs and talk to Brock before leaving.`,
@@ -56,17 +60,30 @@ export function initLibraryProgress() {
       }
     });
 
-    // --- Exit (leave) → auto-dismiss the hold-up popup ---
+    // Exit (leave) → auto-dismiss the “Hold up!” popup
     WA.room.area.onLeave(EXIT_AREA_NAME).subscribe(() => {
       closeGatePopup();
     });
+
+    // Safety: if the page unloads (room change, refresh), close popups
+    window.addEventListener("beforeunload", closeAllUi);
   });
 }
 
-/* ---------- Helpers ---------- */
+/* ============ HELPERS ============ */
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
+}
+
+function closeProgressPopup() {
+  try { progressPopupRef?.close?.(); } catch {}
+  progressPopupRef = undefined;
+}
+
+function closeAllUi() {
+  closeGatePopup();
+  closeProgressPopup();
 }
 
 function allDone(): boolean {
