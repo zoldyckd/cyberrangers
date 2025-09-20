@@ -17,10 +17,10 @@ const goals: Goals = {
 const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
-// UI refs we actively manage
-let gatePopupRef: any | undefined;        // “Hold up!” popup
-let progressPopupRef: any | undefined;    // Checklist popup we open/update here only
+let gatePopupRef: any | undefined;       // “Hold up!” popup
+let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
 
+/* ============ INIT ============ */
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
@@ -30,7 +30,7 @@ export function initLibraryProgress() {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
           goals[egg as keyof Goals] = true;
-          openOrUpdateChecklist();       // <-- open/update ONE popup we can later close
+          notifyProgress();
         }
       });
     });
@@ -39,21 +39,21 @@ export function initLibraryProgress() {
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
         goals.BrockZone = true;
-        openOrUpdateChecklist();
+        notifyProgress();
       }
     });
 
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        // close any lingering UI before teleport
+        // 🔒 close any lingering UI before teleport
         closeGatePopup();
         closeProgressPopup();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
         gatePopupRef = WA.ui.openPopup(
-          "phishing_gate_popup", // must exist as a rectangle object in Tiled
+          "phishing_gate_popup",
           `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 easter eggs and talk to Brock before leaving.`,
           [{ label: "OK", className: "primary", callback: (p: any) => p.close() }]
         );
@@ -65,42 +65,12 @@ export function initLibraryProgress() {
       closeGatePopup();
     });
 
-    // Safety: close on unload/room change
-    window.addEventListener("beforeunload", () => {
-      closeGatePopup();
-      closeProgressPopup();
-    });
+    // Safety: if the page unloads (room change, refresh), close popups
+    window.addEventListener("beforeunload", closeAllUi);
   });
 }
 
-/* ---------- Checklist popup (single, reusable) ---------- */
-function openOrUpdateChecklist() {
-  const body = buildChecklistText();
-
-  // Reuse a single popup so it doesn't stack and we can close it on teleport
-  try { progressPopupRef?.close?.(); } catch {}
-  progressPopupRef = WA.ui.openPopup(
-    "phishing_progress_popup",  // add a tiny rectangle object with this name in the map
-    body,
-    [] // no buttons; purely informational
-  );
-}
-
-function buildChecklistText(): string {
-  const lines = [
-    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
-    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-    goals.BrockZone     ? "✅ Brock (NPC)"  : "⬜ Brock (NPC)",
-  ];
-  return `Phishing Room Progress
-
-${lines.join("\n")}
-
-Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
-}
-
-/* ---------- Close helpers ---------- */
+/* ============ HELPERS ============ */
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
@@ -111,7 +81,11 @@ function closeProgressPopup() {
   progressPopupRef = undefined;
 }
 
-/* ---------- Logic helpers ---------- */
+function closeAllUi() {
+  closeGatePopup();
+  closeProgressPopup();
+}
+
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
@@ -123,4 +97,14 @@ function missingList(): string[] {
   if (!goals.QRcode)        out.push("QR Code Easter Egg");
   if (!goals.BrockZone)     out.push("Talk to Brock (NPC)");
   return out;
+}
+
+function notifyProgress() {
+  const done = [
+    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
+    goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
+  ].join("   ");
+  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
 }
