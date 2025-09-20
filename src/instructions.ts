@@ -25,7 +25,7 @@ function openInstructions() {
   closeInstructions(); // safety: avoid duplicates
   instructionsPopupRef = WA.ui.openPopup(
     "instructionsPopup",
-    "👋 Welcome Ranger! Use the Arrow Keys or WASD to move around. Walk close to objects such as signs, boards, or NPCs to interact with them. Sometimes you will need to press SPACE to open a dialogue or a side panel with more details. Explore the garden and see what you can discover!",
+    "👋 Welcome Ranger! Use the Arrow Keys or WASD to move around. Walk close to objects such as signs, boards, or NPCs to interact with them. Sometimes you will need to press SPACE to open a dialogue or a side panel with more details. Explore the garden and see what you can discover! REMEMBER! Check the signboard for more info.",
     [
       {
         label: "Let’s go!",
