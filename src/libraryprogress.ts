@@ -1,7 +1,11 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-// Track which objectives are completed
-let found = {
+// zones (Class=area) in library.tmj:
+// blackbibleppt, MurdochEmail, QRcode, BrockZone, to-canteen
+
+type Keys = "blackbibleppt" | "MurdochEmail" | "QRcode" | "BrockZone";
+
+const found: Record<Keys, boolean> = {
   blackbibleppt: false,
   MurdochEmail: false,
   QRcode: false,
@@ -12,18 +16,18 @@ export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[WA] Library progression system ready");
 
-    // Easter egg triggers
+    // Easter eggs
     WA.room.area.onEnter("blackbibleppt").subscribe(() => mark("blackbibleppt"));
     WA.room.area.onEnter("MurdochEmail").subscribe(() => mark("MurdochEmail"));
     WA.room.area.onEnter("QRcode").subscribe(() => mark("QRcode"));
 
-    // NPC trigger
+    // NPC
     WA.room.area.onEnter("BrockZone").subscribe(() => mark("BrockZone"));
 
     // Stairs gate
     WA.room.area.onEnter("to-canteen").subscribe(() => {
       if (allDone()) {
-        WA.nav.goToRoom("canteen.tmj#from-library"); // 👈 adjust spawn point name if needed
+        WA.nav.goToRoom("canteen.tmj#from-library"); // adjust spawn anchor if needed
       } else {
         showBlockedPopup();
       }
@@ -31,15 +35,13 @@ export function initLibraryProgress() {
   });
 }
 
-function mark(key: keyof typeof found) {
+function mark(key: Keys) {
   if (found[key]) return;
   found[key] = true;
-  const p = WA.ui.openPopup(
-    "progressHint",
-    progressText(),
-    []
-  );
-  setTimeout(() => p.close(), 1200); // auto close after 1.2s
+
+  // Tiny feedback popup that auto-closes
+  const popup = WA.ui.openPopup("progressHint", progressText(), []);
+  setTimeout(() => popup.close(), 1200);
 }
 
 function allDone() {
@@ -47,14 +49,14 @@ function allDone() {
 }
 
 function progressText() {
-  const done = Object.values(found).filter(Boolean).length;
+  const done = Number(found.blackbibleppt) + Number(found.MurdochEmail) + Number(found.QRcode) + Number(found.BrockZone);
   return `Progress: ${done}/4 — Find 3 easter eggs and talk to the NPC before moving on.`;
 }
 
 function showBlockedPopup() {
-  const p = WA.ui.openPopup(
+  WA.ui.openPopup(
     "stairsBlocked",
-    "The stairs are blocked. You must discover all 3 easter eggs and talk to the NPC before moving on.",
-    [{ label: "OK", className: "primary", callback: (pop) => pop.close() }]
+    "The stairs are locked. Discover all 3 easter eggs and speak to the NPC before moving on.",
+    [{ label: "OK", className: "primary", callback: (popup) => popup.close() }]
   );
 }
