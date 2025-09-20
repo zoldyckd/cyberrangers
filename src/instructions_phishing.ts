@@ -6,15 +6,8 @@ export function initInstructionsPhishing() {
   WA.onInit().then(() => {
     console.log("[WA] Phishing Instructions ready");
 
-    // Only open when player walks into the zone
-    WA.room.area.onEnter("instructions_phishing").subscribe(() => {
-      openPhishingInstructions();
-    });
-
-    // Close when player walks out
-    WA.room.area.onLeave("instructions_phishing").subscribe(() => {
-      closePhishingInstructions();
-    });
+    // Open immediately when the map loads
+    openPhishingInstructions();
   });
 }
 
