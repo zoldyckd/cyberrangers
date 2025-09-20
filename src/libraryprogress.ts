@@ -3,14 +3,14 @@
 type Goals = {
   blackbibleppt: boolean;
   MurdochEmail: boolean;
-  QRCode: boolean;
+  QRcode: boolean;   // 👈 lowercase c to match your Tiled area name
   BrockZone: boolean;
 };
 
 const goals: Goals = {
   blackbibleppt: false,
   MurdochEmail: false,
-  QRCode: false,
+  QRcode: false,
   BrockZone: false,
 };
 
@@ -58,14 +58,14 @@ export function initLibraryProgress() {
 
 /* ---------- Helpers ---------- */
 function allDone(): boolean {
-  return goals.blackbibleppt && goals.MurdochEmail && goals.QRCode && goals.BrockZone;
+  return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
 
 function missingList(): string[] {
   const out: string[] = [];
   if (!goals.blackbibleppt) out.push("Black Bible Easter Egg");
   if (!goals.MurdochEmail) out.push("Murdoch Email Easter Egg");
-  if (!goals.QRCode) out.push("QR Code Easter Egg");
+  if (!goals.QRcode) out.push("QR Code Easter Egg");
   if (!goals.BrockZone) out.push("Talk to Brock (NPC)");
   return out;
 }
@@ -74,7 +74,7 @@ function notifyProgress() {
   const done = [
     goals.blackbibleppt ? "✅ BlackBible" : "⬜ BlackBible",
     goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRCode" : "⬜ QRCode",
+    goals.QRcode        ? "✅ QRcode" : "⬜ QRcode",
     goals.BrockZone     ? "✅ Brock" : "⬜ Brock",
   ].join("   ");
 
