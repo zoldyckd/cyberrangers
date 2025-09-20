@@ -588,6 +588,17 @@
                  "width":117.333333333333,
                  "x":412,
                  "y":103.666666666667
+                }, 
+                {
+                 "height":128,
+                 "id":31,
+                 "name":"instructions_phishing",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":128,
+                 "x":352,
+                 "y":480
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -668,7 +679,7 @@
          "y":0
         }],
  "nextlayerid":25,
- "nextobjectid":31,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "properties":[
         {

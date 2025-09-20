@@ -8,7 +8,7 @@ import { initMurdochEmail } from "./murdochemail";   // 👈 add this
 import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initInstructions } from "./instructions";   // 👈 add this
-
+import { initPhishingInstructions } from "./instructions_phishingPopup";   // 👈 add this
 
 
 
@@ -27,4 +27,6 @@ WA.onInit().then(async () => {
   initBrockZone();
   initBillboard();
   initInstructions();
+  initPhishingInstructions();
+
 });
