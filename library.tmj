@@ -447,7 +447,7 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":64,
+                 "height":32,
                  "id":16,
                  "name":"from-garden",
                  "properties":[
@@ -459,9 +459,9 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":96,
-                 "x":256,
-                 "y":576
+                 "width":32,
+                 "x":320,
+                 "y":608
                 }, 
                 {
                  "height":32,
@@ -598,7 +598,7 @@
                  "visible":true,
                  "width":128,
                  "x":352,
-                 "y":480
+                 "y":512
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -678,7 +678,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":25,
+ "nextlayerid":26,
  "nextobjectid":33,
  "orientation":"orthogonal",
  "properties":[
