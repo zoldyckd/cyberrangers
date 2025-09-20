@@ -18,31 +18,24 @@ const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
 let gatePopupRef: any | undefined;       // “Hold up!” popup
-let progressPopupRef: any | undefined;   // reserved for future use
-let isTeleporting = false;               // block UI during room change
+let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
 
-/* ---------- Action message control (no stacking) ---------- */
-let lastActionMsg = "";
-let hudTimer: number | undefined;
-
-function nukeActionMessage() {
-  const nuke = () => {
-    try { (WA.ui as any).removeActionMessage?.(); } catch {}
-    try { WA.ui.displayActionMessage({ message: "", callback: () => {} }); } catch {}
-  };
-  nuke();
-  requestAnimationFrame?.(nuke);
-  setTimeout(nuke, 60);
-  setTimeout(nuke, 250);
+/* ===== NEW: helper to hide the bottom action panel (displayActionMessage) ===== */
+function hideActionMessage() {
+  try {
+    // If available on your WA version:
+    (WA.ui as any).removeActionMessage?.();
+  } catch { /* ignore */ }
+  try {
+    // Fallback: overwrite with empty text to clear it.
+    WA.ui.displayActionMessage({ message: "", callback: () => {} });
+  } catch { /* ignore */ }
 }
 
 /* ============ INIT ============ */
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
-
-    // Arrive super clean in case previous room left residue
-    nukeActionMessage();
 
     // Eggs
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
@@ -65,11 +58,10 @@ export function initLibraryProgress() {
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        isTeleporting = true;          // ⛔ stop any new UI
-        // close EVERYTHING before jumping
+        // 🔒 close any lingering UI before teleport
         closeGatePopup();
         closeProgressPopup();
-        nukeActionMessage();
+        hideActionMessage(); // NEW: kill the action panel before changing map
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -86,9 +78,8 @@ export function initLibraryProgress() {
       closeGatePopup();
     });
 
-    // Safety on unload/refresh
+    // Safety: if the page unloads (room change, refresh), close popups
     window.addEventListener("beforeunload", closeAllUi);
-    window.addEventListener("unload", closeAllUi);
   });
 }
 
@@ -106,7 +97,7 @@ function closeProgressPopup() {
 function closeAllUi() {
   closeGatePopup();
   closeProgressPopup();
-  nukeActionMessage();
+  hideActionMessage(); // NEW: also clear on unload/refresh just in case
 }
 
 function allDone(): boolean {
@@ -123,25 +114,11 @@ function missingList(): string[] {
 }
 
 function notifyProgress() {
-  if (isTeleporting) return; // don’t spawn anything during room change
-
-  const msg = `Progress: ${
-    [
-      goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
-      goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-      goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-      goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
-    ].join("   ")
-  }`;
-
-  // Deduplicate identical text (prevents stacking when multiple goals flip)
-  if (msg === lastActionMsg) return;
-  lastActionMsg = msg;
-
-  // Debounce rapid updates (if goals flip in the same tick)
-  if (hudTimer) clearTimeout(hudTimer);
-  hudTimer = setTimeout(() => {
-    try { (WA.ui as any).removeActionMessage?.(); } catch {}
-    try { WA.ui.displayActionMessage({ message: msg, callback: () => {} }); } catch {}
-  }, 0) as unknown as number;
+  const done = [
+    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
+    goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
+  ].join("   ");
+  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
 }
