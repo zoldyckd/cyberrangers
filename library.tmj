@@ -635,6 +635,17 @@
                  "width":96,
                  "x":256,
                  "y":576
+                }, 
+                {
+                 "height":96,
+                 "id":36,
+                 "name":"phishing_gate_popup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":128,
+                 "x":416,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -715,7 +726,7 @@
          "y":0
         }],
  "nextlayerid":27,
- "nextobjectid":36,
+ "nextobjectid":38,
  "orientation":"orthogonal",
  "properties":[
         {
