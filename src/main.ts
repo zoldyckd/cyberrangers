@@ -8,8 +8,6 @@ import { initMurdochEmail } from "./murdochemail";   // 👈 add this
 import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initInstructions } from "./instructions";   // 👈 add this
-import { initInstructionsPhishing } from "./instructions_phishing";   // 👈 add this
-import { initLibraryProgress } from "./libraryprogress";   // 👈 add this
 
 
 
@@ -28,8 +26,6 @@ WA.onInit().then(async () => {
   initBrockZone();
   initBillboard();
   initInstructions();
-  initInstructionsPhishing();
-  initLibraryProgress();
 
 
 });
