@@ -18,35 +18,18 @@ const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
 let gatePopupRef: any | undefined;       // “Hold up!” popup
-let progressPopupRef: any | undefined;   // (reserved, unused for HUD popups)
+let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
 
-/* ===== HUD (action message) controls ===== */
-let lastHudMsg = "";
-const SHOW_HUD_FROM_START = true; // set false if you only want it after 1st goal
-
-function progressMsg(): string {
-  return `Progress: ${
-    [
-      goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
-      goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-      goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-      goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
-    ].join("   ")
-  }`;
-}
-
-function hideHud() {
-  try { (WA.ui as any).removeActionMessage?.(); } catch {}
-  try { WA.ui.displayActionMessage({ message: "", callback: () => {} }); } catch {}
-}
-
-function showHud(force = false) {
-  const msg = progressMsg();
-  if (!force && msg === lastHudMsg) return;           // dedupe identical content
-  lastHudMsg = msg;
-  // show exactly one HUD: remove first, then show
-  try { (WA.ui as any).removeActionMessage?.(); } catch {}
-  try { WA.ui.displayActionMessage({ message: msg, callback: () => {} }); } catch {}
+/* ===== NEW: helper to hide the bottom action panel (displayActionMessage) ===== */
+function hideActionMessage() {
+  try {
+    // If available on your WA version:
+    (WA.ui as any).removeActionMessage?.();
+  } catch { /* ignore */ }
+  try {
+    // Fallback: overwrite with empty text to clear it.
+    WA.ui.displayActionMessage({ message: "", callback: () => {} });
+  } catch { /* ignore */ }
 }
 
 /* ============ INIT ============ */
@@ -54,16 +37,12 @@ export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
 
-    // arrive clean + (optional) show HUD immediately
-    hideHud();
-    if (SHOW_HUD_FROM_START) showHud(true);
-
     // Eggs
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
           goals[egg as keyof Goals] = true;
-          showHud();                  // update the ONE HUD
+          notifyProgress();
         }
       });
     });
@@ -72,16 +51,17 @@ export function initLibraryProgress() {
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
         goals.BrockZone = true;
-        showHud();                    // update the ONE HUD
+        notifyProgress();
       }
     });
 
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        // 🔒 kill everything before teleport so nothing follows to next map
+        // 🔒 close any lingering UI before teleport
         closeGatePopup();
-        hideHud();
+        closeProgressPopup();
+        hideActionMessage(); // NEW: kill the action panel before changing map
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -98,9 +78,8 @@ export function initLibraryProgress() {
       closeGatePopup();
     });
 
-    // Safety on unload/refresh
+    // Safety: if the page unloads (room change, refresh), close popups
     window.addEventListener("beforeunload", closeAllUi);
-    window.addEventListener("unload", closeAllUi);
   });
 }
 
@@ -110,9 +89,15 @@ function closeGatePopup() {
   gatePopupRef = undefined;
 }
 
+function closeProgressPopup() {
+  try { progressPopupRef?.close?.(); } catch {}
+  progressPopupRef = undefined;
+}
+
 function closeAllUi() {
   closeGatePopup();
-  hideHud(); // ensure no HUD leaks across maps
+  closeProgressPopup();
+  hideActionMessage(); // NEW: also clear on unload/refresh just in case
 }
 
 function allDone(): boolean {
@@ -126,4 +111,14 @@ function missingList(): string[] {
   if (!goals.QRcode)        out.push("QR Code Easter Egg");
   if (!goals.BrockZone)     out.push("Talk to Brock (NPC)");
   return out;
+}
+
+function notifyProgress() {
+  const done = [
+    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+    goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
+    goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
+  ].join("   ");
+  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
 }
