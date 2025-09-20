@@ -18,23 +18,20 @@ const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
 let gatePopupRef: any | undefined;       // “Hold up!” popup
-let progressPopupRef: any | undefined;   // (reserved if you later use a popup)
-let isTeleporting = false;               // NEW: block new UI during room change
+let progressPopupRef: any | undefined;   // reserved for future use
+let isTeleporting = false;               // block UI during room change
 
-/* ===== NEW: action message dedupe/debounce ===== */
-let lastActionMessage = "";
-let notifyTimer: number | undefined;
+/* ---------- Action message control (no stacking) ---------- */
+let lastActionMsg = "";
+let hudTimer: number | undefined;
 
-/* ===== helper to hide the bottom action panel (displayActionMessage) =====
-   Some WA builds leave a visual residue. We clear it now, next frame,
-   and after a short delay to force a repaint. */
-function hideActionMessage() {
+function nukeActionMessage() {
   const nuke = () => {
     try { (WA.ui as any).removeActionMessage?.(); } catch {}
     try { WA.ui.displayActionMessage({ message: "", callback: () => {} }); } catch {}
   };
   nuke();
-  try { (window as any).requestAnimationFrame?.(nuke); } catch {}
+  requestAnimationFrame?.(nuke);
   setTimeout(nuke, 60);
   setTimeout(nuke, 250);
 }
@@ -43,6 +40,9 @@ function hideActionMessage() {
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
+
+    // Arrive super clean in case previous room left residue
+    nukeActionMessage();
 
     // Eggs
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
@@ -65,10 +65,11 @@ export function initLibraryProgress() {
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        isTeleporting = true;           // NEW: freeze any new UI
+        isTeleporting = true;          // ⛔ stop any new UI
+        // close EVERYTHING before jumping
         closeGatePopup();
         closeProgressPopup();
-        hideActionMessage();            // kill action bar cleanly
+        nukeActionMessage();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -85,8 +86,9 @@ export function initLibraryProgress() {
       closeGatePopup();
     });
 
-    // Safety: if the page unloads (room change, refresh), close popups
+    // Safety on unload/refresh
     window.addEventListener("beforeunload", closeAllUi);
+    window.addEventListener("unload", closeAllUi);
   });
 }
 
@@ -104,10 +106,9 @@ function closeProgressPopup() {
 function closeAllUi() {
   closeGatePopup();
   closeProgressPopup();
-  hideActionMessage(); // also clear on unload/refresh
+  nukeActionMessage();
 }
 
-/* unchanged */
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
 }
@@ -121,27 +122,25 @@ function missingList(): string[] {
   return out;
 }
 
-/* ===== NEW: safe, deduped progress HUD ===== */
 function notifyProgress() {
-  if (isTeleporting) return; // don’t spawn UI while leaving the room
+  if (isTeleporting) return; // don’t spawn anything during room change
 
-  const msg =
-    `Progress: ${
-      [
-        goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
-        goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-        goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
-        goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
-      ].join("   ")
-    }`;
+  const msg = `Progress: ${
+    [
+      goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+      goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+      goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
+      goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
+    ].join("   ")
+  }`;
 
-  // dedupe: if nothing changed, don’t re-render a new HUD
-  if (msg === lastActionMessage) return;
-  lastActionMessage = msg;
+  // Deduplicate identical text (prevents stacking when multiple goals flip)
+  if (msg === lastActionMsg) return;
+  lastActionMsg = msg;
 
-  // debounce: collapse rapid successive updates into one render
-  if (notifyTimer) clearTimeout(notifyTimer);
-  notifyTimer = setTimeout(() => {
+  // Debounce rapid updates (if goals flip in the same tick)
+  if (hudTimer) clearTimeout(hudTimer);
+  hudTimer = setTimeout(() => {
     try { (WA.ui as any).removeActionMessage?.(); } catch {}
     try { WA.ui.displayActionMessage({ message: msg, callback: () => {} }); } catch {}
   }, 0) as unknown as number;
