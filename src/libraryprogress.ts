@@ -1,9 +1,17 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
+/**
+ * - Tracks 3 eggs + NPC
+ * - Shows a stacking "goal panel" (popup) each time progress updates
+ * - Auto-closes the "Hold up!" popup when you step off the stairs
+ * - Cleans up ALL goal popups right before teleport so nothing carries over
+ * - If the progress popup anchor object doesn't exist, falls back to a toast
+ */
+
 type Goals = {
   blackbibleppt: boolean;
   MurdochEmail: boolean;
-  QRcode: boolean;   // matches Tiled name
+  QRcode: boolean;   // matches your Tiled name
   BrockZone: boolean;
 };
 
@@ -14,46 +22,49 @@ const goals: Goals = {
   BrockZone: false,
 };
 
-const EXIT_AREA_NAME = "to-canteen";           // Class=area at stairs
-const NEXT_ROOM = "canteen.tmj#spawn";         // adjust if needed
-const PROG_POPUP_ID = "phishing_progress_popup"; // rectangle object in Tiled
-const GATE_POPUP_ID = "phishing_gate_popup";     // rectangle object in Tiled
+const EXIT_AREA_NAME = "to-canteen";
+const NEXT_ROOM = "canteen.tmj#spawn";
+
+// Popup anchor IDs (Rectangle objects in Tiled). GATE is required; PROG is optional.
+const GATE_POPUP_ID = "phishing_gate_popup";
+const PROG_POPUP_ID = "phishing_progress_popup";
+// If PROG_POPUP_ID is missing, we'll try these alternates before falling back to a toast:
+const ALT_PROG_POPUP_IDS = ["instructions_phishingPopup", "MurdochEmailPopup"];
 
 let gatePopupRef: any | undefined;
-// track all progress popups so we can close them before navigation
-let progressPopupRefs: any[] = [];
+let progressPopupRefs: any[] = []; // store all goal popups to close before navigation
 
 export function initLibraryProgress() {
   WA.onInit().then(() => {
     console.log("[LibraryProgress] ready");
 
-    // initial toast/popup
-    showProgressPopup();
+    // Initial panel/ toast
+    showProgressPanel();
 
-    // --- Eggs ---
+    // Eggs
     ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
           goals[egg as keyof Goals] = true;
-          showProgressPopup();
+          showProgressPanel();
         }
       });
     });
 
-    // --- NPC ---
+    // NPC
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
         goals.BrockZone = true;
-        showProgressPopup();
+        showProgressPanel();
       }
     });
 
-    // --- Exit gate ---
+    // Exit gate (stairs)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        // close ALL UI before leaving so nothing carries to next map
+        // Clean UI BEFORE teleport, so nothing follows you
         closeGatePopup();
-        closeAllProgressPopups();
+        closeAllProgressPanels();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         const text = `🚧 Hold up!
@@ -62,23 +73,24 @@ You still need to complete:
 • ${missingList().join("\n• ")}
 
 Find all 3 easter eggs and talk to Brock before leaving.`;
+
         closeGatePopup(); // ensure single instance
-        gatePopupRef = WA.ui.openPopup(GATE_POPUP_ID, text, [
+        gatePopupRef = openPopupSafe(GATE_POPUP_ID, text, [
           { label: "OK", className: "primary", callback: (p: any) => p.close() },
         ]);
       }
     });
 
-    // Auto-close the “Hold up!” when stepping away from stairs
+    // Auto-close the Hold up! when stepping away from the stairs area
     WA.room.area.onLeave(EXIT_AREA_NAME).subscribe(() => {
       closeGatePopup();
     });
   });
 }
 
-/* ---------- UI helpers ---------- */
+/* ---------------- UI helpers ---------------- */
 
-function showProgressPopup() {
+function showProgressPanel() {
   const line = [
     goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
     goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
@@ -90,11 +102,33 @@ function showProgressPopup() {
 
 Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
 
-  const ref = WA.ui.openPopup(PROG_POPUP_ID, text, []); // stacking by design
-  progressPopupRefs.push(ref);
+  // Try preferred anchor; if missing, try alternates; else fall back to a toast
+  const ref =
+    openPopupSafe(PROG_POPUP_ID, text, []) ||
+    tryAlternates(ALT_PROG_POPUP_IDS, text) ||
+    (WA.ui.displayActionMessage({ message: text, callback: () => {} }), undefined);
+
+  if (ref) progressPopupRefs.push(ref); // only track actual popups (not toasts)
 }
 
-function closeAllProgressPopups() {
+function tryAlternates(ids: string[], text: string) {
+  for (const id of ids) {
+    const ref = openPopupSafe(id, text, []);
+    if (ref) return ref;
+  }
+  return undefined;
+}
+
+function openPopupSafe(id: string, text: string, buttons: any[]) {
+  try {
+    return WA.ui.openPopup(id, text, buttons);
+  } catch {
+    // The anchor object probably doesn't exist on this map; ignore and fall back.
+    return undefined;
+  }
+}
+
+function closeAllProgressPanels() {
   for (const ref of progressPopupRefs) {
     try { ref?.close?.(); } catch {}
   }
@@ -106,7 +140,7 @@ function closeGatePopup() {
   gatePopupRef = undefined;
 }
 
-/* ---------- Logic helpers ---------- */
+/* ---------------- Logic helpers ---------------- */
 
 function allDone(): boolean {
   return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
