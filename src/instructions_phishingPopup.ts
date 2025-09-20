@@ -30,7 +30,7 @@ export function initPhishingInstructions() {
 function openPopup() {
   closePopup();
   popup = WA.ui.openPopup(
-    "instructions_phishingPopup",
+    "from-garden",
     "🔎 This room hides 3 easter eggs. Explore the objects and see what you can find. Speak with the NPC for more in-depth details about phishing before moving on to the next map.",
     [{ label: "Got it!", className: "primary", callback: () => closePopup() }]
   );
