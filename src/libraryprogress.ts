@@ -17,8 +17,8 @@ const goals: Goals = {
 const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
-let gatePopupRef: any | undefined;       // “Hold up!” popup
-let progressPopupRef: any | undefined;   // progress popup (if you open one elsewhere)
+let gatePopupRef: any | undefined;      // “Hold up!” popup
+let progressPopupRef: any | undefined;    // progress popup (if you open one elsewhere)
 
 /* ===== NEW: helper to hide the bottom action panel (displayActionMessage) ===== */
 function hideActionMessage() {
@@ -59,9 +59,7 @@ export function initLibraryProgress() {
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
         // 🔒 close any lingering UI before teleport
-        closeGatePopup();
-        closeProgressPopup();
-        hideActionMessage(); // NEW: kill the action panel before changing map
+        closeAllUi();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
         closeGatePopup(); // avoid stacking
@@ -115,10 +113,10 @@ function missingList(): string[] {
 
 function notifyProgress() {
   const done = [
-    goals.blackbibleppt ? "✅ BlackBible"   : "⬜ BlackBible",
+    goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
     goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
     goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
     goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
-  ].join("   ");
+  ].join("    ");
   WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
 }
