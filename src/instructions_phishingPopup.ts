@@ -3,39 +3,36 @@
 let popup: ReturnType<typeof WA.ui.openPopup> | undefined;
 
 export function initPhishingInstructions() {
+  console.log("[Phishing] file loaded");             // <-- must see this
+
   WA.onInit().then(() => {
-    console.log("[WA] Phishing Instructions ready");
+    console.log("[Phishing] WA ready");              // <-- must see this
 
-    // 1) Force open shortly after spawn (handles the case where onEnter doesn't fire on spawn)
+    // Force-open once on spawn (covers case where onEnter doesn't fire on spawn)
     setTimeout(() => {
+      console.log("[Phishing] open on spawn timeout");
       openPopup();
-    }, 200);
+    }, 250);
 
-    // 2) If you step onto the spawn tile again later, open it
+    // Enter/leave the 1x1 spawn tile to open/close
     WA.room.area.onEnter("from-garden").subscribe(() => {
+      console.log("[Phishing] enter from-garden");
       openPopup();
     });
 
-    // 3) Leave the 1x1 spawn tile → close
     WA.room.area.onLeave("from-garden").subscribe(() => {
+      console.log("[Phishing] leave from-garden");
       closePopup();
     });
   });
 }
 
 function openPopup() {
-  // avoid duplicates
   closePopup();
   popup = WA.ui.openPopup(
-    "instructions_phishingPopup", // popup id only
+    "instructions_phishingPopup",
     "🔎 This room hides 3 easter eggs. Explore the objects and see what you can find. Speak with the NPC for more in-depth details about phishing before moving on to the next map.",
-    [
-      {
-        label: "Got it!",
-        className: "primary",
-        callback: () => closePopup(),
-      },
-    ]
+    [{ label: "Got it!", className: "primary", callback: () => closePopup() }]
   );
 }
 
