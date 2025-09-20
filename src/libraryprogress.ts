@@ -18,9 +18,10 @@ const EXIT_AREA_NAME = "to-canteen";
 const NEXT_ROOM = "canteen.tmj#spawn";
 
 let gatePopupRef: any | undefined;
-let progressPopupRef: any | undefined;
+// REVISED: Renaming to progressUiRef for clarity, as it will now be a popup
+let progressUiRef: any | undefined;
 
-// NEW: Use a debounce flag to prevent multiple triggers
+// Use a debounce flag to prevent multiple triggers
 let isTransitioning = false;
 
 function hideActionMessage() {
@@ -37,14 +38,16 @@ function closeGatePopup() {
   gatePopupRef = undefined;
 }
 
-function closeProgressPopup() {
-  try { progressPopupRef?.close?.(); } catch {}
-  progressPopupRef = undefined;
+// REVISED: Now closes the progress popup
+function closeProgressUi() {
+  try { progressUiRef?.close?.(); } catch {}
+  progressUiRef = undefined;
 }
 
 function closeAllUi() {
   closeGatePopup();
-  closeProgressPopup();
+  closeProgressUi();
+  // We can leave this here as a fallback
   hideActionMessage();
 }
 
@@ -66,20 +69,19 @@ export function initLibraryProgress() {
     // NPC
     WA.room.area.onEnter("BrockZone").subscribe(() => {
       if (!goals.BrockZone) {
-        goals.BrockZone = true;
-        notifyProgress();
+      goals.BrockZone = true;
+      notifyProgress();
       }
     });
 
     // Exit (enter)
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
-      // NEW: Check the debounce flag
       if (isTransitioning) {
-        return; // Exit early if we're already in the process
+        return;
       }
 
       if (allDone()) {
-        isTransitioning = true; // Set the flag to true
+        isTransitioning = true;
         closeAllUi();
         WA.nav.goToRoom(NEXT_ROOM);
       } else {
@@ -116,6 +118,7 @@ function missingList(): string[] {
   return out;
 }
 
+// REVISED: This function now uses a popup to display the progress
 function notifyProgress() {
   const done = [
     goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
@@ -123,5 +126,14 @@ function notifyProgress() {
     goals.QRcode        ? "✅ QRcode"       : "⬜ QRcode",
     goals.BrockZone     ? "✅ Brock"        : "⬜ Brock",
   ].join("    ");
-  WA.ui.displayActionMessage({ message: `Progress: ${done}`, callback: () => {} });
+
+  // First, close any existing progress popup to prevent stacking.
+  closeProgressUi();
+  
+  // Then, open a new popup with the updated progress.
+  progressUiRef = WA.ui.openPopup(
+    "progress_popup",
+    `Progress: ${done}`,
+    [{ label: "Close", className: "primary", callback: (p: any) => p.close() }]
+  );
 }
