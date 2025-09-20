@@ -48,20 +48,19 @@ export function initLibraryProgress() {
     // --- Exit gate at the stairs ---
     WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
       if (allDone()) {
-        closeAllPopups();
-        setTimeout(() => WA.nav.goToRoom(NEXT_ROOM), 0);
-      } else {
-        closeChecklist();
         closeGatePopup();
-
+        WA.nav.goToRoom(NEXT_ROOM);
+      } else {
+        // Show a single “Hold up” popup (reused, not stacked)
         const text = `🚧 Hold up!
 
 You still need to complete:
 • ${missingList().join("\n• ")}
 
 Find all 3 easter eggs and talk to Brock before leaving.`;
+        closeGatePopup();
         gatePopupRef = WA.ui.openPopup("phishing_gate_popup", text, [
-          { label: "OK", className: "primary", callback: (p: any) => p.close() },
+          { label: "OK", className: "primary", callback: (p) => p.close() },
         ]);
       }
     });
@@ -71,6 +70,7 @@ Find all 3 easter eggs and talk to Brock before leaving.`;
 /* ---------- Checklist popup ---------- */
 
 function openOrUpdateChecklist() {
+  // Build compact checklist text
   const lines = [
     goals.blackbibleppt ? "✅ BlackBible"    : "⬜ BlackBible",
     goals.MurdochEmail  ? "✅ MurdochEmail"  : "⬜ MurdochEmail",
@@ -84,6 +84,7 @@ ${lines.join("\n")}
 
 Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
 
+  // Close and reopen with updated text so it doesn't stack
   try { progressPopupRef?.close?.(); } catch {}
   progressPopupRef = WA.ui.openPopup("phishing_progress_popup", body, []);
 }
@@ -91,17 +92,6 @@ Visit all 3 easter eggs and talk to Brock to unlock the exit.`;
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
-}
-
-/* ---------- NEW: close helpers ---------- */
-function closeChecklist() {
-  try { progressPopupRef?.close?.(); } catch {}
-  progressPopupRef = undefined;
-}
-function closeAllPopups() {
-  try { gatePopupRef?.close?.(); } catch {}
-  gatePopupRef = undefined;
-  closeChecklist();
 }
 
 /* ---------- Helpers ---------- */
