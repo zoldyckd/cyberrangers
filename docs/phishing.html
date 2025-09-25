@@ -9,39 +9,27 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play Are you fishing or being Phished?.</tw-noscript></noscript></tw-story>
-<tw-storydata name="Are you fishing or being Phished?" startnode="1" creator="Twine" creator-version="2.10.0" format="Harlowe" format-version="3.3.9" ifid="0737B0CF-354F-4692-AD72-36EE52F69CCD" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* Full-page background */
-html, body {
-  height: 100%;
-}
-body {
-  background: #000 url("assets/phishingbg.jpeg") no-repeat center center fixed;
+<tw-storydata name="Are you fishing or being Phished?" startnode="1" creator="Twine" creator-version="2.10.0" format="Harlowe" format-version="3.3.9" ifid="0737B0CF-354F-4692-AD72-36EE52F69CCD" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* Background for BOTH SugarCube and Harlowe */
+html, body { height: 100%; }
+
+body,
+tw-story {
+  background-color: #000;
+  background-image: url("https://zoldyckd.github.io/cyberrangers/assets/phishingbg.jpeg?v=1");
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
-  color: #fff;
-  font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-
-/* Add a subtle readable panel for passages */
-#passages {
+/* Readable content panel */
+#passages,            /* SugarCube */
+tw-passage {          /* Harlowe */
   max-width: 880px;
   margin: 48px auto;
   background: rgba(0,0,0,0.55);
   padding: 24px 28px;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-}
-
-/* Nicer links/buttons */
-a.link-internal, .macro-link, .macro-button {
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,0.2);
-  padding: 8px 12px;
-  border-radius: 10px;
-  display: inline-block;
-  margin: 6px 6px 0 0;
-}
-a.link-internal:hover, .macro-link:hover, .macro-button:hover {
-  background: rgba(255,255,255,0.12);
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-passagedata pid="1" name="Alarm" tags="" position="1300,475" size="100,100">🚨 Murdoch campus is in chaos. Emails are flying, QR posters plaster walls, and IT phones are exploding.
 
