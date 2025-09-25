@@ -584,7 +584,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"\/doc\/Are you fishing or being Phished.html"
+                         "value":"\/docs\/Are you fishing or being Phished.html"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
