@@ -584,7 +584,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/phishing.html\n"
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/phishing.html"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
