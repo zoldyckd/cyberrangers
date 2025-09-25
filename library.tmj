@@ -584,7 +584,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/seahyr.github.io\/ICT302-Story\/"
+                         "value":"\/doc\/Are you fishing or being Phished.html"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
