@@ -15,7 +15,7 @@ const goals: Goals = {
 };
 
 const EXIT_AREA_NAME = "to-canteen";   // exit gate area
-const NEXT_ROOM = "canteen.tmj#spawn"; // change if your spawn is named differently
+const NEXT_ROOM = "canteen.tmj#from-library"; // change if your spawn is named differently
 
 export function initLibraryProgress() {
   WA.onInit().then(() => {
