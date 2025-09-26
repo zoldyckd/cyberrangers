@@ -1,11 +1,10 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
 type Goals = {
   poster: boolean;
   usbdrive: boolean;
   stickynote: boolean;
-  AmeliaZone: boolean;     // NPC
+  AmeliaZone: boolean;
 };
 
 const goals: Goals = {
@@ -15,29 +14,12 @@ const goals: Goals = {
   AmeliaZone: false,
 };
 
-// Exit config
-const EXIT_AREA_NAMES = ["to-hall", "to-hall-gate"]; // we listen to both, use whichever you have
-const NEXT_ROOM = "hall.tmj#from-canteen";           // change if your filename differs
-
-let exitPortal: any | undefined;
+const EXIT_AREA_NAME = "to-hall";                 // the area in Tiled
+const NEXT_ROOM = "hall.tmj#from-canteen";        // adjust filename if needed
 
 export function initOfficeProgress() {
-  WA.onInit().then(async () => {
-    console.log("[OfficeProgress] init");
-
-    // Scripting extra lets us control portals safely
-    try {
-      await bootstrapExtra();
-      exitPortal = WA.room.getPortal("to-hall");
-      if (exitPortal) {
-        exitPortal.setTarget(null);
-        console.log("[OfficeProgress] Found portal 'to-hall' → locked (target cleared)");
-      } else {
-        console.log("[OfficeProgress] No portal named 'to-hall' (good, using area gate)");
-      }
-    } catch (e) {
-      console.warn("[OfficeProgress] bootstrapExtra/getPortal not available:", e);
-    }
+  WA.onInit().then(() => {
+    console.log("[OfficeProgress] ready");
 
     // --- Easter Eggs ---
     ["poster", "usbdrive", "stickynote"].forEach((egg) => {
@@ -48,12 +30,9 @@ export function initOfficeProgress() {
           notifyProgress();
         }
       });
-      WA.room.area.onLeave(egg).subscribe(() => {
-        console.log(`[OfficeProgress] LEAVE ${egg}`);
-      });
     });
 
-    // --- NPC (counts towards progress) ---
+    // --- NPC ---
     WA.room.area.onEnter("AmeliaZone").subscribe(() => {
       console.log("[OfficeProgress] ENTER AmeliaZone");
       if (!goals.AmeliaZone) {
@@ -61,29 +40,20 @@ export function initOfficeProgress() {
         notifyProgress();
       }
     });
-    WA.room.area.onLeave("AmeliaZone").subscribe(() => {
-      console.log("[OfficeProgress] LEAVE AmeliaZone");
-    });
 
-    // --- Exit gate(s) ---
-    EXIT_AREA_NAMES.forEach((name) => {
-      WA.room.area.onEnter(name).subscribe(() => {
-        console.log(`[OfficeProgress] ENTER ${name} | allDone=${allDone()}`);
-        if (allDone()) {
-          try { exitPortal?.setTarget(NEXT_ROOM); } catch {}
-          WA.nav.goToRoom(NEXT_ROOM);
-        } else {
-          WA.ui.openPopup(
-            "safeinternet_gate_popup",
-            `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 clues and talk to Amelia before leaving.`,
-            [{ label: "OK", className: "primary", callback: (p) => p.close() }]
-          );
-        }
-      });
+    // --- Exit ---
+    WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
+      console.log("[OfficeProgress] ENTER EXIT, allDone =", allDone());
+      if (allDone()) {
+        WA.nav.goToRoom(NEXT_ROOM);
+      } else {
+        WA.ui.openPopup(
+          "safeinternet_gate_popup",
+          `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 clues and talk to Amelia before leaving.`,
+          [{ label: "OK", className: "primary", callback: (p) => p.close() }]
+        );
+      }
     });
-
-    // Helpful: tell the player their starting status
-    notifyProgress();
   });
 }
 
@@ -105,7 +75,7 @@ function notifyProgress() {
   const status = [
     goals.poster ? "✅ Poster" : "⬜ Poster",
     goals.usbdrive ? "✅ USB" : "⬜ USB",
-    goals.stickynote ? "✅ Sticky" : "⬜ Sticky",
+    goals.stickynote ? "✅ Sticky" : "⬜ Sticky Note",
     goals.AmeliaZone ? "✅ Amelia" : "⬜ Amelia",
   ].join("   ");
 
