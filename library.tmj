@@ -557,7 +557,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/ppt\/Phishing.mp4"
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/Phishing.mp4"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
@@ -584,7 +584,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/docs\/phishing.html"
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/phishing.html"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
