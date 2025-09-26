@@ -7,6 +7,7 @@ import { initQRCode } from "./qrcode";   // 👈 add this
 import { initMurdochEmail } from "./murdochemail";   // 👈 add this
 import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
+import { initSpawnIntro } from "./spawnIntro";
 import { initInstructions } from "./instructions";   // 👈 add this
 import { initInstructionsPhishing } from "./instructions_phishing";   // 👈 add this
 import { initLibraryProgress } from "./libraryprogress";   // 👈 add this
@@ -27,6 +28,7 @@ WA.onInit().then(async () => {
   initMurdochEmail();
   initBrockZone();
   initBillboard();
+  initSpawnIntro();
   initInstructions();
   initInstructionsPhishing();
   initLibraryProgress();
