@@ -1,64 +1,14 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-// One rectangle object in Tiled named exactly "MurdochEmailPopup".
+// You must have ONE rectangle object in Tiled named exactly "MurdochEmailPopup".
 const POPUP_ANCHOR = "MurdochEmailPopup";
 
-type Btn = { label: string; callback: () => void };
-
 let ref: any | undefined;
-let btnSeq = 0; // unique ids per popup so listeners bind correctly
 
-function renderHtml(text: string, buttons: Btn[]) {
-  const thisSeq = ++btnSeq;
-  const ids = buttons.map((_, i) => `gxbtn-${thisSeq}-${i}`);
-  const html = `
-  <style>
-    .gx-wrap { max-width: 720px; }
-    .gx-wrap p { margin: 0 0 12px 0; line-height: 1.35; }
-    .gx-btns {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin-top: 6px;
-    }
-    .gx-btns button{
-      flex:1 1 30%;
-      min-width: 160px;
-      padding: 8px 12px;
-      border: 0;
-      border-radius: 8px;
-      cursor: pointer;
-      white-space: normal;      /* allow wrapping */
-      text-align: center;
-    }
-    .gx-btns button:hover{ opacity:.9; }
-  </style>
-  <div class="gx-wrap">
-    <p>${text.replace(/\n/g, "<br/>")}</p>
-    <div class="gx-btns">
-      ${buttons.map((b, i) => `<button id="${ids[i]}">${b.label}</button>`).join("")}
-    </div>
-  </div>`;
-  return { html, ids };
-}
-
-function show(text: string, buttons: Btn[]) {
-  // close old so they don’t stack
+function show(text: string, buttons: { label: string; callback: () => void }[]) {
+  // Close any existing popup so they don't stack behind each other
   try { ref?.close?.(); } catch {}
-  const { html, ids } = renderHtml(text, buttons);
-  ref = WA.ui.openPopup(POPUP_ANCHOR, html, []); // buttons rendered by us
-
-  // bind clicks
-  ids.forEach((id, i) => {
-    setTimeout(() => {
-      document.getElementById(id)?.addEventListener("click", () => {
-        try { ref?.close?.(); } catch {}
-        ref = undefined;
-        try { buttons[i].callback(); } catch {}
-      });
-    }, 0);
-  });
+  ref = WA.ui.openPopup(POPUP_ANCHOR, text, buttons);
 }
 
 function hide() {
@@ -75,7 +25,7 @@ function askEmail() {
       { label: "Click the link and pay",      callback: showClicked },
       { label: "Verify first (don't click)",  callback: showVerify  },
       { label: "See red flags",               callback: showFlags   },
-      { label: "Close",                       callback: hide        },
+      { label: "Close",                       callback: hide }
     ]
   );
 }
@@ -87,7 +37,7 @@ function showClicked() {
     [
       { label: "How to verify safely", callback: showVerify },
       { label: "Back",                 callback: askEmail   },
-      { label: "OK",                   callback: hide       },
+      { label: "OK",                   callback: hide       }
     ]
   );
 }
@@ -99,7 +49,7 @@ function showVerify() {
     [
       { label: "See red flags", callback: showFlags },
       { label: "Back",          callback: askEmail  },
-      { label: "Close",         callback: hide      },
+      { label: "Close",         callback: hide      }
     ]
   );
 }
@@ -111,7 +61,7 @@ function showFlags() {
     [
       { label: "Verify safely", callback: showVerify },
       { label: "Back",          callback: askEmail   },
-      { label: "Close",         callback: hide       },
+      { label: "Close",         callback: hide       }
     ]
   );
 }
@@ -120,7 +70,13 @@ function showFlags() {
 export function initMurdochEmail() {
   WA.onInit().then(() => {
     console.log("[MurdochEmail] ready → listening for area 'MurdochEmail'");
-    WA.room.area.onEnter("MurdochEmail").subscribe(askEmail);
-    WA.room.area.onLeave("MurdochEmail").subscribe(hide);
+    WA.room.area.onEnter("MurdochEmail").subscribe(() => {
+      console.log("[MurdochEmail] onEnter");
+      askEmail();
+    });
+    WA.room.area.onLeave("MurdochEmail").subscribe(() => {
+      console.log("[MurdochEmail] onLeave");
+      hide();
+    });
   });
 }
