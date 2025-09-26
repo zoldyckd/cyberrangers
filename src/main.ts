@@ -11,6 +11,10 @@ import { initSpawnIntro } from "./spawnIntro";
 import { initInstructions } from "./instructions";   // 👈 add this
 import { initInstructionsPhishing } from "./instructions_phishing";   // 👈 add this
 import { initLibraryProgress } from "./libraryprogress";   // 👈 add this
+import { initPoster } from "./poster";
+import { initUsbDrive } from "./usbdrive";
+import { initStickyNote } from "./stickynote";
+import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
 
 
 
@@ -32,6 +36,9 @@ WA.onInit().then(async () => {
   initInstructions();
   initInstructionsPhishing();
   initLibraryProgress();
-
+  initPoster();
+  initUsbDrive();
+  initStickyNote();
+  initSafeInternetPractices();
 
 });
