@@ -660,6 +660,17 @@
                  "width":213,
                  "x":186.333333333333,
                  "y":305.666666666667
+                }, 
+                {
+                 "height":161.333333333333,
+                 "id":14,
+                 "name":"safeinternetpractices_gate_popup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":209.333333333333,
+                 "x":374.666666666667,
+                 "y":207.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -802,7 +813,7 @@
          "y":0
         }],
  "nextlayerid":26,
- "nextobjectid":14,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -1701,6 +1712,16 @@
          "spacing":0,
          "tilecount":84,
          "tileheight":32,
+         "tiles":[
+                {
+                 "id":36,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }],
          "tilewidth":32
         }],
  "tilewidth":32,
