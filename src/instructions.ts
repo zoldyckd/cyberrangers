@@ -1,26 +1,37 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let instructionsPopupRef: any | undefined;
-let dismissed = false; // don't reopen until you leave & re-enter
+let popupRef: any | undefined;
+let dismissed = false;     // prevent re-open while still in the area
+let inside = false;        // track whether we are inside the area
+let leaveTimer: any;       // debounce close
 
 export function initInstructions() {
   WA.onInit().then(() => {
     console.log("[WA] Instructions ready");
 
-    // Open when you enter the area
+    // Open ONLY when entering the area
     WA.room.area.onEnter("instructions").subscribe(() => {
+      console.log("[WA] enter instructions");
+      inside = true;
+      clearTimeout(leaveTimer);
       if (!dismissed) openInstructions();
     });
 
-    // ✅ Close when you leave the area (capital L!)
+    // Close (debounced) when leaving the area
     WA.room.area.onLeave("instructions").subscribe(() => {
-      dismissed = false; // reset so it can show next time you come back
-      closeInstructions();
+      console.log("[WA] leave instructions");
+      inside = false;
+      clearTimeout(leaveTimer);
+      leaveTimer = setTimeout(() => {
+        if (!inside) {
+          dismissed = false; // allow showing again next time you come back
+          closeInstructions();
+        }
+      }, 150);
     });
 
-    // If you spawn already inside the area, onEnter may or may not fire.
-    // Open once on load; if not in the area, the onLeave above will keep it closed anyway.
-    openInstructions();
+    // ⛔ Remove the unconditional open-on-load; it causes “flash & disappear”
+    // openInstructions();
   });
 }
 
@@ -28,16 +39,18 @@ function openInstructions() {
   // prevent duplicates
   closeInstructions();
 
-  instructionsPopupRef = WA.ui.openPopup(
+  popupRef = WA.ui.openPopup(
     "instructionsPopup",
     "👋 Welcome Ranger! Use the Arrow Keys or WASD to move around. Walk close to objects such as signs, boards, or NPCs to interact with them. Sometimes you will need to press SPACE to open a dialogue or a side panel with more details. Explore the garden and see what you can discover! REMEMBER! Check the signboard for more info.",
     [
       {
         label: "Let's go!",
         className: "primary",
-        callback: () => {
+        // Use the popup argument that WA passes to the callback
+        callback: (popup) => {
           dismissed = true;
-          closeInstructions();
+          try { popup.close?.(); } catch {}
+          closeInstructions(); // also close our stored ref defensively
         },
       },
     ]
@@ -45,8 +58,8 @@ function openInstructions() {
 }
 
 function closeInstructions() {
-  if (instructionsPopupRef) {
-    instructionsPopupRef.close?.();
-    instructionsPopupRef = undefined;
+  if (popupRef) {
+    try { popupRef.close?.(); } catch {}
+    popupRef = undefined;
   }
 }
