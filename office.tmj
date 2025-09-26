@@ -643,6 +643,22 @@
                  "height":54.6666666666666,
                  "id":12,
                  "name":"AmeliaZone",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/safeinternetpractices.html"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to talk to Amelia."
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
