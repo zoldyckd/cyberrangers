@@ -544,12 +544,6 @@
                  "height":32,
                  "id":2,
                  "name":"to-hall",
-                 "properties":[
-                        {
-                         "name":"exitUrl",
-                         "type":"string",
-                         "value":"hall.tmj#from-office"
-                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
