@@ -1,43 +1,24 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 let popupRef: any | undefined;
-let dismissed = false;     // prevent re-open while still in the area
-let inside = false;        // track whether we are inside the area
-let leaveTimer: any;       // debounce close
 
 export function initInstructions() {
   WA.onInit().then(() => {
-    console.log("[WA] Instructions ready");
+    console.log("[WA] Garden intro ready");
 
-    // Open ONLY when entering the area
-    WA.room.area.onEnter("instructions").subscribe(() => {
-      console.log("[WA] enter instructions");
-      inside = true;
-      clearTimeout(leaveTimer);
-      if (!dismissed) openInstructions();
-    });
+    // Open once as soon as this map loads
+    // Small delay avoids race with other initializers
+    setTimeout(openIntro, 50);
 
-    // Close (debounced) when leaving the area
-    WA.room.area.onLeave("instructions").subscribe(() => {
-      console.log("[WA] leave instructions");
-      inside = false;
-      clearTimeout(leaveTimer);
-      leaveTimer = setTimeout(() => {
-        if (!inside) {
-          dismissed = false; // allow showing again next time you come back
-          closeInstructions();
-        }
-      }, 150);
-    });
-
-    // ⛔ Remove the unconditional open-on-load; it causes “flash & disappear”
-    // openInstructions();
+    // Optional: if your code navigates with WA.nav.goToRoom(), you can
+    // defensively close before leaving the map:
+    WA.ui.onChatMessage?.((msg) => {}); // no-op: keeps WA types happy in some setups
+    // (You can also call closeIntro() right before any goToRoom in your code.)
   });
 }
 
-function openInstructions() {
-  // prevent duplicates
-  closeInstructions();
+function openIntro() {
+  closeIntro(); // prevent duplicates
 
   popupRef = WA.ui.openPopup(
     "instructionsPopup",
@@ -46,18 +27,16 @@ function openInstructions() {
       {
         label: "Let's go!",
         className: "primary",
-        // Use the popup argument that WA passes to the callback
         callback: (popup) => {
-          dismissed = true;
           try { popup.close?.(); } catch {}
-          closeInstructions(); // also close our stored ref defensively
+          closeIntro();
         },
       },
     ]
   );
 }
 
-function closeInstructions() {
+function closeIntro() {
   if (popupRef) {
     try { popupRef.close?.(); } catch {}
     popupRef = undefined;
