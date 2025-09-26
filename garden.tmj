@@ -481,6 +481,17 @@
                  "width":0,
                  "x":288,
                  "y":576
+                }, 
+                {
+                 "height":128,
+                 "id":10,
+                 "name":"spawnIntroPopup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":224,
+                 "x":128,
+                 "y":384
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -561,7 +572,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":10,
+ "nextobjectid":11,
  "orientation":"orthogonal",
  "properties":[
         {
