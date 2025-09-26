@@ -53,11 +53,11 @@ Before you leave, talk to the NPC to learn more about phishing:
 • How to spot scams
 • Simple steps to stay safe
 
-Good luck and stay curious!`,[{label:"Got it!",className:"primary",callback:()=>te()}])}function te(){var e;L&&((e=L.close)==null||e.call(L),L=void 0)}const h={blackbibleppt:!1,MurdochEmail:!1,QRcode:!1,BrockZone:!1},Rt="to-canteen",Bt="canteen.tmj#spawn";function Tt(){WA.onInit().then(()=>{console.log("[LibraryProgress] ready"),["blackbibleppt","MurdochEmail","QRcode"].forEach(e=>{WA.room.area.onEnter(e).subscribe(()=>{h[e]||(h[e]=!0,be())})}),WA.room.area.onEnter("BrockZone").subscribe(()=>{h.BrockZone||(h.BrockZone=!0,be())}),WA.room.area.onEnter(Rt).subscribe(()=>{xt()?WA.nav.goToRoom(Bt):WA.ui.openPopup("phishing_gate_popup",`🚧 Hold up!
+Good luck and stay curious!`,[{label:"Got it!",className:"primary",callback:()=>te()}])}function te(){var e;L&&((e=L.close)==null||e.call(L),L=void 0)}const h={blackbibleppt:!1,MurdochEmail:!1,QRcode:!1,BrockZone:!1},Rt="to-canteen",Bt="canteen.tmj#from-library";function Tt(){WA.onInit().then(()=>{console.log("[LibraryProgress] ready"),["blackbibleppt","MurdochEmail","QRcode"].forEach(e=>{WA.room.area.onEnter(e).subscribe(()=>{h[e]||(h[e]=!0,be())})}),WA.room.area.onEnter("BrockZone").subscribe(()=>{h.BrockZone||(h.BrockZone=!0,be())}),WA.room.area.onEnter(Rt).subscribe(()=>{xt()?WA.nav.goToRoom(Bt):WA.ui.openPopup("phishing_gate_popup",`🚧 Hold up!
 
 You still need to complete:
 • ${It().join(`
 • `)}
 
 Find all 3 easter eggs and talk to Brock before leaving.`,[{label:"OK",className:"primary",callback:e=>e.close()}])})})}function xt(){return h.blackbibleppt&&h.MurdochEmail&&h.QRcode&&h.BrockZone}function It(){const e=[];return h.blackbibleppt||e.push("Black Bible Easter Egg"),h.MurdochEmail||e.push("Murdoch Email Easter Egg"),h.QRcode||e.push("QR Code Easter Egg"),h.BrockZone||e.push("Talk to Brock (NPC)"),e}function be(){const e=[h.blackbibleppt?"✅ BlackBible":"⬜ BlackBible",h.MurdochEmail?"✅ MurdochEmail":"⬜ MurdochEmail",h.QRcode?"✅ QRcode":"⬜ QRcode",h.BrockZone?"✅ Brock":"⬜ Brock"].join("   ");WA.ui.displayActionMessage({message:`Progress: ${e}`,callback:()=>{}})}console.log("Script started");WA.onInit().then(async()=>{console.log("Scripting API ready"),await lt(),ut(),pt(),ht(),mt(),wt(),kt(),Wt(),Et(),Ct(),Mt(),Tt()});
-//# sourceMappingURL=main-8cf3de08.js.map
+//# sourceMappingURL=main-c361ce19.js.map
