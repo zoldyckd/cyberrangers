@@ -658,7 +658,7 @@
                 {
                  "height":113.5,
                  "id":31,
-                 "name":"instructions_phishingPopup",
+                 "name":"phishing_instructionsPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -669,7 +669,7 @@
                 {
                  "height":64,
                  "id":33,
-                 "name":"instructions_phishing",
+                 "name":"phishing_instructions",
                  "properties":[
                         {
                          "name":"openWebsite",
