@@ -1,0 +1,30 @@
+/// <reference types="@workadventure/iframe-api-typings" />
+
+let previewRef: any | undefined;
+
+export function initphishing_SMSphishing() {
+  WA.onInit().then(() => {
+    // When entering SMSphishing area
+    WA.room.area.onEnter("phishing_SMSphishing").subscribe(() => {
+      // Show popup preview
+      try { previewRef?.close?.(); } catch {}
+      previewRef = WA.ui.openPopup(
+        "phishing_SMSphishingPopup",
+        "📱 You received an SMS: “URGENT: Your bank account has been locked. Verify now to avoid service interruption. Click the link to confirm your identity.”\n\n⚠️ SMS messages like this often try to rush you into action. What would you do? Press SPACE to help!",
+        [
+          {
+            label: "Got it",
+            callback: () => {
+              try { previewRef?.close?.(); } catch {}
+            }
+          }
+        ]
+      );
+    });
+
+    // When leaving SMSphishing area
+    WA.room.area.onLeave("phishing_SMSphishing").subscribe(() => {
+      try { previewRef?.close?.(); } catch {}
+    });
+  });
+}

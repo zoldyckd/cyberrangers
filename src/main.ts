@@ -3,8 +3,11 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
+
 import { initphishing_QRcode } from "./phishing_qrcode";   // 👈 add this
 import { initphishing_MurdochEmail } from "./phishing_murdochemail";   // 👈 add this
+import { initphishing_SMSphishing } from "./phishing_smsphishing";
+
 import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initSpawnIntro } from "./spawnIntro";
@@ -45,4 +48,5 @@ WA.onInit().then(async () => {
   initSafeInternetPractices();
   initOfficeProgress();
   initLibrarySpawnNote();
+  initphishing_SMSphishing();
 });
