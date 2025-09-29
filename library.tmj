@@ -714,6 +714,17 @@
                  "width":150,
                  "x":166.5,
                  "y":521.5
+                }, 
+                {
+                 "height":110.5,
+                 "id":39,
+                 "name":"MurdochEmailPopup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":157,
+                 "x":265.5,
+                 "y":307
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -794,7 +805,7 @@
          "y":0
         }],
  "nextlayerid":28,
- "nextobjectid":39,
+ "nextobjectid":40,
  "orientation":"orthogonal",
  "properties":[
         {
