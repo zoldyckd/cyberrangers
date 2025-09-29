@@ -543,7 +543,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to open the Black Bible."
+                         "value":"Press SPACE to take a closer look at the QR code"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -581,7 +581,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to help!"
+                         "value":"Press SPACE to browse the pc"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -608,7 +608,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to open the Black Bible."
+                         "value":"Press SPACE to pick up the phone"
                         }],
                  "rotation":0,
                  "type":"area",
