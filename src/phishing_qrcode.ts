@@ -2,29 +2,33 @@
 
 let previewRef: any | undefined;
 
+const AREA   = "phishing_QRcode";
+const ANCHOR = "phishing_QRcodePopup";
+
 export function initphishing_QRcode() {
   WA.onInit().then(() => {
-    // Enter QR code area
-    WA.room.area.onEnter("phishing_QRcode").subscribe(() => {
-      try { previewRef?.close?.(); } catch {}
+    WA.room.area.onEnter(AREA).subscribe(() => {
+      closePopup();
       previewRef = WA.ui.openPopup(
-        "phishing_QRcodePopup", // anchor must match the popup object in Tiled
+        ANCHOR,
         "📷 You spot a poster in the library: “Free Wi-Fi for Students – Scan to connect.”\n\nScanning unknown QR codes can lead to fake login pages.\n\nWhat would you do? Press SPACE to help!",
-        [
-          {
-            label: "Got it",
-            callback: () => {
-              try { previewRef?.close?.(); } catch {}
-            }
-          }
-        ]
+        [{ label: "Got it", callback: () => closePopup() }]
       );
     });
 
-    // Leave QR code area
-    WA.room.area.onLeave("phishing_QRcode").subscribe(() => {
-      try { previewRef?.close?.(); } catch {}
-      previewRef = undefined;
+    WA.room.area.onLeave(AREA).subscribe(() => {
+      closePopup();
     });
   });
+}
+
+function closePopup() {
+  try {
+    if (previewRef) {
+      previewRef.close?.();
+      previewRef = undefined; // important!
+    }
+  } catch {
+    previewRef = undefined;
+  }
 }

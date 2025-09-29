@@ -2,29 +2,33 @@
 
 let previewRef: any | undefined;
 
+const AREA   = "phishing_SMSphishing";
+const ANCHOR = "phishing_SMSphishingPopup";
+
 export function initphishing_SMSphishing() {
   WA.onInit().then(() => {
-    // When entering SMSphishing area
-    WA.room.area.onEnter("phishing_SMSphishing").subscribe(() => {
-      // Show popup preview
-      try { previewRef?.close?.(); } catch {}
+    WA.room.area.onEnter(AREA).subscribe(() => {
+      closePopup();
       previewRef = WA.ui.openPopup(
-        "phishing_SMSphishingPopup",
-        "📱 You received an SMS: “URGENT: Your bank account has been locked. Verify now to avoid service interruption. Click the link to confirm your identity.”\n\n⚠️ SMS messages like this often try to rush you into action. What would you do? Press SPACE to help!",
-        [
-          {
-            label: "Got it",
-            callback: () => {
-              try { previewRef?.close?.(); } catch {}
-            }
-          }
-        ]
+        ANCHOR,
+        "📱 You received an SMS: “URGENT: Your bank account has been locked. Verify now to avoid service interruption.”\n\n⚠️ Messages like this try to rush you. What would you do? Press SPACE to help!",
+        [{ label: "Got it", callback: () => closePopup() }]
       );
     });
 
-    // When leaving SMSphishing area
-    WA.room.area.onLeave("phishing_SMSphishing").subscribe(() => {
-      try { previewRef?.close?.(); } catch {}
+    WA.room.area.onLeave(AREA).subscribe(() => {
+      closePopup();
     });
   });
+}
+
+function closePopup() {
+  try {
+    if (previewRef) {
+      previewRef.close?.();
+      previewRef = undefined; // important!
+    }
+  } catch {
+    previewRef = undefined;
+  }
 }
