@@ -2,17 +2,17 @@
 
 let popupRef: any | undefined;
 
-export function initInstructionsPhishing() {
+export function initPhishingInstructions() {
   WA.onInit().then(() => {
     console.log("[WA] Phishing sign instructions ready");
 
     // Open when entering the sign-board area
-    WA.room.area.onEnter("instructions_phishing").subscribe(() => {
+    WA.room.area.onEnter("phishing_instructions").subscribe(() => {
       openPopup();
     });
 
     // Close when leaving the sign-board area
-    WA.room.area.onLeave("instructions_phishing").subscribe(() => {
+    WA.room.area.onLeave("phishing_instructions").subscribe(() => {
       closePopup();
     });
   });
@@ -23,7 +23,7 @@ function openPopup() {
   closePopup();
 
   popupRef = WA.ui.openPopup(
-    "instructions_phishingPopup",
+    "phishing_instructionsPopup",
     "🧑‍💻 Go through the PPT to prepare yourself for when you explore the room!",
     [
       {

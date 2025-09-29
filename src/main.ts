@@ -4,15 +4,18 @@ import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
 
-import { initphishing_QRcode } from "./phishing_qrcode";   // 👈 add this
+//phishing - library room
+import { initphishing_QRcode } from "./phishing_qrcode";
 import { initphishing_MurdochEmail } from "./phishing_murdochemail";   // 👈 add this
 import { initphishing_SMSphishing } from "./phishing_smsphishing";
+import { initPhishingLibraryProgress } from "./phishing_libraryprogress";
+import { initPhishingInstructions } from "./phishing_instructions";
+
 
 import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initSpawnIntro } from "./spawnIntro";
 import { initInstructions } from "./instructions";   // 👈 add this
-import { initInstructionsPhishing } from "./instructions_phishing";   // 👈 add this
 import { initLibraryProgress } from "./libraryprogress";   // 👈 add this
 import { initPoster } from "./poster";
 import { initUsbDrive } from "./usbdrive";
@@ -34,14 +37,19 @@ WA.onInit().then(async () => {
   initClock();
   initBoard();
   initMarvie();
+  
+  //phishing - library room
   initphishing_QRcode();                       // 👈 and call it
   initphishing_MurdochEmail();
+  initphishing_SMSphishing();
+  initPhishingLibraryProgress();
+  initPhishingInstructions();
+
+
   initBrockZone();
   initBillboard();
   initSpawnIntro();
   initInstructions();
-  initInstructionsPhishing();
-  initLibraryProgress();
   initPoster();
   initUsbDrive();
   initStickyNote();

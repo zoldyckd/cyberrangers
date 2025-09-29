@@ -1,28 +1,28 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 type Goals = {
-  blackbibleppt: boolean;
-  MurdochEmail: boolean;
-  QRcode: boolean;   // 👈 lowercase c to match your Tiled area name
+  phishing_SMSphishing: boolean;
+  phishing_MurdochEmail: boolean;
+  phishing_QRcode: boolean;
   BrockZone: boolean;
 };
 
 const goals: Goals = {
-  blackbibleppt: false,
-  MurdochEmail: false,
-  QRcode: false,
+  phishing_SMSphishing: false,
+  phishing_MurdochEmail: false,
+  phishing_QRcode: false,
   BrockZone: false,
 };
 
 const EXIT_AREA_NAME = "to-canteen";   // exit gate area
 const NEXT_ROOM = "canteen.tmj#from-library"; // change if your spawn is named differently
 
-export function initLibraryProgress() {
+export function initPhishingLibraryProgress() {
   WA.onInit().then(() => {
-    console.log("[LibraryProgress] ready");
+    console.log("[PhishingLibraryProgress] ready");
 
     // --- Easter Eggs ---
-    ["blackbibleppt", "MurdochEmail", "QRcode"].forEach((egg) => {
+    ["phishing_SMSphishing", "phishing_MurdochEmail", "phishing_QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
           goals[egg as keyof Goals] = true;
@@ -46,7 +46,7 @@ export function initLibraryProgress() {
       } else {
         WA.ui.openPopup(
           "phishing_gate_popup",
-          `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 easter eggs and talk to Brock before leaving.`,
+          `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 phishing easter eggs and talk to Brock before leaving.`,
           [
             { label: "OK", className: "primary", callback: (p) => p.close() },
           ]
@@ -58,24 +58,24 @@ export function initLibraryProgress() {
 
 /* ---------- Helpers ---------- */
 function allDone(): boolean {
-  return goals.blackbibleppt && goals.MurdochEmail && goals.QRcode && goals.BrockZone;
+  return goals.phishing_SMSphishing && goals.phishing_MurdochEmail && goals.phishing_QRcode && goals.BrockZone;
 }
 
 function missingList(): string[] {
   const out: string[] = [];
-  if (!goals.blackbibleppt) out.push("Black Bible Easter Egg");
-  if (!goals.MurdochEmail) out.push("Murdoch Email Easter Egg");
-  if (!goals.QRcode) out.push("QR Code Easter Egg");
+  if (!goals.phishing_SMSphishing) out.push("SMS Phishing Easter Egg");
+  if (!goals.phishing_MurdochEmail) out.push("Murdoch Email Easter Egg");
+  if (!goals.phishing_QRcode) out.push("QR Code Easter Egg");
   if (!goals.BrockZone) out.push("Talk to Brock (NPC)");
   return out;
 }
 
 function notifyProgress() {
   const done = [
-    goals.blackbibleppt ? "✅ BlackBible" : "⬜ BlackBible",
-    goals.MurdochEmail  ? "✅ MurdochEmail" : "⬜ MurdochEmail",
-    goals.QRcode        ? "✅ QRcode" : "⬜ QRcode",
-    goals.BrockZone     ? "✅ Brock" : "⬜ Brock",
+    goals.phishing_SMSphishing ? "✅ SMS" : "⬜ SMS",
+    goals.phishing_MurdochEmail ? "✅ MurdochEmail" : "⬜ MurdochEmail",
+    goals.phishing_QRcode ? "✅ QRcode" : "⬜ QRcode",
+    goals.BrockZone ? "✅ Brock" : "⬜ Brock",
   ].join("   ");
 
   WA.ui.displayActionMessage({
