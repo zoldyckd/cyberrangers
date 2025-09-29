@@ -707,7 +707,7 @@
                 {
                  "height":78.5,
                  "id":38,
-                 "name":"phishing_LibrarySpawnPopup",
+                 "name":"phishing_librarySpawnPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
