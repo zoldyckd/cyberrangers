@@ -25,7 +25,6 @@ import { initOfficeProgress } from "./officeprogress";
 
 
 
-
 console.log("Script started");
 
 WA.onInit().then(async () => {
