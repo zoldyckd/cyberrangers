@@ -24,7 +24,7 @@ function openPPT() {
         callback: () => {
           WA.ui.website.open({
             url: embedUrl,
-            position: { horizontal: "center", vertical: "middle" },
+		    position: { horizontal: "middle", vertical: "middle" }
             size: { width: "85%", height: "85%" },
             allow: true
           });
