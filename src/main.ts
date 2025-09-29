@@ -17,6 +17,7 @@ import { initStickyNote } from "./stickynote";
 import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
 import { initOfficeProgress } from "./officeprogress";
 import { initLibrarySpawnNote } from "./librarySpawnNote";
+import { initPhishing_SMSphishing } from "./phishing_smsphishing";
 
 
 
@@ -45,4 +46,5 @@ WA.onInit().then(async () => {
   initSafeInternetPractices();
   initOfficeProgress();
   initLibrarySpawnNote();
+  initPhishing_SMSphishing();
 });
