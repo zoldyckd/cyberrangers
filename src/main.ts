@@ -16,6 +16,8 @@ import { initUsbDrive } from "./usbdrive";
 import { initStickyNote } from "./stickynote";
 import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
 import { initOfficeProgress } from "./officeprogress";
+import { initLibraryPptOnSpawn } from "./LibraryPptOnSpawn";
+
 
 
 
@@ -42,5 +44,5 @@ WA.onInit().then(async () => {
   initStickyNote();
   initSafeInternetPractices();
   initOfficeProgress();
-
+  initLibraryPptOnSpawn();
 });
