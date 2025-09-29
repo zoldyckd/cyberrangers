@@ -5,18 +5,18 @@ let previewRef: any | undefined;
 export function initphishing_MurdochEmail() {
   WA.onInit().then(() => {
     // When entering MurdochEmail area
-    WA.room.area.onEnter("MurdochEmail").subscribe(() => {
+    WA.room.area.onEnter("phishing_MurdochEmail").subscribe(() => {
       // Show popup preview
       try { previewRef?.close?.(); } catch {}
       previewRef = WA.ui.openPopup(
-        "phishing_MurdochEmailPopup",
-        "📧 You received an email that says: Your university fees are overdue. Click here to pay immediately. This looks suspicious... What would you do? Press Space to help!",
+        "phishing_MurdochEmailPopup",   // must match popup object in Tiled
+        "📧 You received an email: “Your university fees are overdue. Click here to pay immediately.”\n\n⚠️ This looks suspicious... What would you do? Press SPACE to help!",
         [
-          { 
-            label: "Got it", 
-            callback: () => { 
-              try { previewRef?.close?.(); } catch {} 
-            } 
+          {
+            label: "Got it",
+            callback: () => {
+              try { previewRef?.close?.(); } catch {}
+            }
           }
         ]
       );
@@ -28,4 +28,3 @@ export function initphishing_MurdochEmail() {
     });
   });
 }
-
