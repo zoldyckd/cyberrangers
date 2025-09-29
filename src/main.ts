@@ -3,8 +3,8 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
-import { initQRCode } from "./qrcode";   // 👈 add this
-import { initMurdochEmail } from "./murdochemail";   // 👈 add this
+import { initphishing_QRcode } from "./phishing_qrcode";   // 👈 add this
+import { initphishing_MurdochEmail } from "./murdochemail";   // 👈 add this
 import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initSpawnIntro } from "./spawnIntro";
@@ -32,8 +32,8 @@ WA.onInit().then(async () => {
   initClock();
   initBoard();
   initMarvie();
-  initQRCode();                       // 👈 and call it
-  initMurdochEmail();
+  initphishing_QRcode();                       // 👈 and call it
+  initphishing_MurdochEmail();
   initBrockZone();
   initBillboard();
   initSpawnIntro();

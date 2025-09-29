@@ -2,14 +2,14 @@
 
 let previewRef: any | undefined;
 
-export function initMurdochEmail() {
+export function initphishing_MurdochEmail() {
   WA.onInit().then(() => {
     // When entering MurdochEmail area
     WA.room.area.onEnter("MurdochEmail").subscribe(() => {
       // Show popup preview
       try { previewRef?.close?.(); } catch {}
       previewRef = WA.ui.openPopup(
-        "MurdochEmailPopup",
+        "phishing_MurdochEmailPopup",
         "📧 You received an email that says: Your university fees are overdue. Click here to pay immediately. This looks suspicious... What would you do? Press Space to help!",
         [
           { 
@@ -23,7 +23,7 @@ export function initMurdochEmail() {
     });
 
     // When leaving MurdochEmail area
-    WA.room.area.onLeave("MurdochEmail").subscribe(() => {
+    WA.room.area.onLeave("phishing_MurdochEmail").subscribe(() => {
       try { previewRef?.close?.(); } catch {}
     });
   });
