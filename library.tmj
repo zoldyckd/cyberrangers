@@ -571,7 +571,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/Phishing1.1.html"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
@@ -581,7 +581,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to open the Black Bible."
+                         "value":"Press SPACE to help!"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -656,15 +656,15 @@
                  "y":192
                 }, 
                 {
-                 "height":60,
+                 "height":83,
                  "id":31,
                  "name":"instructions_phishingPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":164.5,
-                 "x":320.5,
-                 "y":493.5
+                 "width":166.5,
+                 "x":353,
+                 "y":488
                 }, 
                 {
                  "height":64,
