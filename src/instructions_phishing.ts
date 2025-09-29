@@ -24,7 +24,7 @@ function openPopup() {
 
   popupRef = WA.ui.openPopup(
     "instructions_phishingPopup",
-    "🧑‍💻 Welcome to the Phishing Room!\n\nThere are 3 hidden easter eggs in this room — can you find them all?\n\nBefore you leave, talk to the NPC to learn more about phishing:\n• How attackers trick you\n• How to spot scams\n• Simple steps to stay safe\n\nGood luck and stay curious!",
+    "🧑‍💻 Go through the PPT to prepare yourself for when you explore the room!",
     [
       {
         label: "Got it!",
