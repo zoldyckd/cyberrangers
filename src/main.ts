@@ -16,7 +16,7 @@ import { initUsbDrive } from "./usbdrive";
 import { initStickyNote } from "./stickynote";
 import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
 import { initOfficeProgress } from "./officeprogress";
-import { initLibrarySpawnNote } from "./LibrarySpawnNote";
+import { initLibrarySpawnNote } from "./librarySpawnNote";
 
 
 
