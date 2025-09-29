@@ -656,15 +656,15 @@
                  "y":192
                 }, 
                 {
-                 "height":83,
+                 "height":113.5,
                  "id":31,
                  "name":"instructions_phishingPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":166.5,
-                 "x":353,
-                 "y":488
+                 "width":209.5,
+                 "x":294,
+                 "y":450.5
                 }, 
                 {
                  "height":64,
