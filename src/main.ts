@@ -10,19 +10,18 @@ import { initphishing_MurdochEmail } from "./phishing_murdochemail";   // 👈 a
 import { initphishing_SMSphishing } from "./phishing_smsphishing";
 import { initPhishingLibraryProgress } from "./phishing_libraryprogress";
 import { initPhishingInstructions } from "./phishing_instructions";
+import { initPhishingLibrarySpawnNote } from "./phishing_librarySpawnNote";
+import { initPhishingBrock } from "./phishing_brock";
 
 
-import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initSpawnIntro } from "./spawnIntro";
 import { initInstructions } from "./instructions";   // 👈 add this
-import { initLibraryProgress } from "./libraryprogress";   // 👈 add this
 import { initPoster } from "./poster";
 import { initUsbDrive } from "./usbdrive";
 import { initStickyNote } from "./stickynote";
 import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
 import { initOfficeProgress } from "./officeprogress";
-import { initLibrarySpawnNote } from "./librarySpawnNote";
 
 
 
@@ -44,9 +43,10 @@ WA.onInit().then(async () => {
   initphishing_SMSphishing();
   initPhishingLibraryProgress();
   initPhishingInstructions();
+  initPhishingLibrarySpawnNote();
+  initPhishingBrock();
 
 
-  initBrockZone();
   initBillboard();
   initSpawnIntro();
   initInstructions();
@@ -55,6 +55,4 @@ WA.onInit().then(async () => {
   initStickyNote();
   initSafeInternetPractices();
   initOfficeProgress();
-  initLibrarySpawnNote();
-  initphishing_SMSphishing();
 });

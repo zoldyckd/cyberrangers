@@ -620,7 +620,7 @@
                 {
                  "height":44.25,
                  "id":28,
-                 "name":"BrockZone",
+                 "name":"phishing_Brock",
                  "properties":[
                         {
                          "name":"openWebsite",
@@ -647,7 +647,7 @@
                 {
                  "height":160,
                  "id":30,
-                 "name":"BrockZonePopup",
+                 "name":"phishing_BrockPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,

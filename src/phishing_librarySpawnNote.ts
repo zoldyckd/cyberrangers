@@ -14,7 +14,7 @@ function openNote() {
   // open popup
   try { ref?.close?.(); } catch {}
   ref = WA.ui.openPopup(
-    "LibrarySpawnPopup",            // must match rectangle object in Tiled
+    "phishing_librarySpawnPopup",   // anchor ID (adjust in Tiled if needed)
     "📌 Please visit the signboard.",
     [{ label: "OK", callback: closeNote }]
   );
@@ -27,7 +27,7 @@ function openNote() {
   setTimeout(() => { closeNote(); }, 5000);
 }
 
-export function initLibrarySpawnNote() {
+export function initPhishingLibrarySpawnNote() {
   WA.onInit().then(() => {
     // show when entering the spawn area (arriving from garden)
     WA.room.area.onEnter("from-garden").subscribe(openNote);
