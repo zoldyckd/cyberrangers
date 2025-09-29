@@ -4,7 +4,7 @@ import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
 import { initphishing_QRcode } from "./phishing_qrcode";   // 👈 add this
-import { initphishing_MurdochEmail } from "./murdochemail";   // 👈 add this
+import { initphishing_MurdochEmail } from "./phishing_murdochemail";   // 👈 add this
 import { initBrockZone } from "./BrockZone";   // 👈 add this
 import { initBillboard } from "./billboard";   // 👈 add this
 import { initSpawnIntro } from "./spawnIntro";
