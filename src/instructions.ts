@@ -1,35 +1,38 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-const AREA_NAME = "instructions";          // Tiled area name (Class: area)
-const POPUP_ANCHOR = "instructionsPopup";  // Tiled popup anchor name
-
 let ref: any | undefined;
-let bound = false;
+const AREA   = "instructions";         // Tiled area name (Class: area)
+const ANCHOR = "instructionsPopup";    // Tiled popup anchor name
+
+let bound = false;                     // prevent duplicate subscriptions
 
 export function initInstructions() {
   if (bound) return;
   bound = true;
 
   WA.onInit().then(() => {
-    WA.room.area.onEnter(AREA_NAME).subscribe(() => open());
-    WA.room.area.onLeave(AREA_NAME).subscribe(() => close());
+    WA.room.area.onEnter(AREA).subscribe(() => {
+      closePopup();
+      ref = WA.ui.openPopup(
+        ANCHOR,
+        "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!",
+        [{ label: "Close", callback: () => closePopup() }] // required 3rd arg
+      );
+    });
+
+    WA.room.area.onLeave(AREA).subscribe(() => {
+      closePopup();
+    });
   });
 }
 
-function open() {
-  // make sure any ghost instance is closed first
-  try { ref?.close?.(); } catch {}
-  ref = undefined;
-
-  ref = WA.ui.openPopup(
-    POPUP_ANCHOR,
-    "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!",
-    [] // required by your typings; footer will appear (API limitation)
-  );
-}
-
-function close() {
-  if (!ref) return;
-  try { ref.close?.(); } catch {}
-  ref = undefined;
+function closePopup() {
+  try {
+    if (ref) {
+      ref.close?.();
+      ref = undefined;
+    }
+  } catch {
+    ref = undefined;
+  }
 }
