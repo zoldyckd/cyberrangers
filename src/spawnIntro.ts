@@ -4,7 +4,6 @@ const AREA_NAME = "spawnIntro";        // Tiled object (Class: area)
 const POPUP_ANCHOR = "spawnIntroPopup"; // Tiled popup anchor name
 
 let ref: any | undefined;
-let insideCount = 0;
 
 // prevent duplicate subscriptions on hot-reload
 if (!(window as any).__BOUND_SPAWN_INTRO__) {
@@ -13,14 +12,9 @@ if (!(window as any).__BOUND_SPAWN_INTRO__) {
   export function initSpawnIntro() {
     WA.onInit().then(() => {
       WA.room.area.onEnter(AREA_NAME).subscribe(() => {
-        insideCount++;
         openSpawnIntro();
       });
-
-      WA.room.area.onLeave(AREA_NAME).subscribe(() => {
-        insideCount = Math.max(0, insideCount - 1);
-        if (insideCount === 0) closeSpawnIntro();
-      });
+      // 🚫 Removed onLeave handling, so popup stays until "Got it" is clicked
     });
   }
 }
@@ -30,7 +24,7 @@ function openSpawnIntro() {
 
   ref = WA.ui.openPopup(
     POPUP_ANCHOR,
-    "👋 Welcome! Use Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: walk close to objects (signs, boards, NPCs) to interact.",
+    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
     [
       {
         label: "Got it",
