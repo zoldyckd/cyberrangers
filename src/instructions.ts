@@ -11,25 +11,20 @@ export function initInstructions() {
   bound = true;
 
   WA.onInit().then(() => {
-    WA.room.area.onEnter(AREA_NAME).subscribe(() => {
-      open();
-    });
-
-    WA.room.area.onLeave(AREA_NAME).subscribe(() => {
-      close();
-    });
+    WA.room.area.onEnter(AREA_NAME).subscribe(() => open());
+    WA.room.area.onLeave(AREA_NAME).subscribe(() => close());
   });
 }
 
 function open() {
-  // hard-close any ghost instance, then open without a footer
+  // make sure any ghost instance is closed first
   try { ref?.close?.(); } catch {}
   ref = undefined;
 
   ref = WA.ui.openPopup(
     POPUP_ANCHOR,
-    "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!"
-    // 👈 no third parameter → no bottom bar
+    "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!",
+    [] // required by your typings; footer will appear (API limitation)
   );
 }
 
