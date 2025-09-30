@@ -1,25 +1,27 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let ref: any | undefined;
-const AREA   = "instructions";         // Tiled area name (Class: area)
-const ANCHOR = "instructionsPopup";    // Tiled popup anchor name
+let previewRef: any | undefined;
 
-let bound = false;                     // prevent duplicate subscriptions
+const AREA   = "instructions";        // Tiled area (Class: area)
+const ANCHOR = "instructionsPopup";   // Tiled popup anchor object
 
 export function initInstructions() {
-  if (bound) return;
-  bound = true;
+  // hot-reload / double-import guard
+  if ((window as any).__BOUND_INSTRUCTIONS__) return;
+  (window as any).__BOUND_INSTRUCTIONS__ = true;
 
   WA.onInit().then(() => {
+    // Enter -> open (after closing any stray instance)
     WA.room.area.onEnter(AREA).subscribe(() => {
       closePopup();
-      ref = WA.ui.openPopup(
+      previewRef = WA.ui.openPopup(
         ANCHOR,
-        "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!",
+        "🪧 Cyber Rangers HQ — There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!",
         [{ label: "Close", callback: () => closePopup() }] // required 3rd arg
       );
     });
 
+    // Leave -> always close and clear reference
     WA.room.area.onLeave(AREA).subscribe(() => {
       closePopup();
     });
@@ -28,11 +30,11 @@ export function initInstructions() {
 
 function closePopup() {
   try {
-    if (ref) {
-      ref.close?.();
-      ref = undefined;
+    if (previewRef) {
+      previewRef.close?.();
+      previewRef = undefined; // ensure next cycle starts clean
     }
   } catch {
-    ref = undefined;
+    previewRef = undefined;
   }
 }
