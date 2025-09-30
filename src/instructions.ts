@@ -1,7 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-const AREA = "GardenInstructions";              // area name in garden.tmj
-const ANCHOR = "garden_instructions_popup";     // rectangle object in garden.tmj
+const AREA = "instructions";          // matches the area in garden.tmj
+const ANCHOR = "instructionsPopup";   // matches the rectangle popup in garden.tmj
 
 let ref: any | undefined;
 
