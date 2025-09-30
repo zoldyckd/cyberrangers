@@ -492,6 +492,17 @@
                  "width":224,
                  "x":128,
                  "y":384
+                }, 
+                {
+                 "height":32,
+                 "id":11,
+                 "name":"spawnIntro",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":352,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -572,7 +583,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":11,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "properties":[
         {
