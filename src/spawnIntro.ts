@@ -1,42 +1,40 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-const AREA_NAME = "spawnIntro";        // Tiled object (Class: area)
-const POPUP_ANCHOR = "spawnIntroPopup"; // Tiled popup anchor name
+let spawnBound = false;         // hot-reload guard kept at module scope
 
-let ref: any | undefined;
+export function initSpawnIntro() {
+  if (spawnBound) return;
+  spawnBound = true;
 
-// prevent duplicate subscriptions on hot-reload
-if (!(window as any).__BOUND_SPAWN_INTRO__) {
-  (window as any).__BOUND_SPAWN_INTRO__ = true;
+  const AREA_NAME = "spawnIntro";
+  const POPUP_ANCHOR = "spawnIntroPopup";
 
-  export function initSpawnIntro() {
-    WA.onInit().then(() => {
-      WA.room.area.onEnter(AREA_NAME).subscribe(() => {
-        openSpawnIntro();
-      });
-      // 🚫 Removed onLeave handling, so popup stays until "Got it" is clicked
+  let ref: any | undefined;
+
+  WA.onInit().then(() => {
+    WA.room.area.onEnter(AREA_NAME).subscribe(() => {
+      open();
     });
+    // no onLeave → only button closes it
+  });
+
+  function open() {
+    if (ref) return;
+    ref = WA.ui.openPopup(
+      POPUP_ANCHOR,
+      "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
+      [
+        {
+          label: "Got it",
+          className: "primary",
+          callback: () => close(),
+        },
+      ]
+    );
   }
-}
 
-function openSpawnIntro() {
-  if (ref) return; // already open
-
-  ref = WA.ui.openPopup(
-    POPUP_ANCHOR,
-    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
-    [
-      {
-        label: "Got it",
-        className: "primary",
-        callback: () => closeSpawnIntro(),
-      },
-    ]
-  );
-}
-
-function closeSpawnIntro() {
-  if (!ref) return;
-  try { ref.close?.(); } catch {}
-  ref = undefined;
+  function close() {
+    try { ref?.close?.(); } catch {}
+    ref = undefined;
+  }
 }

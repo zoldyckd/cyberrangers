@@ -1,68 +1,61 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-const AREA_NAME = "instructions";          // Tiled object (Class: area)
-const POPUP_ANCHOR = "instructionsPopup";  // Tiled popup anchor
-const REOPEN_COOLDOWN_MS = 250;            // debounce against spammy enter/leave
+let instrBound = false;   // hot-reload guard
 
-let ref: any | undefined;
-let inArea = false;
-let lastOpen = 0;
-let opening = false;
+export function initInstructions() {
+  if (instrBound) return;
+  instrBound = true;
 
-// prevent duplicate subscriptions if hot-reload
-if (!(window as any).__BOUND_INSTRUCTIONS__) {
-  (window as any).__BOUND_INSTRUCTIONS__ = true;
+  const AREA_NAME = "instructions";
+  const POPUP_ANCHOR = "instructionsPopup";
+  const REOPEN_COOLDOWN_MS = 250;
 
-  export function initInstructions() {
-    WA.onInit().then(() => {
-      WA.room.area.onEnter(AREA_NAME).subscribe(() => {
-        inArea = true;
-        openInstructionsPopup();
-      });
+  let ref: any | undefined;
+  let inArea = false;
+  let lastOpen = 0;
+  let opening = false;
 
-      WA.room.area.onLeave(AREA_NAME).subscribe(() => {
-        inArea = false;
-        closeInstructionsPopup();
-      });
+  WA.onInit().then(() => {
+    WA.room.area.onEnter(AREA_NAME).subscribe(() => {
+      inArea = true;
+      open();
     });
-  }
-}
 
-function openInstructionsPopup() {
-  const now = Date.now();
-  if (opening) return;                      // already in the middle of opening
-  if (ref) return;                          // already open
-  if (now - lastOpen < REOPEN_COOLDOWN_MS) return; // debounce rapid toggles
-  if (!inArea) return;                      // only open if we're still inside
+    WA.room.area.onLeave(AREA_NAME).subscribe(() => {
+      inArea = false;
+      close();
+    });
+  });
 
-  opening = true;
-  // hard close any ghost popup just in case
-  try { ref?.close?.(); } catch {}
-  ref = undefined;
+  function open() {
+    const now = Date.now();
+    if (opening || ref || !inArea || now - lastOpen < REOPEN_COOLDOWN_MS) return;
 
-  try {
-    ref = WA.ui.openPopup(
-      POPUP_ANCHOR,
-      "📜 Welcome! This signage explains what to do next. Read carefully, then walk away to close.",
-      [
-        {
-          label: "Got it",
-          className: "primary",
-          callback: () => {
-            // user acknowledged -> close and prevent immediate reopen until they exit & re-enter
-            closeInstructionsPopup();
+    opening = true;
+    try { ref?.close?.(); } catch {}
+    ref = undefined;
+
+    try {
+      ref = WA.ui.openPopup(
+        POPUP_ANCHOR,
+        "📜 Welcome! This signage explains what to do next. Read carefully, then walk away to close.",
+        [
+          {
+            label: "Got it",
+            className: "primary",
+            callback: () => close(),
           },
-        },
-      ]
-    );
-    lastOpen = now;
-  } finally {
-    opening = false;
+        ]
+      );
+      lastOpen = now;
+    } finally {
+      opening = false;
+    }
   }
-}
 
-function closeInstructionsPopup() {
-  if (!ref) return;
-  try { ref.close?.(); } catch {}
-  ref = undefined;
+  function close() {
+    if (!ref) return;
+    try { ref.close?.(); } catch {}
+    ref = undefined;
+  }
 }
