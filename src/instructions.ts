@@ -1,16 +1,28 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-import { openInstructionsPopup, closeInstructionsPopup } from "./instructionsPopup";
+import { openInstructionsPopup, closeInstructionsPopup, ensurePopupClosed } from "./instructionsPopup";
 
-export function initInstructions() {
-  WA.onInit().then(() => {
-    // Open when the player steps onto the sign area
-    WA.room.area.onEnter("instructions").subscribe(() => {
-      openInstructionsPopup();
-    });
+let insideCount = 0;               // robust against multi-tile / multi-rect areas
+let bound = (window as any).__INSTR_BOUND__;
+if (!bound) {
+  (window as any).__INSTR_BOUND__ = true;
 
-    // Close when the player steps out
-    WA.room.area.onLeave("instructions").subscribe(() => {
-      closeInstructionsPopup();
+  export function initInstructions() {
+    WA.onInit().then(() => {
+      // Enter
+      WA.room.area.onEnter("instructions").subscribe(() => {
+        insideCount++;
+        // idempotent: close any old one first, then open
+        ensurePopupClosed();
+        openInstructionsPopup();
+      });
+
+      // Leave
+      WA.room.area.onLeave("instructions").subscribe(() => {
+        insideCount = Math.max(0, insideCount - 1);
+        if (insideCount === 0) {
+          closeInstructionsPopup();
+        }
+      });
     });
-  });
+  }
 }
