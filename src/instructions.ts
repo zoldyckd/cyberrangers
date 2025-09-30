@@ -1,7 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-const AREA_NAME = "instructions";          // Tiled area name
-const POPUP_ANCHOR = "instructionsPopup";  // Tiled popup object name
+const AREA_NAME = "instructions";          // Tiled area name (Class: area)
+const POPUP_ANCHOR = "instructionsPopup";  // Tiled popup anchor name
 
 let ref: any | undefined;
 let bound = false;
@@ -11,29 +11,29 @@ export function initInstructions() {
   bound = true;
 
   WA.onInit().then(() => {
-    // Open when entering area
     WA.room.area.onEnter(AREA_NAME).subscribe(() => {
-      openInstructionsPopup();
+      open();
     });
 
-    // Close when leaving area
     WA.room.area.onLeave(AREA_NAME).subscribe(() => {
-      closeInstructionsPopup();
+      close();
     });
   });
 }
 
-function openInstructionsPopup() {
-  closeInstructionsPopup(); // prevent duplicates
+function open() {
+  // hard-close any ghost instance, then open without a footer
+  try { ref?.close?.(); } catch {}
+  ref = undefined;
 
   ref = WA.ui.openPopup(
     POPUP_ANCHOR,
-    "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!",
-    [] // 👈 no buttons
+    "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!"
+    // 👈 no third parameter → no bottom bar
   );
 }
 
-function closeInstructionsPopup() {
+function close() {
   if (!ref) return;
   try { ref.close?.(); } catch {}
   ref = undefined;
