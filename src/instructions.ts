@@ -24,18 +24,12 @@ export function initInstructions() {
 }
 
 function openInstructionsPopup() {
-  closeInstructionsPopup(); // avoid duplicates
+  closeInstructionsPopup(); // prevent duplicates
 
   ref = WA.ui.openPopup(
     POPUP_ANCHOR,
     "🪧 Cyber Rangers HQ - There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you’re ready, head to the ladder beside the billboard to continue!",
-    [
-      {
-        label: "Let’s go!",
-        className: "primary",
-        callback: () => closeInstructionsPopup(),
-      },
-    ]
+    [] // 👈 no buttons
   );
 }
 
