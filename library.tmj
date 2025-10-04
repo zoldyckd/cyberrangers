@@ -749,8 +749,8 @@
                  "y":112.5
                 }, 
                 {
-                 "height":19.9947916666667,
-                 "id":49,
+                 "height":19.3281,
+                 "id":55,
                  "name":"",
                  "rotation":0,
                  "text":
@@ -760,57 +760,9 @@
                     },
                  "type":"",
                  "visible":true,
-                 "width":20.7135416666666,
-                 "x":326.809895833333,
-                 "y":566.002604166667
-                }, 
-                {
-                 "height":19.9948,
-                 "id":50,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"\ud83d\udca1",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":20.7135,
-                 "x":258.976583333333,
-                 "y":352.0026
-                }, 
-                {
-                 "height":19.9948,
-                 "id":51,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"\ud83d\udca1",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":20.7135,
-                 "x":264.309916666667,
-                 "y":74.6692666666666
-                }, 
-                {
-                 "height":19.9948,
-                 "id":52,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"\ud83d\udca1",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":20.7135,
-                 "x":260.309916666667,
-                 "y":229.335933333333
+                 "width":24.3802,
+                 "x":263.8099,
+                 "y":75.6692833333334
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -821,6 +773,49 @@
         {
          "id":19,
          "layers":[
+                {
+                 "draworder":"topdown",
+                 "id":31,
+                 "name":"lightbulbs",
+                 "objects":[
+                        {
+                         "height":19.328125,
+                         "id":53,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802083333334,
+                         "x":260.143229166667,
+                         "y":351.002604166667
+                        }, 
+                        {
+                         "height":19.3281,
+                         "id":54,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802,
+                         "x":263.143233333333,
+                         "y":230.33595
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
                 {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -951,8 +946,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":31,
- "nextobjectid":53,
+ "nextlayerid":32,
+ "nextobjectid":56,
  "orientation":"orthogonal",
  "properties":[
         {
