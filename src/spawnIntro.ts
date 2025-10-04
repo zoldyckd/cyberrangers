@@ -3,27 +3,31 @@
 let dismissed = false;
 let spawnPopupRef: any | undefined;
 let unSubMove: (() => void) | undefined;
+
+// remember spawn so we can snap back if a move slips in
 let spawnX = 0;
 let spawnY = 0;
 
 export function initSpawnIntro() {
   WA.onInit().then(() => {
-    // capture spawn position (best effort)
+    // capture initial position (best effort)
     try {
-      // Works on latest WA: either getPosition() or state.{x,y}
       const pos = (WA.player as any).getPosition?.() ?? WA.player.state;
-      spawnX = pos.x ?? 0;
-      spawnY = pos.y ?? 0;
+      spawnX = pos?.x ?? 0;
+      spawnY = pos?.y ?? 0;
     } catch {}
 
-    // 1) lock movement BEFORE opening popup (eliminates the race)
+    // 1) lock controls BEFORE opening popup
     try { WA.controls.disablePlayerControls(); } catch {}
 
-    // 2) open the popup immediately (no setTimeout)
+    // 2) open popup immediately
     openSpawnIntro();
 
-    // 3) movement guard in case a move sneaks in during load
+    // 3) guard any movement during the intro
     attachMovementGuard();
+
+    // 4) keyboard shortcuts to close (helps if button focus gets weird)
+    window.addEventListener("keydown", onKeyClose);
   });
 }
 
@@ -31,8 +35,8 @@ function openSpawnIntro() {
   if (dismissed || spawnPopupRef) return;
 
   spawnPopupRef = WA.ui.openPopup(
-    "spawnIntroPopup", // Tiled object name near spawn
-    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them. To begin, click 'Got it' to start moving!",
+    "spawnIntroPopup", // must match a Tiled object near spawn
+    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them. To begin, click 'Got it' (or press Enter/Space) to start moving!",
     [
       {
         label: "Got it",
@@ -41,13 +45,15 @@ function openSpawnIntro() {
       },
     ]
   );
-
-  // Also allow ESC to dismiss (helps if mouse focus got weird)
-  window.addEventListener("keydown", onEscOnce, { once: true });
 }
 
-function onEscOnce(e: KeyboardEvent) {
-  if (e.key === "Escape") safelyCloseSpawnIntro();
+function onKeyClose(e: KeyboardEvent) {
+  if (dismissed) return;
+  const k = e.key;
+  if (k === "Enter" || k === " " || k === "Escape") {
+    e.preventDefault();
+    safelyCloseSpawnIntro();
+  }
 }
 
 function safelyCloseSpawnIntro() {
@@ -55,33 +61,28 @@ function safelyCloseSpawnIntro() {
   spawnPopupRef = undefined;
   dismissed = true;
 
-  // restore controls
   try { WA.controls.restorePlayerControls(); } catch {}
 
-  // stop guarding movement
+  // stop guarding movement + keys
   try { unSubMove?.(); } catch {}
   unSubMove = undefined;
+  window.removeEventListener("keydown", onKeyClose);
 }
 
 function attachMovementGuard() {
-  // If your WA version uses an observable, use .subscribe() that returns an unsubscribe.
-  // Some builds provide onPlayerMove(cb) returning an unsubscribe directly.
-  const sub = (WA.player as any).onPlayerMove?.((_) => {
-    if (!dismissed) {
-      // If a move slipped in: cancel it and keep user at spawn.
-      try { WA.controls.disablePlayerControls(); } catch {}
-      try {
-        // Best effort: teleport back if your build exposes this API
-        (WA.player as any).teleport?.(spawnX, spawnY);
-      } catch {}
+  // Type the callback param to avoid TS7006
+  const sub = (WA.player as any).onPlayerMove?.((pos: { x: number; y: number }) => {
+    if (dismissed) return;
 
-      // If the popup lost its anchor for any reason, recreate it.
-      if (!spawnPopupRef) {
-        try { openSpawnIntro(); } catch {}
-      }
+    // If any movement sneaks in: re-lock, snap back, and ensure popup exists
+    try { WA.controls.disablePlayerControls(); } catch {}
+    try { (WA.player as any).teleport?.(spawnX, spawnY); } catch {}
+
+    if (!spawnPopupRef) {
+      try { openSpawnIntro(); } catch {}
     }
   });
 
-  // normalize unsubscribe function
+  // Normalize unsubscribe
   unSubMove = typeof sub === "function" ? sub : undefined;
 }
