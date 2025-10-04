@@ -1,57 +1,36 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 let spawnPopupRef: any | undefined;
-let leaveSub: any | undefined;
-let dismissed = false;
 
-function closeSpawnIntro() {
-  try { spawnPopupRef?.close?.(); } catch {}
-  spawnPopupRef = undefined;
-
-  try { leaveSub?.unsubscribe?.(); } catch {}
-  leaveSub = undefined;
-
-  dismissed = true;
-  try { WA.controls.restorePlayerControls(); } catch {}
+export function initSpawnIntro() {
+  WA.onInit().then(() => {
+    // small delay avoids races with other initializers
+    setTimeout(openSpawnIntro, 50);
+  });
 }
 
 function openSpawnIntro() {
-  if (dismissed) return;
-  try { spawnPopupRef?.close?.(); } catch {}
-
-  // lock movement until user acknowledges
-  try { WA.controls.disablePlayerControls(); } catch {}
+  closeSpawnIntro(); // prevent duplicates
 
   spawnPopupRef = WA.ui.openPopup(
-    "spawnIntroPopup", // make sure this matches your Tiled object
-    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them. To begin, click 'Got it' to start moving!",
+    "spawnIntroPopup",
+    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
     [
       {
         label: "Got it",
         className: "primary",
-        callback: closeSpawnIntro,
+        callback: (popup) => {
+          try { popup.close?.(); } catch {}
+          closeSpawnIntro();
+        },
       },
     ]
   );
-
-  // close automatically when leaving the spawn area
-  try { leaveSub?.unsubscribe?.(); } catch {}
-  leaveSub = WA.room.area.onLeave("spawn-area").subscribe(closeSpawnIntro);
-
-  // allow ESC to dismiss too
-  window.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "Escape") closeSpawnIntro();
-  }, { once: true });
 }
 
-export function initSpawnIntro() {
-  WA.onInit().then(() => {
-    // show popup once when entering spawn area
-    WA.room.area.onEnter("spawn-area").subscribe(openSpawnIntro);
-
-    // if already inside area when spawning, show once
-    setTimeout(() => {
-      WA.player.getPosition().then(() => openSpawnIntro());
-    }, 250);
-  });
+function closeSpawnIntro() {
+  if (spawnPopupRef) {
+    try { spawnPopupRef.close?.(); } catch {}
+    spawnPopupRef = undefined;
+  }
 }
