@@ -438,8 +438,29 @@
                          "type":"",
                          "visible":true,
                          "width":72.6667,
-                         "x":54.2121045454545,
+                         "x":53.8484681818182,
                          "y":229.303013636364
+                        }, 
+                        {
+                         "height":20.6667,
+                         "id":21,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "bold":true,
+                             "fontfamily":"Segoe UI",
+                             "halign":"center",
+                             "pixelsize":8,
+                             "text":"Professor Byte",
+                             "valign":"center",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":72.6667,
+                         "x":52.9393772727273,
+                         "y":229.121195454545
                         }],
                  "opacity":1,
                  "type":"objectgroup",
@@ -497,7 +518,7 @@
          "y":0
         }],
  "nextlayerid":22,
- "nextobjectid":21,
+ "nextobjectid":22,
  "orientation":"orthogonal",
  "properties":[
         {
