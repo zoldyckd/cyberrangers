@@ -418,40 +418,6 @@
          "y":0
         }, 
         {
-         "class":"area",
-         "draworder":"topdown",
-         "id":17,
-         "name":"npcs_zones",
-         "objects":[
-                {
-                 "height":49.6666666666667,
-                 "id":21,
-                 "name":"MarvieZone",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":70.3333333333333,
-                 "x":206.333333333333,
-                 "y":460.333333333333
-                }, 
-                {
-                 "height":118.1875,
-                 "id":22,
-                 "name":"marviePopup",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":203.375,
-                 "x":224,
-                 "y":352
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "id":11,
          "layers":[
                 {
