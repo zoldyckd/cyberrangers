@@ -20,7 +20,7 @@ function openSpawnIntro() {
   // that exists at spawn and stays loaded (e.g., an object near spawn).
   spawnPopupRef = WA.ui.openPopup(
     "spawnIntroPopup",
-    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
+    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them. To begin, click 'Got it' to start moving!",
     [
       {
         label: "Got it",

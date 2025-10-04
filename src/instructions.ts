@@ -11,7 +11,7 @@ export function initInstructions() {
       closePopup();
       previewRef = WA.ui.openPopup(
         ANCHOR,
-        "🏫 Cyber Rangers HQ — There are 5 maps to explore and learn cybersecurity: Phishing, Malware, Password Security, Safe Internet Practices, Identity Theft. Check the signage in every map for what to do. When you're ready, head to the ladder beside the billboard to continue!",
+        "🏫 Cyber Rangers HQ — Welcome to the starting map of Cyber Adventure. Murdoch University is in distress, the students need your help! Look for me when you get to every map for more info! When you're ready, head to the ladder at the top to continue!",
         [
           { 
             label: "Close", 
