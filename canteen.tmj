@@ -341,8 +341,8 @@
                  "type":"area",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":160
+                 "x":72,
+                 "y":166
                 }, 
                 {
                  "height":32,
