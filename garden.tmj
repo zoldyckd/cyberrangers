@@ -407,6 +407,7 @@
                          "text":
                             {
                              "bold":true,
+                             "color":"#ffffff",
                              "fontfamily":"Segoe UI",
                              "halign":"center",
                              "pixelsize":8,
