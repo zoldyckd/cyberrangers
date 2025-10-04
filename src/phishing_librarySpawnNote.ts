@@ -1,40 +1,32 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let ref: any | undefined;
-let leaveSub: any | undefined;
+let popupRef: any | undefined;
 
 function closeNote() {
-  try { ref?.close?.(); } catch {}
-  ref = undefined;
-  try { leaveSub?.unsubscribe?.(); } catch {}
-  leaveSub = undefined;
+  try { popupRef?.close?.(); } catch {}
+  popupRef = undefined;
 }
 
 function openNote() {
-  // open popup
-  try { ref?.close?.(); } catch {}
-  ref = WA.ui.openPopup(
-    "phishing_librarySpawnPopup",   // anchor ID (adjust in Tiled if needed)
+  if (popupRef) return; // don't stack popups
+  popupRef = WA.ui.openPopup(
+    "phishing_librarySpawnPopup",   // anchor ID in Tiled
     "📌 Please visit the signboard.",
-    [{ label: "OK", callback: closeNote }]
+    [
+      {
+        label: "OK",
+        callback: closeNote
+      }
+    ]
   );
-
-  // close it automatically when leaving the spawn area
-  try { leaveSub?.unsubscribe?.(); } catch {}
-  leaveSub = WA.room.area.onLeave("from-garden").subscribe(closeNote);
-
-  // (optional) also auto-close after 5s if player doesn't move/click
-  setTimeout(() => { closeNote(); }, 5000);
 }
 
 export function initPhishingLibrarySpawnNote() {
   WA.onInit().then(() => {
-    // show when entering the spawn area (arriving from garden)
+    // open popup when entering area
     WA.room.area.onEnter("from-garden").subscribe(openNote);
 
-    // safety: if the player spawns already inside the area, show once
-    setTimeout(() => {
-      WA.player.getPosition().then(() => openNote());
-    }, 250);
+    // close popup when leaving area
+    WA.room.area.onLeave("from-garden").subscribe(closeNote);
   });
 }
