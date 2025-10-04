@@ -326,14 +326,14 @@
                  "y":130.666666666667
                 }, 
                 {
-                 "height":64,
+                 "height":73.5,
                  "id":5,
                  "name":"instructions",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":64,
-                 "x":64,
+                 "width":54,
+                 "x":51,
                  "y":224
                 }, 
                 {
