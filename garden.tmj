@@ -468,8 +468,8 @@
                  "type":"",
                  "visible":true,
                  "width":192,
-                 "x":128,
-                 "y":288
+                 "x":148.666666666667,
+                 "y":224.333333333333
                 }, 
                 {
                  "height":0,
@@ -545,6 +545,38 @@
                  "y":0
                 }, 
                 {
+                 "draworder":"topdown",
+                 "id":20,
+                 "name":"npc name",
+                 "objects":[
+                        {
+                         "height":20.6666666666667,
+                         "id":13,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "bold":true,
+                             "fontfamily":"Segoe UI",
+                             "halign":"center",
+                             "pixelsize":8,
+                             "text":"Professor Byte",
+                             "valign":"center",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":72.6666666666666,
+                         "x":338,
+                         "y":287.333333333333
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -609,38 +641,6 @@
          "name":"above",
          "opacity":1,
          "type":"group",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":20,
-         "name":"npc name",
-         "objects":[
-                {
-                 "height":12.6666666666667,
-                 "id":13,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "bold":true,
-                     "fontfamily":"Segoe UI",
-                     "halign":"center",
-                     "pixelsize":8,
-                     "text":"Professor Byte",
-                     "valign":"center",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":64,
-                 "x":339.333333333333,
-                 "y":291.333333333333
-                }],
-         "opacity":1,
-         "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
