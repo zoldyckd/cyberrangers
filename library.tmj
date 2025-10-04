@@ -761,8 +761,8 @@
                  "type":"",
                  "visible":true,
                  "width":24.3802,
-                 "x":263.8099,
-                 "y":75.6692833333334
+                 "x":262.476566666667,
+                 "y":78.33595
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -773,49 +773,6 @@
         {
          "id":19,
          "layers":[
-                {
-                 "draworder":"topdown",
-                 "id":31,
-                 "name":"lightbulbs",
-                 "objects":[
-                        {
-                         "height":19.328125,
-                         "id":53,
-                         "name":"",
-                         "rotation":0,
-                         "text":
-                            {
-                             "text":"\ud83d\udca1",
-                             "wrap":true
-                            },
-                         "type":"",
-                         "visible":true,
-                         "width":24.3802083333334,
-                         "x":260.143229166667,
-                         "y":351.002604166667
-                        }, 
-                        {
-                         "height":19.3281,
-                         "id":54,
-                         "name":"",
-                         "rotation":0,
-                         "text":
-                            {
-                             "text":"\ud83d\udca1",
-                             "wrap":true
-                            },
-                         "type":"",
-                         "visible":true,
-                         "width":24.3802,
-                         "x":263.143233333333,
-                         "y":230.33595
-                        }],
-                 "opacity":1,
-                 "type":"objectgroup",
-                 "visible":true,
-                 "x":0,
-                 "y":0
-                }, 
                 {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -905,6 +862,49 @@
                  "type":"tilelayer",
                  "visible":true,
                  "width":20,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":31,
+                 "name":"lightbulbs",
+                 "objects":[
+                        {
+                         "height":19.328125,
+                         "id":53,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802083333334,
+                         "x":261.4765625,
+                         "y":361.002604166667
+                        }, 
+                        {
+                         "height":19.3281,
+                         "id":54,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802,
+                         "x":261.143233333333,
+                         "y":241.002616666667
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
                  "x":0,
                  "y":0
                 }, 
