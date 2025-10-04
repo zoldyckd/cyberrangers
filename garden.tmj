@@ -376,14 +376,14 @@
                  "rotation":0,
                  "text":
                     {
-                     "text":"\u2757",
+                     "text":"\ud83d\udca1",
                      "wrap":true
                     },
                  "type":"",
                  "visible":true,
                  "width":19.546875,
-                 "x":68.9765625,
-                 "y":208.3359375
+                 "x":70.9765625,
+                 "y":216.517755681818
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -417,8 +417,8 @@
                          "type":"",
                          "visible":true,
                          "width":72.6666666666666,
-                         "x":43.5,
-                         "y":222.5
+                         "x":45.5,
+                         "y":230.318181818182
                         }],
                  "opacity":1,
                  "type":"objectgroup",
