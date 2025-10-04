@@ -1,58 +1,47 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let previewRef: any | undefined;
-let initialized = false;
+let popupRef: any | undefined;
 let enterSub: any | undefined;
 let leaveSub: any | undefined;
-let popupOpen = false;
-let lastOpenAt = 0;
+let initialized = false;
 
-const AREA   = "instructions";        // Tiled area name
-const ANCHOR = "instructionsPopup";   // Tiled popup object name
-const COOLDOWN_MS = 250;
+const AREA   = "instructions";       // must match your Tiled area name
+const ANCHOR = "instructionsPopup";  // must match your Tiled popup object
 
 export function initInstructions() {
-  if (initialized) return;  // avoid double init from multiple imports/calls
+  if (initialized) return;           // prevent double-binding if file gets imported twice
   initialized = true;
 
   WA.onInit().then(() => {
-    // Clean any previous (hot reload, etc.)
+    // (Re)create clean subscriptions
     try { enterSub?.unsubscribe?.(); } catch {}
     try { leaveSub?.unsubscribe?.(); } catch {}
 
     enterSub = WA.room.area.onEnter(AREA).subscribe(() => {
-      const now = Date.now();
-      if (now - lastOpenAt < COOLDOWN_MS) return; // debounce
-      lastOpenAt = now;
-
-      if (popupOpen) return; // guard against stacking
-      closePopup();          // extra safety
-
-      previewRef = WA.ui.openPopup(
+      closePopup(); // just in case
+      popupRef = WA.ui.openPopup(
         ANCHOR,
         "🏫 Cyber Rangers HQ — Welcome to the starting map of Cyber Adventure. Murdoch University is in distress, the students need your help! Look for me when you get to every map for more info! When you're ready, head to the ladder at the top to continue!",
         [
           {
             label: "Close",
             className: "primary",
-            callback: (popup) => {
-              try { popup.close?.(); } catch {}
-              closePopup();
-            },
+            callback: () => closePopup(),
           },
         ]
       );
-      popupOpen = true;
     });
 
     leaveSub = WA.room.area.onLeave(AREA).subscribe(() => {
+      // Always close when walking out of the area
       closePopup();
     });
   });
 }
 
 function closePopup() {
-  try { previewRef?.close?.(); } catch {}
-  previewRef = undefined;
-  popupOpen = false;
+  try {
+    popupRef?.close?.();
+  } catch { /* ignore */ }
+  popupRef = undefined;
 }
