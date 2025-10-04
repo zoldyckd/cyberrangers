@@ -560,15 +560,15 @@
                              "fontfamily":"Segoe UI",
                              "halign":"center",
                              "pixelsize":8,
-                             "text":"Professor Byte",
+                             "text":"\u2757Professor Byte",
                              "valign":"center",
                              "wrap":true
                             },
                          "type":"",
                          "visible":true,
                          "width":72.6666666666666,
-                         "x":338,
-                         "y":287.333333333333
+                         "x":335.666666666667,
+                         "y":288.333333333333
                         }],
                  "opacity":1,
                  "type":"objectgroup",
