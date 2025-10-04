@@ -1,44 +1,48 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 let dismissed = false;
-let closeModal: (() => void) | undefined;
+let spawnPopupRef: any | undefined;
 
 export function initSpawnIntro() {
   WA.onInit().then(() => {
-    // small delay avoids races with other initializers
-    setTimeout(openSpawnIntroModal, 80);
+    // tiny delay to avoid races with other initializers
+    setTimeout(openSpawnIntro, 60);
   });
 }
 
-function openSpawnIntroModal() {
-  if (dismissed || closeModal) return;
+function openSpawnIntro() {
+  if (dismissed || spawnPopupRef) return;
 
-  // disable movement while intro is shown (optional but prevents weird races)
+  // prevent the player from walking away and "detaching" the popup anchor
   try { WA.controls.disablePlayerControls(); } catch {}
 
-  const text =
-    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.";
+  // IMPORTANT: make sure the anchor name below matches a Tiled object
+  // that exists at spawn and stays loaded (e.g., an object near spawn).
+  spawnPopupRef = WA.ui.openPopup(
+    "spawnIntroPopup",
+    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
+    [
+      {
+        label: "Got it",
+        className: "primary",
+        callback: () => {
+          safelyCloseSpawnIntro();
+        },
+      },
+    ]
+  );
 
-  // Modal is HUD-based, not tied to a Tiled object — won’t break when you move.
-  closeModal = WA.ui.modal.openModal({
-    title: "Welcome to Cyber Rangers",
-    text,
-    acceptText: "Got it",
-    // optional: let ESC close too
-    escapable: true,
-    onAccept: () => {
-      safelyClose();
-    },
-    onClose: () => {
-      // if user closes via ESC or X, treat as dismissed too
-      safelyClose();
-    },
-  });
+  // optional: allow ESC to dismiss as well (no external file needed)
+  window.addEventListener("keydown", onEscOnce, { once: true });
 }
 
-function safelyClose() {
-  try { closeModal?.(); } catch {}
-  closeModal = undefined;
+function onEscOnce(e: KeyboardEvent) {
+  if (e.key === "Escape") safelyCloseSpawnIntro();
+}
+
+function safelyCloseSpawnIntro() {
+  try { spawnPopupRef?.close?.(); } catch {}
+  spawnPopupRef = undefined;
   dismissed = true;
   try { WA.controls.restorePlayerControls(); } catch {}
 }
