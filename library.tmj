@@ -951,6 +951,11 @@
  "orientation":"orthogonal",
  "properties":[
         {
+         "name":"mapId",
+         "type":"string",
+         "value":"library"
+        }, 
+        {
          "name":"script",
          "type":"string",
          "value":"src\/main.ts"
