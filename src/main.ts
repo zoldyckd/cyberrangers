@@ -4,7 +4,7 @@ import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
 
-// phishing - library room (imports kept)
+// phishing - library room
 import { initphishing_QRcode } from "./phishing_qrcode";
 import { initphishing_MurdochEmail } from "./phishing_murdochemail";
 import { initphishing_SMSphishing } from "./phishing_smsphishing";
@@ -13,7 +13,7 @@ import { initPhishingInstructions } from "./phishing_instructions";
 import { initPhishingLibrarySpawnNote } from "./phishing_librarySpawnNote";
 import { initPhishingBrock } from "./phishing_brock";
 
-// garden / common features (imports kept)
+// garden / common features
 import { initBillboard } from "./billboard";
 import { initSpawnIntro } from "./spawnIntro";
 import { initInstructions } from "./instructions";
@@ -29,30 +29,28 @@ WA.onInit().then(async () => {
   console.log("Scripting API ready");
   await bootstrapExtra();
 
-  // -------------------------
-  // Always-on (safe anywhere)
-  // -------------------------
+  // ------------------------------------------
+  // Common utilities (safe on every map)
+  // ------------------------------------------
   initClock();
   initBoard();
   initMarvie();
 
-  // -------------------------
-  // Detect map id reliably
-  // priority: parse URL (works on play/workadventure pages) -> WA API fallback
-  // -------------------------
+  // ------------------------------------------
+  // Detect which map we are currently on
+  // ------------------------------------------
   const mapId = await detectMapId();
   console.log("[Router] Detected mapId:", mapId);
 
   const isGarden  = mapId.includes("garden");
   const isLibrary = mapId.includes("library");
-  const isCanteen = mapId.includes("canteen"); // placeholder for future
+  const isCanteen = mapId.includes("canteen"); // placeholder for future maps
 
-  // -------------------------
-  // Map-specific inits (Option 1: central routing)
-  // -------------------------
+  // ------------------------------------------
+  // GARDEN MAP
+  // ------------------------------------------
   if (isGarden) {
-    console.log("[Router] Initializing garden features...");
-    // keep these exact calls (you had them in your original file)
+    console.log("[Router] Initializing GARDEN features...");
     initBillboard();
     initSpawnIntro();
     initInstructions();
@@ -60,10 +58,14 @@ WA.onInit().then(async () => {
     initUsbDrive();
     initStickyNote();
     initSafeInternetPractices();
-    initOfficeProgress(); // move to other branch later if not a garden feature
+    initOfficeProgress(); // keep here if garden objects exist
   }
+
+  // ------------------------------------------
+  // LIBRARY MAP (Phishing room)
+  // ------------------------------------------
   else if (isLibrary) {
-    console.log("[Router] Initializing library (phishing) features...");
+    console.log("[Router] Initializing LIBRARY (Phishing) features...");
     initphishing_QRcode();
     initphishing_MurdochEmail();
     initphishing_SMSphishing();
@@ -72,37 +74,55 @@ WA.onInit().then(async () => {
     initPhishingLibrarySpawnNote();
     initPhishingBrock();
   }
+
+  // ------------------------------------------
+  // CANTEEN MAP (future)
+  // ------------------------------------------
   else if (isCanteen) {
-    console.log("[Router] Initializing canteen features (none specified).");
-    // add canteen-specific init() calls here as you build them
+    console.log("[Router] Initializing CANTEEN features...");
+    // add future canteen init calls here
   }
+
+  // ------------------------------------------
+  // FALLBACK
+  // ------------------------------------------
   else {
-    console.warn("[Router] Unknown map; only common features started. Add a branch for this map if you want map-specific inits.");
+    console.warn(
+      "[Router] Unknown map; only common features started. " +
+      "Add a branch for this map in main.ts if you need custom features."
+    );
   }
 });
 
 /**
- * Return a reliable identifier for the current map (.tmj filename, lowercased).
- * - Primary: parse pathname/hash for *.tmj
- * - Fallback: WA.room.getTiledMap() (some WA versions expose .url or .name)
+ * Return the current map’s filename (e.g., 'garden.tmj') reliably.
+ * - First try parsing the browser URL (works for play.workadventu.re/_/ links)
+ * - Fallback to WA API (.url or .name from getTiledMap)
  */
 async function detectMapId(): Promise<string> {
   try {
-    // try to pick up the .tmj from the current URL (works reliably on play/workadventure pages)
-    const full = decodeURIComponent(location.pathname + location.hash);
+    // Primary: parse full URL
+    const full = decodeURIComponent(window.location.href);
+    console.log("[Router] Full URL:", full);
+
     const match = full.match(/\/([^\/?#]+\.tmj)/i);
-    if (match && match[1]) return match[1].toLowerCase();
+    if (match && match[1]) {
+      console.log("[Router] Matched map file:", match[1]);
+      return match[1].toLowerCase();
+    }
   } catch (e) {
-    // ignore and fallback
+    console.warn("[Router] URL parse failed:", e);
   }
 
+  // Fallback to WA API (depends on WA version)
   try {
     const tiled: any = await WA.room.getTiledMap?.();
     const raw = (tiled?.url ?? tiled?.name ?? "").toString();
+    console.log("[Router] WA API map info:", raw);
     if (raw) return (raw.split("/").pop() || raw).toLowerCase();
   } catch (e) {
-    // ignore
+    console.warn("[Router] WA API fallback failed:", e);
   }
 
-  return ""; // unknown
+  return "";
 }
