@@ -21,7 +21,7 @@ export function initInstructions() {
       closePopup(); // just in case
       popupRef = WA.ui.openPopup(
         ANCHOR,
-        "🏫 Cyber Rangers HQ — Welcome to the starting map of Cyber Adventure. Murdoch University is in distress, the students need your help! Look for me, Professor Byte, when you get to every map for more info! When you're ready, head to the ladder at the top to continue!",
+        "🏫 Thank the heavens you're here! Brave student, Murdoch University is under a Cyber Attack! We need your help to protect the school against evildoers who wish us harm. Please proceed through the school and learn about how you can help us!",
         [
           {
             label: "Close",
