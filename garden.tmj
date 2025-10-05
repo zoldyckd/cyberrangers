@@ -476,9 +476,14 @@
          "y":0
         }],
  "nextlayerid":22,
- "nextobjectid":27,
+ "nextobjectid":30,
  "orientation":"orthogonal",
  "properties":[
+        {
+         "name":"mapId",
+         "type":"string",
+         "value":"garden"
+        }, 
         {
          "name":"script",
          "type":"string",
