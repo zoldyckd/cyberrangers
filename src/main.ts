@@ -30,27 +30,20 @@ WA.onInit().then(async () => {
   await bootstrapExtra();
 
   // ------------------------------------------
-  // Common utilities (safe on every map)
+  // Always-on (safe anywhere)
   // ------------------------------------------
   initClock();
   initBoard();
   initMarvie();
 
   // ------------------------------------------
-  // Detect which map we are currently on
+  // Map detection (robust): URL -> WA API -> Tiled map property `mapId`
   // ------------------------------------------
   const mapId = await detectMapId();
-  console.log("[Router] Detected mapId:", mapId);
+  console.log("[Router] mapId =", mapId || "(unknown)");
 
-  const isGarden  = mapId.includes("garden");
-  const isLibrary = mapId.includes("library");
-  const isCanteen = mapId.includes("canteen"); // placeholder for future maps
-
-  // ------------------------------------------
-  // GARDEN MAP
-  // ------------------------------------------
-  if (isGarden) {
-    console.log("[Router] Initializing GARDEN features...");
+  if (mapId === "garden") {
+    console.log("[Router] Initializing GARDEN features…");
     initBillboard();
     initSpawnIntro();
     initInstructions();
@@ -58,14 +51,10 @@ WA.onInit().then(async () => {
     initUsbDrive();
     initStickyNote();
     initSafeInternetPractices();
-    initOfficeProgress(); // keep here if garden objects exist
+    initOfficeProgress(); // keep here only if garden has the required objects
   }
-
-  // ------------------------------------------
-  // LIBRARY MAP (Phishing room)
-  // ------------------------------------------
-  else if (isLibrary) {
-    console.log("[Router] Initializing LIBRARY (Phishing) features...");
+  else if (mapId === "library") {
+    console.log("[Router] Initializing LIBRARY (Phishing) features…");
     initphishing_QRcode();
     initphishing_MurdochEmail();
     initphishing_SMSphishing();
@@ -74,55 +63,43 @@ WA.onInit().then(async () => {
     initPhishingLibrarySpawnNote();
     initPhishingBrock();
   }
-
-  // ------------------------------------------
-  // CANTEEN MAP (future)
-  // ------------------------------------------
-  else if (isCanteen) {
-    console.log("[Router] Initializing CANTEEN features...");
-    // add future canteen init calls here
-  }
-
-  // ------------------------------------------
-  // FALLBACK
-  // ------------------------------------------
   else {
-    console.warn(
-      "[Router] Unknown map; only common features started. " +
-      "Add a branch for this map in main.ts if you need custom features."
-    );
+    console.warn("[Router] Unknown map; only common features started. " +
+      "Set a Tiled Map Property `mapId` (string) to enable map-specific inits.");
   }
 });
 
 /**
- * Return the current map’s filename (e.g., 'garden.tmj') reliably.
- * - First try parsing the browser URL (works for play.workadventu.re/_/ links)
- * - Fallback to WA API (.url or .name from getTiledMap)
+ * Return the current map id as a lowercase string.
+ * Order:
+ *  1) Parse full URL for *.tmj (works when available)
+ *  2) WA API getTiledMap().url/name (if provided by this WA version)
+ *  3) Tiled Map Property: `mapId` (add it in Tiled: Map -> Properties)
  */
 async function detectMapId(): Promise<string> {
+  // 1) Try URL
   try {
-    // Primary: parse full URL
     const full = decodeURIComponent(window.location.href);
-    console.log("[Router] Full URL:", full);
+    const m = full.match(/\/([^\/?#]+)\.tmj/i);
+    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden"
+  } catch {}
 
-    const match = full.match(/\/([^\/?#]+\.tmj)/i);
-    if (match && match[1]) {
-      console.log("[Router] Matched map file:", match[1]);
-      return match[1].toLowerCase();
-    }
-  } catch (e) {
-    console.warn("[Router] URL parse failed:", e);
-  }
-
-  // Fallback to WA API (depends on WA version)
+  // 2) Try WA API (may not expose url/name on some builds)
   try {
     const tiled: any = await WA.room.getTiledMap?.();
     const raw = (tiled?.url ?? tiled?.name ?? "").toString();
-    console.log("[Router] WA API map info:", raw);
-    if (raw) return (raw.split("/").pop() || raw).toLowerCase();
-  } catch (e) {
-    console.warn("[Router] WA API fallback failed:", e);
-  }
+    if (raw) {
+      const base = (raw.split("/").pop() || raw).toLowerCase();
+      if (base.endsWith(".tmj")) return base.replace(/\.tmj$/, "");
+      return base; // sometimes returns plain name without .tmj
+    }
+    // 3) Try Tiled Map Property: mapId
+    const props = tiled?.properties as Array<{ name: string; value: any }> | undefined;
+    const fromProp = props?.find(p => p?.name === "mapId")?.value;
+    if (typeof fromProp === "string" && fromProp.trim()) {
+      return fromProp.trim().toLowerCase();
+    }
+  } catch {}
 
   return "";
 }
