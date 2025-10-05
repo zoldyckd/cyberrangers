@@ -4,7 +4,7 @@ import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
 
-//phishing - library room
+// phishing - library room
 import { initphishing_QRcode } from "./phishing_qrcode";
 import { initphishing_MurdochEmail } from "./phishing_murdochemail";
 import { initphishing_SMSphishing } from "./phishing_smsphishing";
@@ -28,30 +28,23 @@ WA.onInit().then(async () => {
   console.log("Scripting API ready");
   await bootstrapExtra();
 
-  // -----------------------
-  // SAFE / common features
-  // These are map-agnostic utilities that are safe to run everywhere.
-  // (keep these always initialized)
-  // -----------------------
+  // -------- Common / safe everywhere --------
   initClock();
   initBoard();
   initMarvie();
 
-  // -----------------------
-  // Determine which map we're on (exact Tiled `.tmj` filename)
-  // -----------------------
-  const mapUrl = await WA.room.getTiledMapURL();
-  console.log("Loaded map:", mapUrl);
+  // -------- Figure out which map we're on --------
+  const tiled = await WA.room.getTiledMap(); // <-- correct API
+  // Some WA versions expose .url, some only .name — grab whichever exists.
+  const raw = ((tiled as any)?.url ?? (tiled as any)?.name ?? "").toString();
+  const mapId = (raw.split("/").pop() || raw).toLowerCase();
+  console.log("Detected map:", mapId, raw);
 
-  // Helper booleans for readability
-  const isGarden = mapUrl?.includes("garden.tmj");
-  const isLibrary = mapUrl?.includes("library.tmj");
-  const isCanteen = mapUrl?.includes("canteen.tmj"); // example if you add later
-  // add more maps here if needed
+  const isGarden  = mapId.includes("garden");
+  const isLibrary = mapId.includes("library");
+  const isCanteen = mapId.includes("canteen"); // placeholder for future
 
-  // -----------------------
-  // GARDEN (garden.tmj) inits
-  // -----------------------
+  // -------- Garden (garden.tmj) --------
   if (isGarden) {
     console.log("Initializing garden features...");
     initBillboard();
@@ -61,13 +54,9 @@ WA.onInit().then(async () => {
     initUsbDrive();
     initStickyNote();
     initSafeInternetPractices();
-    // If officeprogress has anchors in garden, keep it; otherwise move to the appropriate map branch.
-    initOfficeProgress();
+    initOfficeProgress(); // keep here only if its anchors/areas exist in garden
   }
-
-  // -----------------------
-  // LIBRARY (library.tmj) inits - phishing related
-  // -----------------------
+  // -------- Library (library.tmj) --------
   else if (isLibrary) {
     console.log("Initializing library (phishing) features...");
     initphishing_QRcode();
@@ -78,21 +67,11 @@ WA.onInit().then(async () => {
     initPhishingLibrarySpawnNote();
     initPhishingBrock();
   }
-
-  // -----------------------
-  // CANTEEN / OTHER maps (example branch you can expand)
-  // -----------------------
+  // -------- Other maps (extend as needed) --------
   else if (isCanteen) {
     console.log("Initializing canteen features...");
-    // add inits for canteen here when ready
-  }
-
-  // -----------------------
-  // FALLBACK: Unknown map — do not initialize map-specific features.
-  // -----------------------
-  else {
-    console.log(
-      "Map not matched. Only common features initialized. Add a branch for this map in main.ts to run additional inits."
-    );
+    // add canteen inits here
+  } else {
+    console.log("Unknown map; only common features initialized.");
   }
 });
