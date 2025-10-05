@@ -14,7 +14,7 @@ function openSpawnIntro() {
 
   spawnPopupRef = WA.ui.openPopup(
     "spawnIntroPopup",
-    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
+    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for Professor Byte for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
     [
       {
         label: "Got it",
