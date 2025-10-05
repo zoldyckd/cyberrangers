@@ -1,36 +1,30 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let spawnPopupRef: any | undefined;
+let instructionPopupRef: any | undefined;
 
-export function initSpawnIntro() {
+export function initInstructions() {
   WA.onInit().then(() => {
-    // small delay avoids races with other initializers
-    setTimeout(openSpawnIntro, 50);
+    const AREA = "instructions";
+    const ANCHOR = "instructionsPopup";
+
+    WA.room.area.onEnter(AREA).subscribe(() => {
+      closeInstructionPopup();
+      instructionPopupRef = WA.ui.openPopup(
+        ANCHOR,
+        "🧑‍🏫 Thank the heavens you’re here! Brave student, Murdoch University is under a Cyber Attack! We need your help to protect the school against evildoers who wish us harm. ➡️ Please proceed through the school and learn how you can help us! Controls: Use WASD/Arrow keys to move, and click to choose options.",
+        [{ label: "Let's go!", className: "primary", callback: () => closeInstructionPopup() }]
+      );
+    });
+
+    WA.room.area.onLeave(AREA).subscribe(() => {
+      closeInstructionPopup();
+    });
   });
 }
 
-function openSpawnIntro() {
-  closeSpawnIntro(); // prevent duplicates
-
-  spawnPopupRef = WA.ui.openPopup(
-    "spawnIntroPopup",
-    "👋 Welcome! Use the Arrow Keys or WASD to move. Explore the map and look for the wooden signage for guidance. Tip: Walk close to objects (signs, boards, NPCs) to interact with them.",
-    [
-      {
-        label: "Got it",
-        className: "primary",
-        callback: (popup) => {
-          try { popup.close?.(); } catch {}
-          closeSpawnIntro();
-        },
-      },
-    ]
-  );
-}
-
-function closeSpawnIntro() {
-  if (spawnPopupRef) {
-    try { spawnPopupRef.close?.(); } catch {}
-    spawnPopupRef = undefined;
+function closeInstructionPopup() {
+  if (instructionPopupRef) {
+    try { instructionPopupRef.close?.(); } catch {}
+    instructionPopupRef = undefined;
   }
 }
