@@ -647,7 +647,7 @@
  "orientation":"orthogonal",
  "properties":[
         {
-         "name":"mapID",
+         "name":"mapId",
          "type":"string",
          "value":"canteen"
         }, 
