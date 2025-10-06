@@ -11,7 +11,7 @@ export function initphishing_QRcode() {
       closePopup();
       previewRef = WA.ui.openPopup(
         ANCHOR,
-        "📷 You spot a poster in the library: “Free Wi-Fi for Students – Scan to connect.”\n\nScanning unknown QR codes can lead to fake login pages.\n\nWhat would you do? Press SPACE to help!",
+        "🍗 You spot a poster in the library:“FREE NUGGETS FOR LIFE – Scan Me!” Your friend insists it looks real, but scanning random QR codes can lead to fake websites or data theft. What would you do? Press SPACE to help!"",
         [{ label: "Got it", callback: () => closePopup() }]
       );
     });
