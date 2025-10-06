@@ -15,7 +15,7 @@ function openNote() {
   try { ref?.close?.(); } catch {}
   ref = WA.ui.openPopup(
     "phishing_librarySpawnPopup",   // anchor ID (adjust in Tiled if needed)
-    "📌 Please visit the signboard.",
+    "📌 Please proceed and talk to Professor Byte.",
     [{ label: "OK", callback: closeNote }]
   );
 
