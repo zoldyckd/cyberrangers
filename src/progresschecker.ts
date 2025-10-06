@@ -1,14 +1,13 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-/** Per-map config:
- *  - tasks: mark done when entering these areas
- *  - exitGate: when player enters this area, either move to nextRoom (if all done) or show a warning
- */
+/** Per-map config */
 const MAP_CONFIG: Record<
   string,
   {
     tasks: { key: string; label: string; area: string }[];
     exitGate?: { area: string; nextRoom: string; warnAnchorId?: string };
+    /** Optional: anchor name for the progress popup to avoid stacking */
+    progressAnchorId?: string;
   }
 > = {
   // ===== LIBRARY (Phishing) =====
@@ -22,11 +21,13 @@ const MAP_CONFIG: Record<
     exitGate: {
       area: "to-canteen",
       nextRoom: "canteen.tmj#from-library",
-      warnAnchorId: "phishing_gate_popup", // your Tiled rectangle anchor
+      warnAnchorId: "phishing_gate_popup",
     },
+    // 👇 Optional. If you add a small rectangle named "progress_anchor" in library.tmj
+    progressAnchorId: "progress_anchor",
   },
 
-  // ===== CANTEEN (Malware) — example, tweak as you add areas =====
+  // ===== CANTEEN (Malware) — edit as you add areas =====
   canteen: {
     tasks: [
       { key: "malware_instructions", label: "Slides", area: "malware_instructions" },
@@ -34,6 +35,7 @@ const MAP_CONFIG: Record<
       // { key: "malware_poster", label: "Poster", area: "malware_poster" },
       // { key: "malware_npc", label: "NPC", area: "malware_npc" },
     ],
+    // progressAnchorId: "progress_anchor",              // (optional)
     // exitGate: { area: "to-classroom", nextRoom: "classroom.tmj#from-canteen" },
   },
 };
@@ -43,26 +45,31 @@ type Goals = Record<string, boolean>;
 
 let goals: Goals = {};
 let currentTasks: Task[] = [];
-let toastCooldown = 0;
+let mapCfg: (typeof MAP_CONFIG)[string] | undefined;
 
-// Gate state (to prevent stacking)
+// ----- Single-instance PROGRESS popup / toast -----
+let progressRef: ReturnType<typeof WA.ui.openPopup> | undefined;
+let lastProgressLine = "";
+let lastProgressAt = 0;
+
+// ----- Single-instance GATE popup -----
 let gatePopupRef: ReturnType<typeof WA.ui.openPopup> | undefined;
 let gateCooldown = 0;
 
 export function initProgressChecker() {
   WA.onInit().then(async () => {
     const mapId = await getMapId();
-    const cfg = MAP_CONFIG[mapId];
-    if (!cfg) {
+    mapCfg = MAP_CONFIG[mapId];
+    if (!mapCfg) {
       console.log("[ProgressChecker] No config for map:", mapId);
       return;
     }
 
     console.log("[ProgressChecker] Init for map:", mapId);
-    currentTasks = cfg.tasks;
+    currentTasks = mapCfg.tasks;
     goals = Object.fromEntries(currentTasks.map(t => [t.key, false]));
 
-    // --- Task listeners ---
+    // ---- Task listeners
     currentTasks.forEach(t => {
       try {
         WA.room.area.onEnter(t.area).subscribe(() => {
@@ -70,7 +77,6 @@ export function initProgressChecker() {
             goals[t.key] = true;
             showProgress();
 
-            // Optional: celebrate when all complete
             if (allDone()) {
               WA.ui.displayActionMessage({
                 message: "✅ All tasks done! You may proceed to the exit.",
@@ -84,20 +90,18 @@ export function initProgressChecker() {
       }
     });
 
-    // --- Exit gate listener (single-instance, anchored, no stacking) ---
-    if (cfg.exitGate) {
-      const { area, nextRoom, warnAnchorId } = cfg.exitGate;
+    // ---- Exit gate
+    if (mapCfg.exitGate) {
+      const { area, nextRoom, warnAnchorId } = mapCfg.exitGate;
 
-      // Enter gate
       WA.room.area.onEnter(area).subscribe(() => {
         if (allDone()) {
-          // tiny delay to avoid UI race conditions
           setTimeout(() => WA.nav.goToRoom(nextRoom), 30);
           return;
         }
 
         const now = Date.now();
-        if (now - gateCooldown < 500) return; // debounce rapid re-fires
+        if (now - gateCooldown < 500) return;
         gateCooldown = now;
 
         const missing = missingList();
@@ -112,16 +116,13 @@ export function initProgressChecker() {
                 {
                   label: "Close",
                   className: "primary",
-                  callback: () => {
-                    try { gatePopupRef?.close?.(); } catch {}
-                    gatePopupRef = undefined;
-                  },
+                  callback: () => { try { gatePopupRef?.close?.(); } catch {} gatePopupRef = undefined; },
                 },
               ]
             );
             return;
           } catch {
-            // fall through to toast if anchor missing
+            // fall through to toast
           }
         }
 
@@ -131,30 +132,28 @@ export function initProgressChecker() {
         });
       });
 
-      // Leave gate — close any lingering popup & allow re-entry
       WA.room.area.onLeave(area).subscribe(() => {
         try { gatePopupRef?.close?.(); } catch {}
         gatePopupRef = undefined;
       });
     }
 
-    // Show initial empty progress shortly after load
-    setTimeout(showProgress, 300);
+    // Initial render
+    setTimeout(showProgress, 250);
+
+    // Cleanup on unload
+    window.addEventListener("beforeunload", () => {
+      try { progressRef?.close?.(); } catch {}
+      try { gatePopupRef?.close?.(); } catch {}
+    });
   });
 }
 
-/** Optional external hook: mark a task done manually from other modules */
+/** Mark task from other scripts if needed */
 export function markTaskDone(taskKey: string) {
   if (taskKey in goals && !goals[taskKey]) {
     goals[taskKey] = true;
     showProgress();
-
-    if (allDone()) {
-      WA.ui.displayActionMessage({
-        message: "✅ All tasks done! You may proceed to the exit.",
-        callback: () => {},
-      });
-    }
   }
 }
 
@@ -167,15 +166,40 @@ function missingList(): string[] {
   return currentTasks.filter(t => !goals[t.key]).map(t => t.label);
 }
 
+/** Single-instance progress: updates if text changed, otherwise no-op */
 function showProgress() {
-  const now = Date.now();
-  if (now - toastCooldown < 150) return; // debounce
-  toastCooldown = now;
-
   const line = currentTasks
     .map(t => (goals[t.key] ? `✅ ${t.label}` : `⬜ ${t.label}`))
     .join("   ");
 
+  // avoid spamming if nothing changed
+  const now = Date.now();
+  if (line === lastProgressLine && now - lastProgressAt < 1500) return;
+  lastProgressLine = line;
+  lastProgressAt = now;
+
+  // Prefer anchored popup if configured (stable, non-stacking)
+  if (mapCfg?.progressAnchorId) {
+    try {
+      try { progressRef?.close?.(); } catch {}
+      progressRef = WA.ui.openPopup(
+        mapCfg.progressAnchorId,
+        `Progress:  ${line}`,
+        [
+          {
+            label: "Close",
+            className: "primary",
+            callback: () => { try { progressRef?.close?.(); } catch {} progressRef = undefined; },
+          },
+        ]
+      );
+      return;
+    } catch {
+      // fall back to toast if anchor missing
+    }
+  }
+
+  // Toast fallback (no anchor). Debounced by change detection above.
   WA.ui.displayActionMessage({
     message: `Progress:  ${line}`,
     callback: () => {},

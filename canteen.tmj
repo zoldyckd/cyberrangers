@@ -393,26 +393,42 @@
                  "y":352
                 }, 
                 {
-                 "height":37.2727272727273,
+                 "height":55.2727272727273,
                  "id":9,
                  "name":"malware_instructions",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open up the PPT"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":33.0909090909091,
-                 "x":223.818181818182,
-                 "y":120.363636363636
+                 "width":44.4242424242424,
+                 "x":222.484848484849,
+                 "y":113.696969696969
                 }, 
                 {
-                 "height":86.6666666666667,
+                 "height":135.333333333333,
                  "id":10,
                  "name":"malware_instructionsPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":150,
-                 "x":90.6666666666667,
-                 "y":42
+                 "width":246.666666666667,
+                 "x":-34,
+                 "y":36.6666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
