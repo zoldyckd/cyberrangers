@@ -17,28 +17,26 @@ const goals: Goals = {
 const EXIT_AREA_NAME = "to-canteen";                 // exit gate area
 const NEXT_ROOM = "canteen.tmj#from-library";        // spawn in canteen
 
-let progressRef: ReturnType<typeof WA.ui.openPopup> | undefined;
+// simple debounce to avoid spamming toasts
+let toastCooldown = 0;
 
 export function initPhishingLibraryProgress() {
   WA.onInit().then(async () => {
     console.log("[PhishingLibraryProgress] ready");
 
-    // ✅ Hard-guard: only run in LIBRARY
+    // ✅ Hard-guard: only run this module in LIBRARY
     const mapId = await getMapId();
     if (mapId !== "library") {
       console.log("[PhishingLibraryProgress] skipped on non-library map:", mapId);
       return;
     }
 
-    // Safety: close UI if page/room unloads
-    window.addEventListener("beforeunload", closeProgressUI);
-
     // --- Easter Eggs ---
     ["phishing_SMSphishing", "phishing_MurdochEmail", "phishing_QRcode"].forEach((egg) => {
       WA.room.area.onEnter(egg).subscribe(() => {
         if (!goals[egg as keyof Goals]) {
           goals[egg as keyof Goals] = true;
-          notifyProgress();
+          notifyProgress(); // toast only (no anchor)
         }
       });
     });
@@ -52,18 +50,24 @@ export function initPhishingLibraryProgress() {
     });
 
     // --- Exit ---
-    WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(() => {
+    WA.room.area.onEnter(EXIT_AREA_NAME).subscribe(async () => {
       if (allDone()) {
-        // ✅ Close any progress UI before room switch so it can't “follow” you
-        closeProgressUI();
-        WA.nav.goToRoom(NEXT_ROOM);
+        // small delay to let any UI settle before room switch
+        setTimeout(() => WA.nav.goToRoom(NEXT_ROOM), 30);
       } else {
-        closeProgressUI(); // ensure only the gate popup is visible
-        WA.ui.openPopup(
-          "phishing_gate_popup",
-          `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 phishing easter eggs and talk to Brock before leaving.`,
-          [{ label: "OK", className: "primary", callback: (p) => p.close() }]
-        );
+        // Try anchored popup if you have it; otherwise fallback to toast
+        try {
+          WA.ui.openPopup(
+            "phishing_gate_popup", // <-- must be a rectangle object in Tiled
+            `🚧 Hold up!\n\nYou still need to complete:\n• ${missingList().join("\n• ")}\n\nFind all 3 phishing easter eggs and talk to Brock before leaving.`,
+            [{ label: "OK", className: "primary", callback: (p) => p.close() }]
+          );
+        } catch {
+          WA.ui.displayActionMessage({
+            message: `🚧 Hold up! Missing: ${missingList().join(", ")}`,
+            callback: () => {},
+          });
+        }
       }
     });
   });
@@ -84,7 +88,10 @@ function missingList(): string[] {
 }
 
 function notifyProgress() {
-  // Show as a popup we control (so we can close it on exit)
+  const now = Date.now();
+  if (now - toastCooldown < 250) return; // debounce
+  toastCooldown = now;
+
   const done = [
     goals.phishing_SMSphishing ? "✅ SMS" : "⬜ SMS",
     goals.phishing_MurdochEmail ? "✅ MurdochEmail" : "⬜ MurdochEmail",
@@ -92,20 +99,13 @@ function notifyProgress() {
     goals.BrockZone ? "✅ Brock" : "⬜ Brock",
   ].join("   ");
 
-  closeProgressUI();
-  progressRef = WA.ui.openPopup(
-    "phishing_progressPopup",
-    `Progress: ${done}`,
-    [{ label: "Close", className: "primary", callback: closeProgressUI }]
-  );
+  WA.ui.displayActionMessage({
+    message: `Progress: ${done}`,
+    callback: () => {}, // toast-style, auto-fades, nothing to close()
+  });
 }
 
-function closeProgressUI() {
-  try { progressRef?.close?.(); } catch {}
-  progressRef = undefined;
-}
-
-// Minimal, robust mapId detector (URL → Tiled map property)
+// Minimal mapId detector (URL → Tiled map property)
 async function getMapId(): Promise<string> {
   try {
     const m = decodeURIComponent(location.href).match(/\/([^\/?#]+)\.tmj/i);
