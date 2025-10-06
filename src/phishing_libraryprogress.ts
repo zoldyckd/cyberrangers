@@ -32,7 +32,7 @@ export function initPhishingLibraryProgress() {
     });
 
     // --- NPC ---
-    WA.room.area.onEnter("BrockZone").subscribe(() => {
+    WA.room.area.onEnter("phishing_Brock").subscribe(() => {
       if (!goals.BrockZone) {
         goals.BrockZone = true;
         notifyProgress();
