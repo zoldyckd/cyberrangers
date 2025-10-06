@@ -8,7 +8,7 @@ const MAP_CONFIG: Record<
   string,
   {
     tasks: { key: string; label: string; area: string }[];
-    exitGate?: { area: string; nextRoom: string; warnAnchorId?: string }; // warnAnchorId optional
+    exitGate?: { area: string; nextRoom: string; warnAnchorId?: string };
   }
 > = {
   // ===== LIBRARY (Phishing) =====
@@ -22,8 +22,7 @@ const MAP_CONFIG: Record<
     exitGate: {
       area: "to-canteen",
       nextRoom: "canteen.tmj#from-library",
-      // If you have a rectangle anchor in Tiled you want to use for the warning popup, put its name here:
-      // warnAnchorId: "phishing_gate_popup",
+      warnAnchorId: "phishing_gate_popup", // your Tiled rectangle anchor
     },
   },
 
@@ -39,10 +38,16 @@ const MAP_CONFIG: Record<
   },
 };
 
+type Task = { key: string; label: string; area: string };
 type Goals = Record<string, boolean>;
+
 let goals: Goals = {};
-let currentTasks: { key: string; label: string; area: string }[] = [];
+let currentTasks: Task[] = [];
 let toastCooldown = 0;
+
+// Gate state (to prevent stacking)
+let gatePopupRef: ReturnType<typeof WA.ui.openPopup> | undefined;
+let gateCooldown = 0;
 
 export function initProgressChecker() {
   WA.onInit().then(async () => {
@@ -57,50 +62,83 @@ export function initProgressChecker() {
     currentTasks = cfg.tasks;
     goals = Object.fromEntries(currentTasks.map(t => [t.key, false]));
 
-    // Task listeners
+    // --- Task listeners ---
     currentTasks.forEach(t => {
       try {
         WA.room.area.onEnter(t.area).subscribe(() => {
           if (!goals[t.key]) {
             goals[t.key] = true;
             showProgress();
+
+            // Optional: celebrate when all complete
+            if (allDone()) {
+              WA.ui.displayActionMessage({
+                message: "✅ All tasks done! You may proceed to the exit.",
+                callback: () => {},
+              });
+            }
           }
         });
       } catch (e) {
-        console.warn(`[ProgressChecker] area '${t.area}' not found on map '${mapId}'`, e);
+        console.warn(`[ProgressChecker] area '${t.area}' not found on this map`, e);
       }
     });
 
-    // Exit gate listener
+    // --- Exit gate listener (single-instance, anchored, no stacking) ---
     if (cfg.exitGate) {
-      WA.room.area.onEnter(cfg.exitGate.area).subscribe(() => {
+      const { area, nextRoom, warnAnchorId } = cfg.exitGate;
+
+      // Enter gate
+      WA.room.area.onEnter(area).subscribe(() => {
         if (allDone()) {
           // tiny delay to avoid UI race conditions
-          setTimeout(() => WA.nav.goToRoom(cfg.exitGate!.nextRoom), 30);
-        } else {
-          const missing = missingList();
-          // Try anchored popup if an anchor name was provided; otherwise use toast
-          if (cfg.exitGate?.warnAnchorId) {
-            try {
-              WA.ui.openPopup(
-                cfg.exitGate.warnAnchorId,
-                `🚧 Hold up!\n\nYou still need to complete:\n• ${missing.join("\n• ")}\n\nFind all tasks in this room before leaving.`,
-                [{ label: "OK", className: "primary", callback: p => p.close() }]
-              );
-              return;
-            } catch {
-              // fall through to toast
-            }
-          }
-          WA.ui.displayActionMessage({
-            message: `🚧 Hold up! Missing: ${missing.join(", ")}`,
-            callback: () => {},
-          });
+          setTimeout(() => WA.nav.goToRoom(nextRoom), 30);
+          return;
         }
+
+        const now = Date.now();
+        if (now - gateCooldown < 500) return; // debounce rapid re-fires
+        gateCooldown = now;
+
+        const missing = missingList();
+
+        if (warnAnchorId) {
+          try {
+            try { gatePopupRef?.close?.(); } catch {}
+            gatePopupRef = WA.ui.openPopup(
+              warnAnchorId,
+              `🚧 Hold up!\n\nYou still need to complete:\n• ${missing.join("\n• ")}\n\nFind all tasks in this room before leaving.`,
+              [
+                {
+                  label: "Close",
+                  className: "primary",
+                  callback: () => {
+                    try { gatePopupRef?.close?.(); } catch {}
+                    gatePopupRef = undefined;
+                  },
+                },
+              ]
+            );
+            return;
+          } catch {
+            // fall through to toast if anchor missing
+          }
+        }
+
+        WA.ui.displayActionMessage({
+          message: `🚧 Hold up! Missing: ${missing.join(", ")}`,
+          callback: () => {},
+        });
+      });
+
+      // Leave gate — close any lingering popup & allow re-entry
+      WA.room.area.onLeave(area).subscribe(() => {
+        try { gatePopupRef?.close?.(); } catch {}
+        gatePopupRef = undefined;
       });
     }
 
-    // Optional: show initial empty progress shortly after load
+    // Show initial empty progress shortly after load
     setTimeout(showProgress, 300);
   });
 }
@@ -110,6 +148,13 @@ export function markTaskDone(taskKey: string) {
   if (taskKey in goals && !goals[taskKey]) {
     goals[taskKey] = true;
     showProgress();
+
+    if (allDone()) {
+      WA.ui.displayActionMessage({
+        message: "✅ All tasks done! You may proceed to the exit.",
+        callback: () => {},
+      });
+    }
   }
 }
 
