@@ -3,6 +3,8 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
+import { initProgressChecker } from "./progresschecker";
+
 
 // phishing - library room
 import { initphishing_QRcode } from "./phishing_qrcode";
@@ -39,6 +41,9 @@ WA.onInit().then(async () => {
   initBoard();
   initMarvie();
 
+  // ✅ Progress checker (auto-guards by mapId)
+  initProgressChecker();
+  
   // ------------------------------------------
   // Map detection (robust): URL -> WA API -> Tiled map property `mapId`
   // ------------------------------------------
