@@ -5,7 +5,6 @@ import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
 import { initProgressChecker } from "./progresschecker";
 
-
 // phishing - library room
 import { initphishing_QRcode } from "./phishing_qrcode";
 import { initphishing_MurdochEmail } from "./phishing_murdochemail";
@@ -26,6 +25,9 @@ import { initOfficeProgress } from "./officeprogress";
 
 // canteen - malware room
 import { initMalwareInstructions } from "./malware_instructions";
+import { initMalwareDiscord } from "./malware_discord"; // 🆕 add this
+import { initMalwareUsbDrive } from "./malware_usbdrive"; // 🆕 if you have it
+import { initMalwareTrojan } from "./malware_trojan"; // 🆕 for trojan popup
 
 console.log("Script started");
 
@@ -42,7 +44,7 @@ WA.onInit().then(async () => {
 
   // ✅ Progress checker (auto-guards by mapId)
   initProgressChecker();
-  
+
   // ------------------------------------------
   // Map detection (robust): URL -> WA API -> Tiled map property `mapId`
   // ------------------------------------------
@@ -60,6 +62,7 @@ WA.onInit().then(async () => {
     initSafeInternetPractices();
     initOfficeProgress(); // keep here only if garden has the required objects
   }
+
   else if (mapId === "library") {
     console.log("[Router] Initializing LIBRARY (Phishing) features…");
     initphishing_QRcode();
@@ -69,10 +72,15 @@ WA.onInit().then(async () => {
     initPhishingLibrarySpawnNote();
     initPhishingBrock();
   }
+
   else if (mapId === "canteen") {
     console.log("[Router] Initializing CANTEEN (Malware) features…");
     initMalwareInstructions();
+    initMalwareDiscord();     // 🆕 Discord scam popup
+    initMalwareUsbDrive();    // 🆕 USB malware popup
+    initMalwareTrojan();      // 🆕 Trojan popup
   }
+
   else {
     console.warn(
       "[Router] Unknown map; only common features started. " +
@@ -89,23 +97,20 @@ WA.onInit().then(async () => {
  *  3) Tiled Map Property: `mapId` (add it in Tiled: Map -> Properties)
  */
 async function detectMapId(): Promise<string> {
-  // 1) Try URL
   try {
     const full = decodeURIComponent(window.location.href);
     const m = full.match(/\/([^\/?#]+)\.tmj/i);
     if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen"
   } catch {}
 
-  // 2) Try WA API (may not expose url/name on some builds)
   try {
     const tiled: any = await WA.room.getTiledMap?.();
     const raw = (tiled?.url ?? tiled?.name ?? "").toString();
     if (raw) {
       const base = (raw.split("/").pop() || raw).toLowerCase();
       if (base.endsWith(".tmj")) return base.replace(/\.tmj$/, "");
-      return base; // sometimes returns plain name without .tmj
+      return base;
     }
-    // 3) Try Tiled Map Property: mapId
     const props = tiled?.properties as Array<{ name: string; value: any }> | undefined;
     const fromProp = props?.find(p => p?.name === "mapId")?.value;
     if (typeof fromProp === "string" && fromProp.trim()) {

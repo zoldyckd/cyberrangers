@@ -11,10 +11,11 @@ const MAP_CONFIG: Record<
   // ===== LIBRARY (Phishing) =====
   library: {
     tasks: [
-      { key: "phishing_SMSphishing",  label: "SMS",          area: "phishing_SMSphishing" },
-      { key: "phishing_MurdochEmail", label: "MurdochEmail", area: "phishing_MurdochEmail" },
-      { key: "phishing_QRcode",       label: "QRcode",       area: "phishing_QRcode" },
-      { key: "phishing_Brock",        label: "Brock",        area: "phishing_Brock" },
+      { key: "phishing_SMSphishing",     label: "SMS",        area: "phishing_SMSphishing" },
+      { key: "phishing_MurdochEmail",    label: "MurdochEmail", area: "phishing_MurdochEmail" },
+      { key: "phishing_QRcode",          label: "QRcode",     area: "phishing_QRcode" },
+      // 👇 replaced Brock with phishing_instructions
+      { key: "phishing_instructions",    label: "PPT Slides", area: "phishing_instructions" },
     ],
     exitGate: {
       area: "to-canteen",
@@ -26,10 +27,10 @@ const MAP_CONFIG: Record<
   // ===== CANTEEN (Malware) =====
   canteen: {
     tasks: [
-      { key: "malware_instructions", label: "Slides", area: "malware_instructions" },
-      // { key: "malware_usb",     label: "USB",    area: "malware_usb" },
-      // { key: "malware_poster",  label: "Poster", area: "malware_poster" },
-      // { key: "malware_npc",     label: "NPC",    area: "malware_npc" },
+      { key: "malware_instructions", label: "Slides",  area: "malware_instructions" },
+      { key: "malware_discord",      label: "Discord", area: "malware_discord" },  // 👈 added
+      // { key: "malware_usbdrive",  label: "USB",     area: "malware_usbdrive" },
+      // { key: "malware_trojan",    label: "Trojan",  area: "malware_trojan" },
     ],
     // exitGate: { area: "to-classroom", nextRoom: "classroom.tmj#from-canteen" },
   },
@@ -60,14 +61,6 @@ function loadGoals(mapId: string): Goals | null {
 /** Remove goals from all *other* maps (prevents cross-map stacking). */
 function clearOtherMaps(currentMapId: string) {
   try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (!k) continue;
-      if (k.startsWith(STORAGE_PREFIX) && !k.endsWith(currentMapId)) {
-        // Defensive: iterate separately to avoid index shift while removing
-      }
-    }
-    // Do a second pass to actually remove (avoids index juggling)
     const toDelete: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
@@ -103,17 +96,14 @@ export function initProgressChecker() {
     initializedForMap = mapId;
 
     const cfg = MAP_CONFIG[mapId];
-    if (!cfg) {
-      console.log("[ProgressChecker] No config for map:", mapId);
-      // still clear leftover state from other maps
-      hardCloseAllUi();
-      clearOtherMaps(mapId);
-      return;
-    }
-
     // Clean slate on map load: close lingering UI and purge other maps' progress
     hardCloseAllUi();
     clearOtherMaps(mapId);
+
+    if (!cfg) {
+      console.log("[ProgressChecker] No config for map:", mapId);
+      return;
+    }
 
     console.log("[ProgressChecker] Init for map:", mapId);
     currentTasks = cfg.tasks;
@@ -161,7 +151,7 @@ export function initProgressChecker() {
           exiting = true;
           hardCloseAllUi();
           try { WA.controls.disablePlayerControls(); } catch {}
-          // We *also* clear this map's progress so coming back is fresh (optional)
+          // Optional: clear this map's progress so coming back is fresh
           try { localStorage.removeItem(storageKey(mapId)); } catch {}
           setTimeout(() => WA.nav.goToRoom(nextRoom), 40);
           return;
@@ -215,7 +205,6 @@ export function markTaskDone(taskKey: string) {
   if (exiting) return;
   if (taskKey in goals && !goals[taskKey]) {
     goals[taskKey] = true;
-    // persist under current map
     const mapId = initializedForMap || "";
     if (mapId) saveGoals(mapId, goals);
 
