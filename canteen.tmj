@@ -427,8 +427,8 @@
                  "type":"",
                  "visible":true,
                  "width":246.666666666667,
-                 "x":-34,
-                 "y":36.6666666666667
+                 "x":256,
+                 "y":96
                 }, 
                 {
                  "height":35.3333333333334,
@@ -448,7 +448,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to open up the PPT"
+                         "value":"Press SPACE to pick up the USB drive"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -513,7 +513,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to open up the PPT"
+                         "value":"Press SPACE to take a look at the PC"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -530,8 +530,8 @@
                  "type":"",
                  "visible":true,
                  "width":256,
-                 "x":0,
-                 "y":192
+                 "x":224,
+                 "y":224
                 }, 
                 {
                  "height":32,
@@ -551,7 +551,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to open up the PPT"
+                         "value":"Press SPACE to check out the PC"
                         }],
                  "rotation":0,
                  "type":"area",

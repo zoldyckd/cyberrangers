@@ -24,17 +24,22 @@ const MAP_CONFIG: Record<
     },
   },
 
-  // ===== CANTEEN (Malware) =====
-  canteen: {
-    tasks: [
-      { key: "malware_instructions", label: "Slides",  area: "malware_instructions" },
-      { key: "malware_discord",      label: "Discord", area: "malware_discord" },  // 👈 added
-      // { key: "malware_usbdrive",  label: "USB",     area: "malware_usbdrive" },
-      // { key: "malware_trojan",    label: "Trojan",  area: "malware_trojan" },
-    ],
-    // exitGate: { area: "to-classroom", nextRoom: "classroom.tmj#from-canteen" },
+// ===== CANTEEN (Malware) =====
+canteen: {
+  tasks: [
+    { key: "malware_instructions", label: "Slides",  area: "malware_instructions" },
+    { key: "malware_discord",      label: "Discord", area: "malware_discord" },
+    { key: "malware_usbdrive",     label: "USB",     area: "malware_usbdrive" },
+    { key: "malware_trojan",       label: "Trojan",  area: "malware_trojan" },
+  ],
+  exitGate: {
+    area: "to-classroom",                      // <- must match your area name in Tiled
+    nextRoom: "classroom.tmj#from-canteen",    // <- where to go when ALL tasks are done
+    warnAnchorId: "malware_gate_popup",        // <- add a rectangle anchor near the stairs
   },
-};
+},
+
+
 
 type Task  = { key: string; label: string; area: string };
 type Goals = Record<string, boolean>;
