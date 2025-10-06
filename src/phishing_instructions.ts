@@ -24,7 +24,7 @@ function openPopup() {
 
   popupRef = WA.ui.openPopup(
     "phishing_instructionsPopup",
-    "🧑‍💻 Go through the PPT to prepare yourself for when you explore the room!",
+    "🧑‍💻 Quick! We saw one of the hackers going through this room! They are using phishing emails and dodgy QR codes to endanger students on campus! Before you chase after him, you should read these slides to learn how you can defend against Phishing.  ",
     [
       {
         label: "Got it!",
