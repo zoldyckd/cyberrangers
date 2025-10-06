@@ -32,97 +32,36 @@ tw-passage {          /* Harlowe */
   padding: 24px 28px;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-}
-
-/* Panel/container */
-.byte-panel {
-  background: rgba(0,0,0,0.55);
-  border-radius: 16px;
-  padding: 14px;
-  backdrop-filter: blur(2px);
-}
-
-/* Row layout: avatar left, text right */
-.byte-row {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-
-/* Avatar */
-.byte-avatar {
-  width: 110px;            /* tweak 90–140 as you like */
-  border-radius: 12px;     /* match your rounded image */
-  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
-  flex: 0 0 auto;
-}
-
-/* Text block */
-.byte-text {
-  color: #fff;
-  line-height: 1.45;
-}
-
-/* Name label */
-.byte-name {
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-
-/* Lesson block */
-.byte-lessons {
-  margin-top: 10px;
-}
-
-.byte-lessons b {
-  display: inline-block;
-  margin-bottom: 4px;
-}
-
-/* Mobile: stack avatar above text */
-@media (max-width: 640px) {
-  .byte-row { flex-direction: column; align-items: center; }
-  .byte-text { text-align: left; width: 100%; }
-  .byte-avatar { width: 120px; }
-}
-</style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-passagedata pid="1" name="start" tags="" position="475,400" size="100,100">Welcome to **Cyber Rangers: Phishing Case Files**.  
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-passagedata pid="1" name="start" tags="" position="475,400" size="100,100">Welcome to **Cyber Rangers: Phishing Case Files**.  
 You are asked by Murdoch IT to help investigate suspicious messages spreading across campus.  
 
 Your task: Explore each suspicious case and uncover how phishing works.  
 It doesn’t matter which one you investigate first — all are important.  
 
 [[Begin Investigation|Checking Email]]
-</tw-passagedata><tw-passagedata pid="2" name="Outro" tags="" position="975,775" size="100,100">&lt;div class=&quot;byte-panel&quot;&gt;
-  &lt;div class=&quot;byte-row&quot;&gt;
-    &lt;img src=&quot;assets/professorbyte.png&quot; alt=&quot;Professor Byte&quot; class=&quot;byte-avatar&quot;&gt;
+</tw-passagedata><tw-passagedata pid="2" name="Outro" tags="" position="975,775" size="100,100">&lt;div style=&quot;display:flex; align-items:flex-start; gap:12px;&quot;&gt;
 
-    &lt;div class=&quot;byte-text&quot;&gt;
-      &lt;div class=&quot;byte-name&quot;&gt;Professor Byte:&lt;/div&gt;
-      &lt;div&gt;“Great work investigating this case! You’ve seen how phishing emails use fear, urgency,
-      and fake links to trap users.”&lt;/div&gt;
+  &lt;!-- Professor Byte full body --&gt;
+  &lt;img src=&quot;assets/professorbyte.png&quot; 
+       alt=&quot;Professor Byte&quot; 
+       style=&quot;width:150px; flex-shrink:0;&quot;&gt;
 
-      &lt;div class=&quot;byte-lessons&quot;&gt;
-        &lt;b&gt;Lesson Summary:&lt;/b&gt;
-        &lt;ul style=&quot;margin:6px 0 0 18px;&quot;&gt;
-          &lt;li&gt;Always verify sender addresses and URLs.&lt;/li&gt;
-          &lt;li&gt;Hover before you click.&lt;/li&gt;
-          &lt;li&gt;Report suspicious emails to IT — don’t just delete them.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/div&gt;
-
-      [[End the case|End]]
-    &lt;/div&gt;
+  &lt;!-- Dialogue text --&gt;
+  &lt;div style=&quot;color:#fff; line-height:1.5;&quot;&gt;
+    &lt;b&gt;Professor Byte:&lt;/b&gt;&lt;br&gt;
+    “Great work investigating this case! You’ve seen how phishing emails use fear, urgency,
+    and fake links to trap users.”
   &lt;/div&gt;
 &lt;/div&gt;
 
+&lt;br&gt;
+&lt;b&gt;Lesson Summary:&lt;/b&gt;&lt;br&gt;
+- Always verify sender addresses and URLs.&lt;br&gt;
+- Hover before you click.&lt;br&gt;
+- Report suspicious emails to IT — don’t just delete them.&lt;br&gt;&lt;br&gt;
 
-
-**Lesson Summary:**  
-- Always verify sender addresses and URLs.  
-- Hover before you click.  
-- Report suspicious emails to IT — don’t just delete them.
-
-[[End the case|End]]</tw-passagedata><tw-passagedata pid="3" name="End" tags="" position="975,925" size="100,100">
+[[End the case|End]]
+</tw-passagedata><tw-passagedata pid="3" name="End" tags="" position="975,925" size="100,100">
 You close the fake email and log out safely.  
 Another phishing threat foiled! 🛡️  
 
