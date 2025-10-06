@@ -23,6 +23,9 @@ import { initStickyNote } from "./stickynote";
 import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
 import { initOfficeProgress } from "./officeprogress";
 
+// canteen - malware room
+import { initMalwareInstructions } from "./malware_instructions";
+
 console.log("Script started");
 
 WA.onInit().then(async () => {
@@ -63,9 +66,15 @@ WA.onInit().then(async () => {
     initPhishingLibrarySpawnNote();
     initPhishingBrock();
   }
+  else if (mapId === "canteen") {
+    console.log("[Router] Initializing CANTEEN (Malware) features…");
+    initMalwareInstructions();
+  }
   else {
-    console.warn("[Router] Unknown map; only common features started. " +
-      "Set a Tiled Map Property `mapId` (string) to enable map-specific inits.");
+    console.warn(
+      "[Router] Unknown map; only common features started. " +
+      "Set a Tiled Map Property `mapId` (string) to enable map-specific inits."
+    );
   }
 });
 
@@ -81,7 +90,7 @@ async function detectMapId(): Promise<string> {
   try {
     const full = decodeURIComponent(window.location.href);
     const m = full.match(/\/([^\/?#]+)\.tmj/i);
-    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden"
+    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen"
   } catch {}
 
   // 2) Try WA API (may not expose url/name on some builds)
