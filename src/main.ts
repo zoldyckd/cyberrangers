@@ -1,8 +1,12 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
+
+// Always-on (safe anywhere)
 import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
+
+// Progress system (reads phishing_progress.ts + malware_progress.ts)
 import { initProgressChecker } from "./progresschecker";
 
 // phishing - library room
@@ -11,7 +15,6 @@ import { initphishing_MurdochEmail } from "./phishing_murdochemail";
 import { initphishing_SMSphishing } from "./phishing_smsphishing";
 import { initPhishingInstructions } from "./phishing_instructions";
 import { initPhishingLibrarySpawnNote } from "./phishing_librarySpawnNote";
-import { initPhishingBrock } from "./phishing_brock";
 
 // garden / common features
 import { initBillboard } from "./billboard";
@@ -25,9 +28,9 @@ import { initOfficeProgress } from "./officeprogress";
 
 // canteen - malware room
 import { initMalwareInstructions } from "./malware_instructions";
-import { initMalwareDiscord } from "./malware_discord"; // 🆕 add this
-import { initMalwareUsbDrive } from "./malware_usbdrive"; // 🆕 if you have it
-import { initMalwareTrojan } from "./malware_trojan"; // 🆕 for trojan popup
+import { initMalwareDiscord } from "./malware_discord";
+import { initMalwareUsbDrive } from "./malware_usbdrive";
+import { initMalwareTrojan } from "./malware_trojan";
 
 console.log("Script started");
 
@@ -42,7 +45,7 @@ WA.onInit().then(async () => {
   initBoard();
   initMarvie();
 
-  // ✅ Progress checker (auto-guards by mapId)
+  // ✅ Progress checker (auto-guards by mapId; handles gate + toasts)
   initProgressChecker();
 
   // ------------------------------------------
@@ -61,30 +64,24 @@ WA.onInit().then(async () => {
     initStickyNote();
     initSafeInternetPractices();
     initOfficeProgress(); // keep here only if garden has the required objects
-  }
-
-  else if (mapId === "library") {
+  } else if (mapId === "library") {
     console.log("[Router] Initializing LIBRARY (Phishing) features…");
     initphishing_QRcode();
     initphishing_MurdochEmail();
     initphishing_SMSphishing();
-    initPhishingInstructions();
+    initPhishingInstructions();        // PPT slides
     initPhishingLibrarySpawnNote();
-    initPhishingBrock();
-  }
-
-  else if (mapId === "canteen") {
+    // (Brock removed per new progress config)
+  } else if (mapId === "canteen") {
     console.log("[Router] Initializing CANTEEN (Malware) features…");
     initMalwareInstructions();
-    initMalwareDiscord();     // 🆕 Discord scam popup
-    initMalwareUsbDrive();    // 🆕 USB malware popup
-    initMalwareTrojan();      // 🆕 Trojan popup
-  }
-
-  else {
+    initMalwareDiscord();
+    initMalwareUsbDrive();
+    initMalwareTrojan();
+  } else {
     console.warn(
       "[Router] Unknown map; only common features started. " +
-      "Set a Tiled Map Property `mapId` (string) to enable map-specific inits."
+        "Set a Tiled Map Property `mapId` (string) to enable map-specific inits."
     );
   }
 });
@@ -97,22 +94,25 @@ WA.onInit().then(async () => {
  *  3) Tiled Map Property: `mapId` (add it in Tiled: Map -> Properties)
  */
 async function detectMapId(): Promise<string> {
+  // 1) Try URL
   try {
     const full = decodeURIComponent(window.location.href);
     const m = full.match(/\/([^\/?#]+)\.tmj/i);
     if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen"
   } catch {}
 
+  // 2) Try WA API (may not expose url/name on some builds)
   try {
     const tiled: any = await WA.room.getTiledMap?.();
     const raw = (tiled?.url ?? tiled?.name ?? "").toString();
     if (raw) {
       const base = (raw.split("/").pop() || raw).toLowerCase();
       if (base.endsWith(".tmj")) return base.replace(/\.tmj$/, "");
-      return base;
+      return base; // sometimes returns plain name without .tmj
     }
+    // 3) Try Tiled Map Property: mapId
     const props = tiled?.properties as Array<{ name: string; value: any }> | undefined;
-    const fromProp = props?.find(p => p?.name === "mapId")?.value;
+    const fromProp = props?.find((p) => p?.name === "mapId")?.value;
     if (typeof fromProp === "string" && fromProp.trim()) {
       return fromProp.trim().toLowerCase();
     }

@@ -1,82 +1,48 @@
 /// <reference types="@workadventure/iframe-api-typings" />
+import { PHISHING_PROGRESS } from "./phishing_progress";
+import { MALWARE_PROGRESS } from "./malware_progress";
 
-/** Per-map config */
-const MAP_CONFIG: Record<
-  string,
-  {
-    tasks: { key: string; label: string; area: string }[];
-    exitGate?: { area: string; nextRoom: string; warnAnchorId?: string };
-  }
-> = {
-  // ===== LIBRARY (Phishing) =====
-  library: {
-    tasks: [
-      { key: "phishing_SMSphishing",     label: "SMS",        area: "phishing_SMSphishing" },
-      { key: "phishing_MurdochEmail",    label: "MurdochEmail", area: "phishing_MurdochEmail" },
-      { key: "phishing_QRcode",          label: "QRcode",     area: "phishing_QRcode" },
-      // 👇 replaced Brock with phishing_instructions
-      { key: "phishing_instructions",    label: "PPT Slides", area: "phishing_instructions" },
-    ],
-    exitGate: {
-      area: "to-canteen",
-      nextRoom: "canteen.tmj#from-library",
-      warnAnchorId: "phishing_gate_popup",
-    },
-  },
-
-// ===== CANTEEN (Malware) =====
-canteen: {
-  tasks: [
-    { key: "malware_instructions", label: "Slides",  area: "malware_instructions" },
-    { key: "malware_discord",      label: "Discord", area: "malware_discord" },
-    { key: "malware_usbdrive",     label: "USB",     area: "malware_usbdrive" },
-    { key: "malware_trojan",       label: "Trojan",  area: "malware_trojan" },
-  ],
-  exitGate: {
-    area: "to-classroom",                      // <- must match your area name in Tiled
-    nextRoom: "classroom.tmj#from-canteen",    // <- where to go when ALL tasks are done
-    warnAnchorId: "malware_gate_popup",        // <- add a rectangle anchor near the stairs
-  },
-},
-
-
-
-type Task  = { key: string; label: string; area: string };
+/* ------------ types (local to this file) ------------ */
+type Task = { key: string; label: string; area: string };
+type SingleMapConfig = {
+  tasks: Task[];
+  exitGate?: { area: string; nextRoom: string; warnAnchorId?: string };
+};
+type MapConfigRecord = Record<string, SingleMapConfig>;
 type Goals = Record<string, boolean>;
 
-/* ----------------- storage helpers ----------------- */
-const STORAGE_PREFIX = "cr:goals:"; // per-map namespace
+/* ------------ merge per-room configs ------------ */
+const MAP_CONFIG: MapConfigRecord = {
+  ...PHISHING_PROGRESS,
+  ...MALWARE_PROGRESS,
+};
 
-function storageKey(mapId: string) {
-  return `${STORAGE_PREFIX}${mapId}`;
-}
+/* ------------ storage helpers ------------ */
+const STORAGE_PREFIX = "cr:goals:"; // per-map namespace
+const storageKey = (mapId: string) => `${STORAGE_PREFIX}${mapId}`;
 
 function saveGoals(mapId: string, goals: Goals) {
   try { localStorage.setItem(storageKey(mapId), JSON.stringify(goals)); } catch {}
 }
-
 function loadGoals(mapId: string): Goals | null {
   try {
     const raw = localStorage.getItem(storageKey(mapId));
-    if (!raw) return null;
-    return JSON.parse(raw) as Goals;
+    return raw ? (JSON.parse(raw) as Goals) : null;
   } catch { return null; }
 }
-
 /** Remove goals from all *other* maps (prevents cross-map stacking). */
 function clearOtherMaps(currentMapId: string) {
   try {
     const toDelete: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (!k) continue;
-      if (k.startsWith(STORAGE_PREFIX) && !k.endsWith(currentMapId)) toDelete.push(k);
+      if (k && k.startsWith(STORAGE_PREFIX) && !k.endsWith(currentMapId)) toDelete.push(k);
     }
     toDelete.forEach(k => localStorage.removeItem(k));
   } catch {}
 }
 
-/* ----------------- module state ----------------- */
+/* ------------ module state ------------ */
 let goals: Goals = {};
 let currentTasks: Task[] = [];
 let toastCooldown = 0;
@@ -84,9 +50,9 @@ let toastCooldown = 0;
 let gatePopupRef: ReturnType<typeof WA.ui.openPopup> | undefined;
 let gateCooldown = 0;
 let exiting = false;
-let initializedForMap = ""; // prevents double init if the script persists
+let initializedForMap = ""; // prevent double init if script persists
 
-/* ----------------- API ----------------- */
+/* ------------ public API ------------ */
 export function initProgressChecker() {
   WA.onInit().then(async () => {
     const mapId = (await getMapId()) || "";
@@ -94,13 +60,11 @@ export function initProgressChecker() {
       console.log("[ProgressChecker] No mapId resolved.");
       return;
     }
-    if (initializedForMap === mapId) {
-      // already initialized for this map; avoid duplicate subscriptions
-      return;
-    }
+    if (initializedForMap === mapId) return;
     initializedForMap = mapId;
 
     const cfg = MAP_CONFIG[mapId];
+
     // Clean slate on map load: close lingering UI and purge other maps' progress
     hardCloseAllUi();
     clearOtherMaps(mapId);
@@ -113,7 +77,7 @@ export function initProgressChecker() {
     console.log("[ProgressChecker] Init for map:", mapId);
     currentTasks = cfg.tasks;
 
-    // Try to restore, but ensure we only keep keys that exist in this map's tasks
+    // Restore progress (clamped to current task keys)
     const restored = loadGoals(mapId);
     const defaultGoals = Object.fromEntries(currentTasks.map(t => [t.key, false]));
     goals = { ...defaultGoals, ...(restored ?? {}) };
@@ -156,18 +120,17 @@ export function initProgressChecker() {
           exiting = true;
           hardCloseAllUi();
           try { WA.controls.disablePlayerControls(); } catch {}
-          // Optional: clear this map's progress so coming back is fresh
+          // Optional: clear current map progress so coming back is fresh
           try { localStorage.removeItem(storageKey(mapId)); } catch {}
           setTimeout(() => WA.nav.goToRoom(nextRoom), 40);
           return;
         }
 
         const now = Date.now();
-        if (now - gateCooldown < 500) return;
+        if (now - gateCooldown < 500) return; // debounce rapid re-fires
         gateCooldown = now;
 
         const missing = missingList();
-
         if (warnAnchorId) {
           try {
             closeGatePopup();
@@ -184,7 +147,7 @@ export function initProgressChecker() {
             );
             return;
           } catch {
-            // fall through to toast if anchor missing
+            // fall back to toast if the anchor is missing
           }
         }
 
@@ -205,7 +168,7 @@ export function initProgressChecker() {
   });
 }
 
-/** Optional external hook */
+/** Optional external hook (other scripts can mark tasks done manually) */
 export function markTaskDone(taskKey: string) {
   if (exiting) return;
   if (taskKey in goals && !goals[taskKey]) {
@@ -224,37 +187,29 @@ export function markTaskDone(taskKey: string) {
   }
 }
 
-/* ----------------- internals ----------------- */
+/* ------------ internals ------------ */
 function allDone(): boolean {
   return currentTasks.every(t => goals[t.key]);
 }
-
 function missingList(): string[] {
   return currentTasks.filter(t => !goals[t.key]).map(t => t.label);
 }
-
 function showProgress() {
   if (exiting) return;
-
   const now = Date.now();
-  if (now - toastCooldown < 150) return;
+  if (now - toastCooldown < 150) return; // debounce
   toastCooldown = now;
 
   const line = currentTasks
     .map(t => (goals[t.key] ? `✅ ${t.label}` : `⬜ ${t.label}`))
     .join("   ");
 
-  WA.ui.displayActionMessage({
-    message: `Progress:  ${line}`,
-    callback: () => {},
-  });
+  WA.ui.displayActionMessage({ message: `Progress:  ${line}`, callback: () => {} });
 }
-
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
 }
-
 function hardCloseAllUi() {
   closeGatePopup();
 }
