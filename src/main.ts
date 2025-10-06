@@ -10,7 +10,6 @@ import { initProgressChecker } from "./progresschecker";
 import { initphishing_QRcode } from "./phishing_qrcode";
 import { initphishing_MurdochEmail } from "./phishing_murdochemail";
 import { initphishing_SMSphishing } from "./phishing_smsphishing";
-import { initPhishingLibraryProgress } from "./phishing_libraryprogress";
 import { initPhishingInstructions } from "./phishing_instructions";
 import { initPhishingLibrarySpawnNote } from "./phishing_librarySpawnNote";
 import { initPhishingBrock } from "./phishing_brock";
@@ -66,7 +65,6 @@ WA.onInit().then(async () => {
     initphishing_QRcode();
     initphishing_MurdochEmail();
     initphishing_SMSphishing();
-    initPhishingLibraryProgress();
     initPhishingInstructions();
     initPhishingLibrarySpawnNote();
     initPhishingBrock();
