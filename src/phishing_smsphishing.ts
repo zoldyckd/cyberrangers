@@ -11,7 +11,7 @@ export function initphishing_SMSphishing() {
       closePopup();
       previewRef = WA.ui.openPopup(
         ANCHOR,
-        "📱 You received an SMS: “URGENT: Your bank account has been locked. Verify now to avoid service interruption.”\n\n⚠️ Messages like this try to rush you. What would you do? Press SPACE to help!",
+        "🔗 You received a message: “Your Murdoch account needs verification! Click here: https://tinyurl.com/murdoch-reset. Shortened links can hide where they actually lead. Always check the real destination before clicking! What would you do? Press SPACE to help!",
         [{ label: "Got it", callback: () => closePopup() }]
       );
     });
