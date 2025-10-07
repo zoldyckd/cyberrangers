@@ -38,6 +38,12 @@ import { initPasswordSecurityLMSAccount } from "./passwordsecurity_lmsaccount";
 import { initPasswordSecurityLMSPasswordExpired } from "./passwordsecurity_lmspasswordexpired";
 import { initPasswordSecurityUnlockedPC } from "./passwordsecurity_unlockedpc";
 
+// hall - safe internet practices (hub)
+import { initSafeInternetPracticesFreeWifi } from "./safeinternetpractices_freewifi";
+import { initSafeInternetPracticesFileUploads } from "./safeinternetpractices_fileuploads";
+import { initSafeInternetPracticesOutdatedSoftware } from "./safeinternetpractices_outdatedsoftware";
+import { initSafeInternetPracticesInstructions } from "./safeinternetpractices_instructions";
+
 console.log("Script started");
 
 WA.onInit().then(async () => {
@@ -90,6 +96,12 @@ WA.onInit().then(async () => {
     initPasswordSecurityLMSAccount();         // “borrow my account?” scenario
     initPasswordSecurityLMSPasswordExpired(); // password renewal scenario
     initPasswordSecurityUnlockedPC();         // unlocked PC scenario
+  } else if (mapId === "hall") {
+    console.log("[Router] Initializing HALL (Safe Internet Practices) features…");
+    initSafeInternetPracticesFreeWifi();
+    initSafeInternetPracticesFileUploads();
+    initSafeInternetPracticesOutdatedSoftware();
+	initSafeInternetPracticesInstructions();
   } else {
     console.warn(
       "[Router] Unknown map; only common features started. " +
@@ -110,7 +122,7 @@ async function detectMapId(): Promise<string> {
   try {
     const full = decodeURIComponent(window.location.href);
     const m = full.match(/\/([^\/?#]+)\.tmj/i);
-    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen", "classroom"
+    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen", "classroom", "hall"
   } catch {}
 
   // 2) Try WA API (may not expose url/name on some builds)

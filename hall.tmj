@@ -17,8 +17,8 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 1705, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 1705, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -308,7 +308,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2954, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -320,7 +320,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":20,
          "id":14,
-         "name":"portals",
+         "name":"flooritems",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -358,13 +358,7 @@
                 {
                  "height":32,
                  "id":31,
-                 "name":"to-library",
-                 "properties":[
-                        {
-                         "name":"exitUrl",
-                         "type":"string",
-                         "value":"library.tmj#from-hall"
-                        }],
+                 "name":"to-computerlab",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -375,7 +369,7 @@
                 {
                  "height":32,
                  "id":33,
-                 "name":"from-garden",
+                 "name":"from-classroom",
                  "properties":[
                         {
                          "name":"start",
@@ -392,7 +386,7 @@
                 {
                  "height":32,
                  "id":34,
-                 "name":"suspiciouslink",
+                 "name":"safeinternetpractices_freewifi",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -401,15 +395,92 @@
                  "y":192
                 }, 
                 {
-                 "height":76,
+                 "height":119,
                  "id":35,
-                 "name":"suspiciouslinkPopuip",
+                 "name":"safeinternetpractices_freewifiPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":113.75,
-                 "x":430.25,
+                 "width":206.75,
+                 "x":337.25,
                  "y":116
+                }, 
+                {
+                 "height":44.6666666666667,
+                 "id":37,
+                 "name":"safeinternetpractices_fileuploads",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":52,
+                 "x":118.333333333333,
+                 "y":96
+                }, 
+                {
+                 "height":108.666666666667,
+                 "id":39,
+                 "name":"safeinternetpractices_fileuploadsPopup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":237.333333333333,
+                 "x":10,
+                 "y":103.333333333333
+                }, 
+                {
+                 "height":33,
+                 "id":44,
+                 "name":"safeinternetpractices_outdatedsoftware",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":320,
+                 "y":320
+                }, 
+                {
+                 "height":128,
+                 "id":46,
+                 "name":"safeinternetpractices_outdatedsoftwarePopup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":352,
+                 "x":192,
+                 "y":256
+                }, 
+                {
+                 "height":47.3333333333333,
+                 "id":47,
+                 "name":"safeinternetpractices_instructions",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":59.3333333333333,
+                 "x":212,
+                 "y":463.333333333333
+                }, 
+                {
+                 "height":140,
+                 "id":48,
+                 "name":"safeinternetpractices_instructionsPopup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":302.666666666667,
+                 "x":236,
+                 "y":346
+                }, 
+                {
+                 "height":133,
+                 "id":52,
+                 "name":"safeinternetpractices_gate_popup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":212.5,
+                 "x":560,
+                 "y":-7
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -420,6 +491,111 @@
         {
          "id":11,
          "layers":[
+                {
+                 "draworder":"topdown",
+                 "id":18,
+                 "name":"npc name",
+                 "objects":[
+                        {
+                         "height":16.578125,
+                         "id":51,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "bold":true,
+                             "fontfamily":"Segoe UI",
+                             "pixelsize":11,
+                             "text":"Professor Byte",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":79.546875,
+                         "x":204.643229166667,
+                         "y":452.252604166667
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":19,
+                 "name":"lightbulbs",
+                 "objects":[
+                        {
+                         "height":19.3281,
+                         "id":41,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802,
+                         "x":547.8099,
+                         "y":126.33595
+                        }, 
+                        {
+                         "height":19.3281,
+                         "id":42,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802,
+                         "x":130.8099,
+                         "y":82.33595
+                        }, 
+                        {
+                         "height":19.3281,
+                         "id":43,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802,
+                         "x":324.8099,
+                         "y":305.83595
+                        }, 
+                        {
+                         "height":19.3281,
+                         "id":50,
+                         "name":"",
+                         "rotation":0,
+                         "text":
+                            {
+                             "text":"\ud83d\udca1",
+                             "wrap":true
+                            },
+                         "type":"",
+                         "visible":true,
+                         "width":24.3802,
+                         "x":230.476566666667,
+                         "y":436.33595
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
                 {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -455,7 +631,7 @@
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 2906, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -489,8 +665,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":18,
- "nextobjectid":37,
+ "nextlayerid":21,
+ "nextobjectid":53,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -1769,6 +1945,32 @@
          "name":"[Base]BaseChip_pipo",
          "spacing":0,
          "tilecount":1064,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":12,
+         "firstgid":2870,
+         "image":"tilesets\/Characters_free\/Bob_16x16.png",
+         "imageheight":224,
+         "imagewidth":384,
+         "margin":0,
+         "name":"Bob_16x16",
+         "spacing":0,
+         "tilecount":84,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":1,
+         "firstgid":2954,
+         "image":"tilesets\/laptop.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"laptop",
+         "spacing":0,
+         "tilecount":1,
          "tileheight":32,
          "tilewidth":32
         }],
