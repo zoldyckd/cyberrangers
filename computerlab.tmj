@@ -456,6 +456,22 @@
                  "height":65,
                  "id":29,
                  "name":"idtheft_instructions",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to talk"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -478,6 +494,22 @@
                  "height":48,
                  "id":31,
                  "name":"idtheft_sensitivepapers",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open the locker"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -500,6 +532,22 @@
                  "height":38.6666666666667,
                  "id":34,
                  "name":"idtheft_customerservicecall",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to pick up the phone"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -631,6 +679,22 @@
                          "height":29.75,
                          "id":41,
                          "name":"idtheft_celebration",
+                         "properties":[
+                                {
+                                 "name":"openWebsite",
+                                 "type":"string",
+                                 "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                                }, 
+                                {
+                                 "name":"openWebsiteTrigger",
+                                 "type":"string",
+                                 "value":"onaction"
+                                }, 
+                                {
+                                 "name":"openWebsiteTriggerMessage",
+                                 "type":"string",
+                                 "value":"Press SPACE to take a selfie"
+                                }],
                          "rotation":0,
                          "type":"area",
                          "visible":true,

@@ -418,6 +418,22 @@
                  "height":32,
                  "id":34,
                  "name":"safeinternetpractices_freewifi",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to take a closer look at the poster"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -440,6 +456,22 @@
                  "height":44.6666666666667,
                  "id":37,
                  "name":"safeinternetpractices_fileuploads",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to talk to your classmate"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -462,6 +494,22 @@
                  "height":33,
                  "id":44,
                  "name":"safeinternetpractices_outdatedsoftware",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to pick up this laptop"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -484,6 +532,22 @@
                  "height":47.3333333333333,
                  "id":47,
                  "name":"safeinternetpractices_instructions",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to talk "
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,

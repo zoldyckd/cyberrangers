@@ -486,7 +486,17 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"www.google.com"
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to enter the survey page"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -503,7 +513,17 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"www.google.com"
+                         "value":"https:\/\/view.officeapps.live.com\/op\/view.aspx?src=https%3A%2F%2Fzoldyckd.github.io%2Fcyberrangers%2Fwebsitepopup%2FPhishing.pptx\n"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to engage CipherX"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -616,8 +636,8 @@
                          "type":"",
                          "visible":true,
                          "width":223.333333333333,
-                         "x":182.666666666667,
-                         "y":-37.3333333333333
+                         "x":200.666666666667,
+                         "y":82.6666666666667
                         }],
                  "opacity":1,
                  "type":"objectgroup",
