@@ -379,12 +379,6 @@
                  "height":32,
                  "id":4,
                  "name":"to-classroom",
-                 "properties":[
-                        {
-                         "name":"exitUrl",
-                         "type":"string",
-                         "value":"classroom.tmj#from-canteen"
-                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -393,7 +387,7 @@
                  "y":352
                 }, 
                 {
-                 "height":54.6363636363643,
+                 "height":61.3863636363643,
                  "id":9,
                  "name":"malware_instructions",
                  "properties":[

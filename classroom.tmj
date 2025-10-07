@@ -418,7 +418,7 @@
                  "y":288
                 }, 
                 {
-                 "height":40.9090909090909,
+                 "height":58.4090909090909,
                  "id":12,
                  "name":"passwordsecurity_instructions",
                  "properties":[
@@ -440,8 +440,8 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":55.4545454545455,
-                 "x":563.272727272727,
+                 "width":91.4545454545455,
+                 "x":546.772727272727,
                  "y":256
                 }, 
                 {
@@ -1871,6 +1871,16 @@
          "spacing":0,
          "tilecount":84,
          "tileheight":32,
+         "tiles":[
+                {
+                 "id":36,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }],
          "tilewidth":32
         }],
  "tilewidth":32,
