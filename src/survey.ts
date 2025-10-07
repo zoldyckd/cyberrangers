@@ -8,7 +8,13 @@ export function initSurvey() {
 
     // Show popup when entering the area
     WA.room.area.onEnter("survey").subscribe(() => {
-      openPopup();
+      // Check if CipherX is cleared first
+      const bossCleared = localStorage.getItem("cr:goals:office");
+      if (bossCleared && bossCleared.includes('"finalboss":true')) {
+        openPopup();
+      } else {
+        showBlockedMessage();
+      }
     });
 
     // Close popup when leaving the area
@@ -28,6 +34,21 @@ function openPopup() {
     [
       {
         label: "Open Survey",
+        className: "primary",
+        callback: () => closePopup(),
+      },
+    ]
+  );
+}
+
+function showBlockedMessage() {
+  closePopup();
+  popupRef = WA.ui.openPopup(
+    "surveyBlockedPopup",
+    "🚫 You can’t proceed yet! Defeat CipherX first before you can access the survey.",
+    [
+      {
+        label: "Okay",
         className: "primary",
         callback: () => closePopup(),
       },
