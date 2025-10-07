@@ -1,25 +1,17 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-let bossPopupRef: any | undefined;
+let popupRef: any | undefined;
 
 export function initFinalBossCipherX() {
   WA.onInit().then(() => {
     console.log("[WA] Final Boss CipherX ready");
 
-    // Show hint when entering the area (but do NOT open yet)
+    // Show popup when entering the area
     WA.room.area.onEnter("finalboss_cipherx").subscribe(() => {
-      WA.ui.displayActionMessage({
-        message: "Press SPACE to confront CipherX",
-        callback: () => openPopup(),
-      });
-    });
-
-    // Only open when player presses SPACE inside the area
-    WA.room.area.onAction("finalboss_cipherx").subscribe(() => {
       openPopup();
     });
 
-    // Close if player leaves the area
+    // Close popup when leaving the area
     WA.room.area.onLeave("finalboss_cipherx").subscribe(() => {
       closePopup();
     });
@@ -27,11 +19,12 @@ export function initFinalBossCipherX() {
 }
 
 function openPopup() {
+  // Prevent duplicates
   closePopup();
 
-  bossPopupRef = WA.ui.openPopup(
+  popupRef = WA.ui.openPopup(
     "finalboss_cipherxPopup",
-    "👾 So... you’ve made it through every challenge — phishing, malware, weak passwords, stolen identities. You’ve been a thorn in my plans for far too long!\n\nPress SPACE in the quiz area to face CipherX in the final showdown!",
+    "👾 So... you’ve made it through every challenge — phishing, malware, weak passwords, stolen identities. You’ve been a thorn in my plans for far too long! Press SPACE to face CipherX in the final showdown quiz!",
     [
       {
         label: "I’m ready!",
@@ -43,8 +36,8 @@ function openPopup() {
 }
 
 function closePopup() {
-  if (bossPopupRef) {
-    try { bossPopupRef.close?.(); } catch {}
-    bossPopupRef = undefined;
+  if (popupRef) {
+    try { popupRef.close?.(); } catch {}
+    popupRef = undefined;
   }
 }
