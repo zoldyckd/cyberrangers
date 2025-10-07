@@ -663,8 +663,8 @@
                  "type":"",
                  "visible":true,
                  "width":209.5,
-                 "x":276.333333333333,
-                 "y":455.5
+                 "x":320,
+                 "y":416
                 }, 
                 {
                  "height":38,
@@ -747,22 +747,6 @@
                  "width":207.5,
                  "x":92.5,
                  "y":112.5
-                }, 
-                {
-                 "height":19.3281,
-                 "id":60,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"\ud83d\udca1",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":24.3802,
-                 "x":387.3099,
-                 "y":152.33595
                 }],
          "opacity":1,
          "type":"objectgroup",

@@ -393,7 +393,7 @@
                  "y":352
                 }, 
                 {
-                 "height":55.2727272727273,
+                 "height":54.6363636363643,
                  "id":9,
                  "name":"malware_instructions",
                  "properties":[
@@ -568,8 +568,19 @@
                  "type":"",
                  "visible":true,
                  "width":192,
-                 "x":576,
-                 "y":160
+                 "x":568.666666666667,
+                 "y":87.3333333333333
+                }, 
+                {
+                 "height":140,
+                 "id":23,
+                 "name":"malware_gate_popup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":209.333333333333,
+                 "x":582,
+                 "y":222.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -879,7 +890,7 @@
          "y":0
         }],
  "nextlayerid":24,
- "nextobjectid":23,
+ "nextobjectid":25,
  "orientation":"orthogonal",
  "properties":[
         {

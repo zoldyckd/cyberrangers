@@ -16,8 +16,8 @@ export const PASSWORDSECURITY_PROGRESS: Record<
       { key: "passwordsecurity_unlockedpc",        label: "Unlocked PC",       area: "passwordsecurity_unlockedpc" },
     ],
     exitGate: {
-      area: "to-office",                              // area name in Tiled (stairs/door)
-      nextRoom: "office.tmj#from-classroom",          // destination when ALL tasks done
+      area: "to-hall",                              // area name in Tiled (stairs/door)
+      nextRoom: "hall.tmj#from-classroom",          // destination when ALL tasks done
       warnAnchorId: "passwordsecurity_gate_popup",    // anchor rectangle near exit
     },
   },
