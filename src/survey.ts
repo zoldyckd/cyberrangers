@@ -30,7 +30,7 @@ function isCipherXCleared(): boolean {
     const raw = localStorage.getItem("cr:goals:office");
     if (!raw) return false;
     const goals = JSON.parse(raw);
-    return goals["finalboss"] === true;
+    return goals["finalboss_cipherx"] === true;
   } catch {
     return false;
   }
