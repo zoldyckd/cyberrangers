@@ -2,7 +2,8 @@
 import { PHISHING_PROGRESS } from "./phishing_progress";
 import { MALWARE_PROGRESS } from "./malware_progress";
 import { PASSWORDSECURITY_PROGRESS } from "./passwordsecurity_progress";
-
+import { IDTHEFT_PROGRESS } from "./idtheft_progress";
+import { SAFEINTERNETPRACTICES_PROGRESS } from "./safeinternetpractices_progress";
 
 /* ------------ types (local to this file) ------------ */
 type Task = { key: string; label: string; area: string };
@@ -17,12 +18,13 @@ type Goals = Record<string, boolean>;
 const MAP_CONFIG: MapConfigRecord = {
   ...PHISHING_PROGRESS,
   ...MALWARE_PROGRESS,
-  ...PASSWORDSECURITY_PROGRESS, // ← add this line
-
+  ...PASSWORDSECURITY_PROGRESS,
+  ...IDTHEFT_PROGRESS,
+  ...SAFEINTERNETPRACTICES_PROGRESS,
 };
 
 /* ------------ storage helpers ------------ */
-const STORAGE_PREFIX = "cr:goals:"; // per-map namespace
+const STORAGE_PREFIX = "cr:goals:";
 const storageKey = (mapId: string) => `${STORAGE_PREFIX}${mapId}`;
 
 function saveGoals(mapId: string, goals: Goals) {
@@ -69,7 +71,7 @@ export function initProgressChecker() {
 
     const cfg = MAP_CONFIG[mapId];
 
-    // Clean slate on map load: close lingering UI and purge other maps' progress
+    // Clean slate on map load
     hardCloseAllUi();
     clearOtherMaps(mapId);
 
@@ -124,14 +126,13 @@ export function initProgressChecker() {
           exiting = true;
           hardCloseAllUi();
           try { WA.controls.disablePlayerControls(); } catch {}
-          // Optional: clear current map progress so coming back is fresh
           try { localStorage.removeItem(storageKey(mapId)); } catch {}
           setTimeout(() => WA.nav.goToRoom(nextRoom), 40);
           return;
         }
 
         const now = Date.now();
-        if (now - gateCooldown < 500) return; // debounce rapid re-fires
+        if (now - gateCooldown < 500) return; // debounce
         gateCooldown = now;
 
         const missing = missingList();
@@ -141,17 +142,11 @@ export function initProgressChecker() {
             gatePopupRef = WA.ui.openPopup(
               warnAnchorId,
               `🚧 Hold up!\n\nYou still need to complete:\n• ${missing.join("\n• ")}\n\nFind all tasks in this room before leaving.`,
-              [
-                {
-                  label: "Close",
-                  className: "primary",
-                  callback: () => closeGatePopup(),
-                },
-              ]
+              [{ label: "Close", className: "primary", callback: () => closeGatePopup() }]
             );
             return;
           } catch {
-            // fall back to toast if the anchor is missing
+            // fall back to toast
           }
         }
 
@@ -172,7 +167,7 @@ export function initProgressChecker() {
   });
 }
 
-/** Optional external hook (other scripts can mark tasks done manually) */
+/** Optional external hook */
 export function markTaskDone(taskKey: string) {
   if (exiting) return;
   if (taskKey in goals && !goals[taskKey]) {

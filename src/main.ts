@@ -6,7 +6,7 @@ import { initClock } from "./clock";
 import { initBoard } from "./board";
 import { initMarvie } from "./marvie";
 
-// Progress system (reads phishing_progress.ts + malware_progress.ts)
+// Progress system (auto by mapId; handles gate + toasts)
 import { initProgressChecker } from "./progresschecker";
 
 // phishing - library room
@@ -24,7 +24,7 @@ import { initPoster } from "./poster";
 import { initUsbDrive } from "./usbdrive";
 import { initStickyNote } from "./stickynote";
 import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
-import { initOfficeProgress } from "./officeprogress";
+import { initOfficeProgress } from "./officeprogress"; // keep only if you still use it
 
 // canteen - malware room
 import { initMalwareInstructions } from "./malware_instructions";
@@ -44,6 +44,12 @@ import { initSafeInternetPracticesFileUploads } from "./safeinternetpractices_fi
 import { initSafeInternetPracticesOutdatedSoftware } from "./safeinternetpractices_outdatedsoftware";
 import { initSafeInternetPracticesInstructions } from "./safeinternetpractices_instructions";
 
+// computerlab - ID theft room (NEW)
+import { initIDTheftInstructions } from "./idtheft_instructions";
+import { initIDTheftSensitivePapers } from "./idtheft_sensitivepapers";
+import { initIDTheftCustomerServiceCall } from "./idtheft_customerservicecall";
+import { initIDTheftCelebration } from "./idtheft_celebration";
+
 console.log("Script started");
 
 WA.onInit().then(async () => {
@@ -61,7 +67,7 @@ WA.onInit().then(async () => {
   initProgressChecker();
 
   // ------------------------------------------
-  // Map detection (robust): URL -> WA API -> Tiled map property `mapId`
+  // Map detection (robust)
   // ------------------------------------------
   const mapId = await detectMapId();
   console.log("[Router] mapId =", mapId || "(unknown)");
@@ -81,9 +87,8 @@ WA.onInit().then(async () => {
     initphishing_QRcode();
     initphishing_MurdochEmail();
     initphishing_SMSphishing();
-    initPhishingInstructions();        // PPT slides
+    initPhishingInstructions();
     initPhishingLibrarySpawnNote();
-    // (Brock removed per new progress config)
   } else if (mapId === "canteen") {
     console.log("[Router] Initializing CANTEEN (Malware) features…");
     initMalwareInstructions();
@@ -92,16 +97,22 @@ WA.onInit().then(async () => {
     initMalwareTrojan();
   } else if (mapId === "classroom") {
     console.log("[Router] Initializing CLASSROOM (Password Security) features…");
-    initPasswordSecurityInstructions();       // PPT slides intro
-    initPasswordSecurityLMSAccount();         // “borrow my account?” scenario
-    initPasswordSecurityLMSPasswordExpired(); // password renewal scenario
-    initPasswordSecurityUnlockedPC();         // unlocked PC scenario
+    initPasswordSecurityInstructions();
+    initPasswordSecurityLMSAccount();
+    initPasswordSecurityLMSPasswordExpired();
+    initPasswordSecurityUnlockedPC();
+  } else if (mapId === "computerlab") {
+    console.log("[Router] Initializing COMPUTER LAB (ID Theft) features…");
+    initIDTheftInstructions();          // slides intro
+    initIDTheftSensitivePapers();       // scenario 1
+    initIDTheftCustomerServiceCall();   // scenario 2
+    initIDTheftCelebration();           // scenario 3
   } else if (mapId === "hall") {
     console.log("[Router] Initializing HALL (Safe Internet Practices) features…");
     initSafeInternetPracticesFreeWifi();
     initSafeInternetPracticesFileUploads();
     initSafeInternetPracticesOutdatedSoftware();
-	initSafeInternetPracticesInstructions();
+    initSafeInternetPracticesInstructions();
   } else {
     console.warn(
       "[Router] Unknown map; only common features started. " +
@@ -112,29 +123,22 @@ WA.onInit().then(async () => {
 
 /**
  * Return the current map id as a lowercase string.
- * Order:
- *  1) Parse full URL for *.tmj (works when available)
- *  2) WA API getTiledMap().url/name (if provided by this WA version)
- *  3) Tiled Map Property: `mapId` (add it in Tiled: Map -> Properties)
  */
 async function detectMapId(): Promise<string> {
-  // 1) Try URL
   try {
     const full = decodeURIComponent(window.location.href);
     const m = full.match(/\/([^\/?#]+)\.tmj/i);
-    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen", "classroom", "hall"
+    if (m?.[1]) return m[1].toLowerCase();
   } catch {}
 
-  // 2) Try WA API (may not expose url/name on some builds)
   try {
     const tiled: any = await WA.room.getTiledMap?.();
     const raw = (tiled?.url ?? tiled?.name ?? "").toString();
     if (raw) {
       const base = (raw.split("/").pop() || raw).toLowerCase();
       if (base.endsWith(".tmj")) return base.replace(/\.tmj$/, "");
-      return base; // sometimes returns plain name without .tmj
+      return base;
     }
-    // 3) Try Tiled Map Property: mapId
     const props = tiled?.properties as Array<{ name: string; value: any }> | undefined;
     const fromProp = props?.find((p) => p?.name === "mapId")?.value;
     if (typeof fromProp === "string" && fromProp.trim()) {

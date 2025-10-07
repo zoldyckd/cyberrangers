@@ -670,6 +670,11 @@
  "orientation":"orthogonal",
  "properties":[
         {
+         "name":"mapId",
+         "type":"string",
+         "value":"hall"
+        }, 
+        {
          "name":"script",
          "type":"string",
          "value":"src\/main.ts"

@@ -550,143 +550,6 @@
                  "width":32,
                  "x":416,
                  "y":352
-                }, 
-                {
-                 "height":96,
-                 "id":3,
-                 "name":"instructions_safeinternetpractices",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":96,
-                 "x":352,
-                 "y":160
-                }, 
-                {
-                 "height":32,
-                 "id":4,
-                 "name":"usbdrive",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":256,
-                 "y":128
-                }, 
-                {
-                 "height":32,
-                 "id":5,
-                 "name":"stickynote",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":256,
-                 "y":320
-                }, 
-                {
-                 "height":32,
-                 "id":6,
-                 "name":"poster",
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":64,
-                 "x":160,
-                 "y":64
-                }, 
-                {
-                 "height":103,
-                 "id":7,
-                 "name":"posterPopup",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":226.5,
-                 "x":72.1666666666667,
-                 "y":39.8333333333333
-                }, 
-                {
-                 "height":159,
-                 "id":8,
-                 "name":"usbdrivePopup",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":255.166666666667,
-                 "x":93.1666666666667,
-                 "y":113.666666666667
-                }, 
-                {
-                 "height":212,
-                 "id":9,
-                 "name":"instructions_safeinternetpracticesPopup",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":351.666666666667,
-                 "x":259.333333333333,
-                 "y":182.833333333333
-                }, 
-                {
-                 "height":130.5,
-                 "id":10,
-                 "name":"stickynotePopup",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":231.5,
-                 "x":259,
-                 "y":212.5
-                }, 
-                {
-                 "height":54.6666666666666,
-                 "id":12,
-                 "name":"AmeliaZone",
-                 "properties":[
-                        {
-                         "name":"openWebsite",
-                         "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/safeinternetpractices.html"
-                        }, 
-                        {
-                         "name":"openWebsiteTrigger",
-                         "type":"string",
-                         "value":"onaction"
-                        }, 
-                        {
-                         "name":"openWebsiteTriggerMessage",
-                         "type":"string",
-                         "value":"Press SPACE to talk to Amelia."
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":49.3333333333333,
-                 "x":183.666666666667,
-                 "y":414
-                }, 
-                {
-                 "height":132.666666666667,
-                 "id":13,
-                 "name":"AmeliaZonePopup",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":213,
-                 "x":186.333333333333,
-                 "y":305.666666666667
-                }, 
-                {
-                 "height":161.333333333333,
-                 "id":14,
-                 "name":"safeinternetpractices_gate_popup",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":209.333333333333,
-                 "x":374.666666666667,
-                 "y":207.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -832,6 +695,11 @@
  "nextobjectid":15,
  "orientation":"orthogonal",
  "properties":[
+        {
+         "name":"mapId",
+         "type":"string",
+         "value":"office"
+        }, 
         {
          "name":"script",
          "type":"string",
