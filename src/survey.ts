@@ -8,12 +8,11 @@ export function initSurvey() {
 
     // Show popup when entering the area
     WA.room.area.onEnter("survey").subscribe(() => {
-      // Check if CipherX is cleared first
-      const bossCleared = localStorage.getItem("cr:goals:office");
-      if (bossCleared && bossCleared.includes('"finalboss":true')) {
-        openPopup();
+      // gate check: require CipherX cleared first
+      if (isCipherXCleared()) {
+        openSurveyPopup();
       } else {
-        showBlockedMessage();
+        openBlockedPopup();
       }
     });
 
@@ -24,7 +23,20 @@ export function initSurvey() {
   });
 }
 
-function openPopup() {
+function isCipherXCleared(): boolean {
+  // Progress saved by progresschecker under cr:goals:office
+  // Ensure your finalboss task key is "finalboss" in finalboss_progress.ts
+  try {
+    const raw = localStorage.getItem("cr:goals:office");
+    if (!raw) return false;
+    const goals = JSON.parse(raw);
+    return goals["finalboss"] === true;
+  } catch {
+    return false;
+  }
+}
+
+function openSurveyPopup() {
   // Prevent duplicates
   closePopup();
 
@@ -35,17 +47,19 @@ function openPopup() {
       {
         label: "Open Survey",
         className: "primary",
-        callback: () => closePopup(),
+        callback: () => closePopup(), // you'll handle WA.ui.openWebsite elsewhere
       },
     ]
   );
 }
 
-function showBlockedMessage() {
+function openBlockedPopup() {
+  // Prevent duplicates
   closePopup();
+
   popupRef = WA.ui.openPopup(
     "surveyBlockedPopup",
-    "🚫 You can’t proceed yet! Defeat CipherX first before you can access the survey.",
+    "🚫 You can’t proceed yet! Defeat CipherX first before accessing the final survey.",
     [
       {
         label: "Okay",
