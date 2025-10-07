@@ -8,12 +8,7 @@ export function initSurvey() {
 
     // Show popup when entering the area
     WA.room.area.onEnter("survey").subscribe(() => {
-      // gate check: require CipherX cleared first
-      if (isCipherXCleared()) {
-        openSurveyPopup();
-      } else {
-        openBlockedPopup();
-      }
+      openPopup();
     });
 
     // Close popup when leaving the area
@@ -23,20 +18,7 @@ export function initSurvey() {
   });
 }
 
-function isCipherXCleared(): boolean {
-  // Progress saved by progresschecker under cr:goals:office
-  // Ensure your finalboss task key is "finalboss" in finalboss_progress.ts
-  try {
-    const raw = localStorage.getItem("cr:goals:office");
-    if (!raw) return false;
-    const goals = JSON.parse(raw);
-    return goals["finalboss_cipherx"] === true;
-  } catch {
-    return false;
-  }
-}
-
-function openSurveyPopup() {
+function openPopup() {
   // Prevent duplicates
   closePopup();
 
@@ -46,23 +28,6 @@ function openSurveyPopup() {
     [
       {
         label: "Open Survey",
-        className: "primary",
-        callback: () => closePopup(), // you'll handle WA.ui.openWebsite elsewhere
-      },
-    ]
-  );
-}
-
-function openBlockedPopup() {
-  // Prevent duplicates
-  closePopup();
-
-  popupRef = WA.ui.openPopup(
-    "surveyBlockedPopup",
-    "🚫 You can’t proceed yet! Defeat CipherX first before accessing the final survey.",
-    [
-      {
-        label: "Okay",
         className: "primary",
         callback: () => closePopup(),
       },
