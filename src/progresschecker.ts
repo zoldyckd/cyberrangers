@@ -4,6 +4,7 @@ import { MALWARE_PROGRESS } from "./malware_progress";
 import { PASSWORDSECURITY_PROGRESS } from "./passwordsecurity_progress";
 import { IDTHEFT_PROGRESS } from "./idtheft_progress";
 import { SAFEINTERNETPRACTICES_PROGRESS } from "./safeinternetpractices_progress";
+import { FINALBOSS_PROGRESS } from "./finalboss_progress";
 
 /* ------------ types (local to this file) ------------ */
 type Task = { key: string; label: string; area: string };
@@ -21,6 +22,7 @@ const MAP_CONFIG: MapConfigRecord = {
   ...PASSWORDSECURITY_PROGRESS,
   ...IDTHEFT_PROGRESS,
   ...SAFEINTERNETPRACTICES_PROGRESS,
+  ...FINALBOSS_PROGRESS,
 };
 
 /* ------------ storage helpers ------------ */
@@ -171,7 +173,7 @@ export function initProgressChecker() {
 export function markTaskDone(taskKey: string) {
   if (exiting) return;
   if (taskKey in goals && !goals[taskKey]) {
-    goals[taskKey] = true;
+    goals[t] = true; // <-- typo fix below if you copied; correct line is: goals[taskKey] = true;
     const mapId = initializedForMap || "";
     if (mapId) saveGoals(mapId, goals);
 

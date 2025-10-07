@@ -44,11 +44,17 @@ import { initSafeInternetPracticesFileUploads } from "./safeinternetpractices_fi
 import { initSafeInternetPracticesOutdatedSoftware } from "./safeinternetpractices_outdatedsoftware";
 import { initSafeInternetPracticesInstructions } from "./safeinternetpractices_instructions";
 
-// computerlab - ID theft room (NEW)
+// computerlab - ID theft room
 import { initIDTheftInstructions } from "./idtheft_instructions";
 import { initIDTheftSensitivePapers } from "./idtheft_sensitivepapers";
 import { initIDTheftCustomerServiceCall } from "./idtheft_customerservicecall";
 import { initIDTheftCelebration } from "./idtheft_celebration";
+
+// office - final room (FINAL BOSS + SURVEY)  👇 NEW
+import { initFinalBossSpawn } from "./finalboss_spawn";
+import { initFinalBossCipherX } from "./finalboss_cipherx";
+import { initEndingMessage } from "./endingmessage";
+import { initSurvey } from "./survey";
 
 console.log("Script started");
 
@@ -113,6 +119,12 @@ WA.onInit().then(async () => {
     initSafeInternetPracticesFileUploads();
     initSafeInternetPracticesOutdatedSoftware();
     initSafeInternetPracticesInstructions();
+  } else if (mapId === "office") {
+    console.log("[Router] Initializing OFFICE (Final Boss) features…");
+    initFinalBossSpawn();       // entry flavor text
+    initFinalBossCipherX();     // boss popup → SPACE to quiz (Twine)
+    initEndingMessage();        // post-quiz congrats
+    initSurvey();               // stairs area → survey popup
   } else {
     console.warn(
       "[Router] Unknown map; only common features started. " +
