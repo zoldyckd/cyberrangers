@@ -494,7 +494,7 @@
                  "y":64
                 }, 
                 {
-                 "height":65,
+                 "height":53.75,
                  "id":18,
                  "name":"passwordsecurity_lmsaccount",
                  "properties":[
@@ -516,9 +516,9 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":43,
-                 "x":648.666666666667,
-                 "y":469.5
+                 "width":47.75,
+                 "x":640,
+                 "y":471.75
                 }, 
                 {
                  "height":87,
