@@ -41,4 +41,3 @@ function closePopup() {
     popupRef = undefined;
   }
 }
-s
