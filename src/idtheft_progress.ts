@@ -18,7 +18,7 @@ export const IDTHEFT_PROGRESS: Record<
     ],
     exitGate: {
       area: "to-office",
-      nextRoom: "office",           // TODO: set to your actual Office room path/id
+      nextRoom: "office.tmj#from-computerlab",           // TODO: set to your actual Office room path/id
       warnAnchorId: "idtheft_gate_popup",
     },
   },
