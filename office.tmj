@@ -498,7 +498,13 @@
                 {
                  "height":61.3333333333333,
                  "id":16,
-                 "name":"finalboss",
+                 "name":"finalboss_cipherx",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":""
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -509,7 +515,7 @@
                 {
                  "height":136,
                  "id":17,
-                 "name":"finalbossPopup",
+                 "name":"finalboss_cipherxPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -538,6 +544,23 @@
                  "width":277,
                  "x":166,
                  "y":240
+                }, 
+                {
+                 "height":112.666666666667,
+                 "id":27,
+                 "name":"surveyPopup",
+                 "properties":[
+                        {
+                         "name":"openWebsite",
+                         "type":"string",
+                         "value":""
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":264.666666666667,
+                 "x":423.333333333333,
+                 "y":242.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -811,7 +834,7 @@
          "y":0
         }],
  "nextlayerid":30,
- "nextobjectid":27,
+ "nextobjectid":28,
  "orientation":"orthogonal",
  "properties":[
         {
