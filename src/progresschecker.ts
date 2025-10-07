@@ -1,6 +1,8 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 import { PHISHING_PROGRESS } from "./phishing_progress";
 import { MALWARE_PROGRESS } from "./malware_progress";
+import { PASSWORDSECURITY_PROGRESS } from "./passwordsecurity_progress";
+
 
 /* ------------ types (local to this file) ------------ */
 type Task = { key: string; label: string; area: string };
@@ -15,6 +17,8 @@ type Goals = Record<string, boolean>;
 const MAP_CONFIG: MapConfigRecord = {
   ...PHISHING_PROGRESS,
   ...MALWARE_PROGRESS,
+  ...PASSWORDSECURITY_PROGRESS, // ← add this line
+
 };
 
 /* ------------ storage helpers ------------ */

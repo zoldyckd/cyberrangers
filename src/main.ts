@@ -32,6 +32,12 @@ import { initMalwareDiscord } from "./malware_discord";
 import { initMalwareUsbDrive } from "./malware_usbdrive";
 import { initMalwareTrojan } from "./malware_trojan";
 
+// classroom - password security room
+import { initPasswordSecurityInstructions } from "./passwordsecurity_instructions";
+import { initPasswordSecurityLMSAccount } from "./passwordsecurity_lmsaccount";
+import { initPasswordSecurityLMSPasswordExpired } from "./passwordsecurity_lmspasswordexpired";
+import { initPasswordSecurityUnlockedPC } from "./passwordsecurity_unlockedpc";
+
 console.log("Script started");
 
 WA.onInit().then(async () => {
@@ -78,6 +84,12 @@ WA.onInit().then(async () => {
     initMalwareDiscord();
     initMalwareUsbDrive();
     initMalwareTrojan();
+  } else if (mapId === "classroom") {
+    console.log("[Router] Initializing CLASSROOM (Password Security) features…");
+    initPasswordSecurityInstructions();       // PPT slides intro
+    initPasswordSecurityLMSAccount();         // “borrow my account?” scenario
+    initPasswordSecurityLMSPasswordExpired(); // password renewal scenario
+    initPasswordSecurityUnlockedPC();         // unlocked PC scenario
   } else {
     console.warn(
       "[Router] Unknown map; only common features started. " +
@@ -98,7 +110,7 @@ async function detectMapId(): Promise<string> {
   try {
     const full = decodeURIComponent(window.location.href);
     const m = full.match(/\/([^\/?#]+)\.tmj/i);
-    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen"
+    if (m?.[1]) return m[1].toLowerCase(); // e.g., "garden", "library", "canteen", "classroom"
   } catch {}
 
   // 2) Try WA API (may not expose url/name on some builds)
