@@ -6,8 +6,16 @@ export function initSurvey() {
   WA.onInit().then(() => {
     console.log("[WA] Survey area ready");
 
-    // Show popup when entering the area
+    // Show hint when entering area (do NOT open yet)
     WA.room.area.onEnter("survey").subscribe(() => {
+      WA.ui.displayActionMessage({
+        message: "Press SPACE to open the Final Survey",
+        callback: () => openPopup(),
+      });
+    });
+
+    // Open popup only when SPACE is pressed
+    WA.room.area.onAction("survey").subscribe(() => {
       openPopup();
     });
 
@@ -24,12 +32,20 @@ function openPopup() {
 
   popupRef = WA.ui.openPopup(
     "surveyPopup",
-    "📝 Final Step: Please proceed to complete the post-game survey to help us improve Cyber Rangers! Press SPACE to begin.",
+    "📝 Final Step: Please complete the post-game survey to help us improve Cyber Rangers! Press SPACE in the popup to launch it.",
     [
       {
-        label: "Open Survey by pressing SPACE",
+        label: "Open Survey",
         className: "primary",
-        callback: () => closePopup(),
+        callback: () => {
+          // use WA's built-in openWebsite for your survey
+          WA.ui.openWebsite({
+            url: "https://example.com/your-survey", // 🔗 replace with your survey link
+            position: "center",
+            size: { width: 80, height: 80 },
+          });
+          closePopup();
+        },
       },
     ]
   );
