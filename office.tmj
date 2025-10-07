@@ -486,7 +486,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":""
+                         "value":"www.google.com"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -503,7 +503,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":""
+                         "value":"www.google.com"
                         }],
                  "rotation":0,
                  "type":"area",
