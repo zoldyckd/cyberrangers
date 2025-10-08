@@ -590,22 +590,6 @@
                  "height":44.25,
                  "id":28,
                  "name":"phishing_Brock",
-                 "properties":[
-                        {
-                         "name":"openWebsite",
-                         "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/phishing.html"
-                        }, 
-                        {
-                         "name":"openWebsiteTrigger",
-                         "type":"string",
-                         "value":"onaction"
-                        }, 
-                        {
-                         "name":"openWebsiteTriggerMessage",
-                         "type":"string",
-                         "value":"Press SPACE to talk to Brock."
-                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
