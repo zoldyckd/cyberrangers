@@ -590,6 +590,17 @@
                  "height":44.25,
                  "id":28,
                  "name":"phishing_Brock",
+                 "properties":[
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onEnter"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Hurry!! Move ahead!!"
+                        }],
                  "rotation":0,
                  "type":"area",
                  "visible":true,
@@ -620,7 +631,7 @@
                  "y":387.5
                 }, 
                 {
-                 "height":93.0000000000001,
+                 "height":104,
                  "id":33,
                  "name":"phishing_instructions",
                  "properties":[
