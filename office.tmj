@@ -550,7 +550,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/forms.cloud.microsoft\/Pages\/DesignPageV2.aspx?subpage=design&FormId=G0wNwHvPk063xxAROpvCMLWQhUbZ50NJiRW-A7TcIHdUMjE0TTk0Q1ZHTU1WVkVHRk83RUxINzlZTC4u"
+                         "value":"https:\/\/forms.office.com\/Pages\/ResponsePage.aspx?id=G0wNwHvPk063xxAROpvCMLWQhUbZ50NJiRW-A7TcIHdUMjE0TTk0Q1ZHTU1WVkVHRk83RUxINzlZTC4u"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
