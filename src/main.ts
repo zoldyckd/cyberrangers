@@ -160,3 +160,11 @@ async function detectMapId(): Promise<string> {
 
   return "";
 }
+WA.onInit().then(() => {
+  // Turn off the user’s devices and prevent meetings altogether
+  WA.controls.turnOffWebcam();
+  WA.controls.turnOffMicrophone();
+  WA.controls.disableWebcam();
+  WA.controls.disableMicrophone();
+  WA.controls.disablePlayerProximityMeeting();
+});
