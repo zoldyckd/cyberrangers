@@ -62,6 +62,16 @@ WA.onInit().then(async () => {
   console.log("Scripting API ready");
   await bootstrapExtra();
 
+  // 🔇 Hide/disable proximity video UI globally
+  try {
+    WA.controls.turnOffWebcam?.();
+    WA.controls.turnOffMicrophone?.();
+    WA.controls.disableWebcam?.();
+    WA.controls.disableMicrophone?.();
+    WA.controls.disablePlayerProximityMeeting?.();
+  } catch (e) {
+    console.warn("[WA] Could not disable A/V overlay:", e);
+  }
   // ------------------------------------------
   // Always-on (safe anywhere)
   // ------------------------------------------
@@ -160,11 +170,4 @@ async function detectMapId(): Promise<string> {
 
   return "";
 }
-WA.onInit().then(() => {
-  // Turn off the user’s devices and prevent meetings altogether
-  WA.controls.turnOffWebcam();
-  WA.controls.turnOffMicrophone();
-  WA.controls.disableWebcam();
-  WA.controls.disableMicrophone();
-  WA.controls.disablePlayerProximityMeeting();
-});
+
