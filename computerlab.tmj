@@ -498,7 +498,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/IDtheft1.1.html"
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/IDTheft1.1.html"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
@@ -536,7 +536,7 @@
                         {
                          "name":"openWebsite",
                          "type":"string",
-                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/IDtheft1.2.html"
+                         "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/IDTheft1.2.html"
                         }, 
                         {
                          "name":"openWebsiteTrigger",
@@ -683,7 +683,7 @@
                                 {
                                  "name":"openWebsite",
                                  "type":"string",
-                                 "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/IDtheft1.3.html"
+                                 "value":"https:\/\/zoldyckd.github.io\/cyberrangers\/websitepopup\/docs\/IDTheft1.3.html"
                                 }, 
                                 {
                                  "name":"openWebsiteTrigger",
