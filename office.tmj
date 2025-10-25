@@ -618,14 +618,14 @@
                  "text":
                     {
                      "halign":"center",
-                     "text":"Peter Cole",
+                     "text":"Peter",
                      "wrap":true
                     },
                  "type":"",
                  "visible":true,
-                 "width":122.0469,
-                 "x":335.97655,
-                 "y":260.33595
+                 "width":62.0469,
+                 "x":369.97655,
+                 "y":263.83595
                 }, 
                 {
                  "height":19.3281,
