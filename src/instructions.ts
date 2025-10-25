@@ -21,7 +21,7 @@ export function initInstructions() {
       closePopup(); // just in case
       popupRef = WA.ui.openPopup(
         ANCHOR,
-        "🏫 Thank the heavens you're here! ${playerName}, Murdoch University is under a Cyber Attack! We need your help to protect the school against evildoers who wish us harm. Please proceed through the school and learn about how you can help us!",
+        "🏫 Thank the heavens you're here!" `${playerName}`, "Murdoch University is under a Cyber Attack! We need your help to protect the school against evildoers who wish us harm. Please proceed through the school and learn about how you can help us!",
         [
           {
             label: "Close",
