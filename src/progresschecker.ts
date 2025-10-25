@@ -4,7 +4,7 @@ import { MALWARE_PROGRESS } from "./malware_progress";
 import { PASSWORDSECURITY_PROGRESS } from "./passwordsecurity_progress";
 import { IDTHEFT_PROGRESS } from "./idtheft_progress";
 import { SAFEINTERNETPRACTICES_PROGRESS } from "./safeinternetpractices_progress";
-import { FINALBOSS_PROGRESS } from "./finalboss_progress";
+import { FINALBOSS_PROGRESS } from "./finalboss_progress"; // ← NEW
 
 /* ------------ types (local to this file) ------------ */
 type Task = { key: string; label: string; area: string };
@@ -22,7 +22,7 @@ const MAP_CONFIG: MapConfigRecord = {
   ...PASSWORDSECURITY_PROGRESS,
   ...IDTHEFT_PROGRESS,
   ...SAFEINTERNETPRACTICES_PROGRESS,
-  ...FINALBOSS_PROGRESS,
+  ...FINALBOSS_PROGRESS, // ← NEW
 };
 
 /* ------------ storage helpers ------------ */
@@ -60,7 +60,7 @@ let gateCooldown = 0;
 let exiting = false;
 let initializedForMap = ""; // prevent double init if script persists
 
-/* ------------ sidebar UI (right) ------------ */
+/* ------------ RIGHT-SIDE PANEL (DOM overlay) ------------ */
 const SIDEBAR_ID = "cr-progress-sidebar";
 
 function ensureSidebar(tasks: Task[]) {
@@ -68,55 +68,61 @@ function ensureSidebar(tasks: Task[]) {
 
   const host = document.createElement("div");
   host.id = SIDEBAR_ID;
+
+  // ICT302 look: purple rounded card, vertical list, Close button
   host.innerHTML = `
-    <div class="ps-head">
-      <span>Progress</span>
-      <button class="ps-toggle" aria-label="Collapse">–</button>
+    <div class="ps-card">
+      <div class="ps-head">Progress</div>
+      <ul class="ps-list">
+        ${tasks.map(t => `
+          <li class="ps-item">
+            <input id="ps-${t.key}" type="checkbox" />
+            <label for="ps-${t.key}">${t.label}</label>
+          </li>`).join("")}
+      </ul>
+      <button id="ps-close" class="ps-close">Close</button>
     </div>
-    <ul class="ps-list">
-      ${tasks.map(t => `
-        <li class="ps-item">
-          <input id="ps-${t.key}" type="checkbox" />
-          <label for="ps-${t.key}">${t.label}</label>
-        </li>`).join("")}
-    </ul>
   `;
+
+  // container position
   Object.assign(host.style, {
     position: "fixed",
-    right: "16px",
+    right: "18px",
     top: "50%",
     transform: "translateY(-50%)",
-    width: "220px",
-    padding: "12px",
-    borderRadius: "14px",
-    background: "rgba(42,60,255,.9)",
-    color: "#fff",
-    boxShadow: "0 10px 24px rgba(0,0,0,.25)",
     zIndex: "9999",
     pointerEvents: "auto",
-    fontFamily: "Inter, system-ui, sans-serif",
   } as Partial<CSSStyleDeclaration>);
 
+  // scoped styles
   const style = document.createElement("style");
   style.textContent = `
-    #${SIDEBAR_ID} .ps-head{display:flex;justify-content:space-between;align-items:center;
-      font-weight:600;margin-bottom:8px}
-    #${SIDEBAR_ID} .ps-toggle{background:transparent;border:none;font-size:18px;cursor:pointer;color:#fff}
-    #${SIDEBAR_ID}.is-collapsed .ps-list{display:none}
+    #${SIDEBAR_ID} .ps-card{
+      font-family: Inter, system-ui, sans-serif;
+      background: rgba(42,60,255,0.9);
+      color:#fff;
+      border-radius:16px;
+      padding:14px 16px;
+      min-width:220px;
+      box-shadow:0 8px 24px rgba(0,0,0,.3);
+    }
+    #${SIDEBAR_ID} .ps-head{font-weight:700;font-size:16px;margin-bottom:10px}
     #${SIDEBAR_ID} .ps-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-    #${SIDEBAR_ID} .ps-item{display:flex;align-items:center;gap:8px}
-    #${SIDEBAR_ID} input[type="checkbox"]{width:16px;height:16px}
-    @media (max-width: 900px){ #${SIDEBAR_ID}{right:8px;width:200px;padding:10px} }
+    #${SIDEBAR_ID} .ps-item{display:flex;align-items:center;gap:8px;font-size:14px}
+    #${SIDEBAR_ID} input[type=checkbox]{width:16px;height:16px}
+    #${SIDEBAR_ID} .ps-close{
+      margin-top:10px;width:100%;
+      background:#4338CA;border:none;color:#fff;border-radius:8px;
+      padding:8px;cursor:pointer;font-weight:600
+    }
+    @media (max-width:900px){ #${SIDEBAR_ID} .ps-card{min-width:200px;padding:12px} }
   `;
   document.head.appendChild(style);
 
-  const toggle = host.querySelector<HTMLButtonElement>(".ps-toggle")!;
-  toggle.onclick = () => {
-    const collapsed = host.classList.toggle("is-collapsed");
-    toggle.textContent = collapsed ? "+" : "–";
-  };
-
   document.body.appendChild(host);
+
+  // Close button just hides the panel (state remains)
+  host.querySelector<HTMLButtonElement>("#ps-close")?.addEventListener("click", () => host.remove());
 }
 
 function updateSidebar(goals: Goals) {
@@ -162,7 +168,7 @@ export function initProgressChecker() {
     const defaultGoals = Object.fromEntries(currentTasks.map(t => [t.key, false]));
     goals = { ...defaultGoals, ...(restored ?? {}) };
 
-    // Mount the sidebar once for this map
+    // Mount & reflect the right panel
     ensureSidebar(currentTasks);
     updateSidebar(goals);
 
@@ -240,7 +246,7 @@ export function initProgressChecker() {
       });
     }
 
-    // Initial reflect
+    // Initial reflect shortly after load
     setTimeout(() => { if (!exiting) showProgress(); }, 300);
   });
 }
@@ -252,6 +258,7 @@ export function markTaskDone(taskKey: string) {
     goals[taskKey] = true;
     const mapId = initializedForMap || "";
     if (mapId) saveGoals(mapId, goals);
+
     showProgress();
 
     if (allDone()) {
@@ -276,7 +283,7 @@ function showProgress() {
   if (now - toastCooldown < 150) return; // debounce
   toastCooldown = now;
 
-  // Ensure/refresh the right sidebar (no bottom toast)
+  // Reflect state in the right-side panel
   ensureSidebar(currentTasks);
   updateSidebar(goals);
 }
@@ -286,7 +293,7 @@ function closeGatePopup() {
 }
 function hardCloseAllUi() {
   closeGatePopup();
-  removeSidebar();
+  removeSidebar();  // ensure no stacking across rooms
 }
 
 /* mapId helper */
