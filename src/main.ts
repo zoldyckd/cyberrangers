@@ -55,6 +55,7 @@ import { initFinalBossSpawn } from "./finalboss_spawn";
 import { initFinalBossCipherX } from "./finalboss_cipherx";
 import { initEndingMessage } from "./endingmessage";
 import { initSurvey } from "./survey";
+import { initFinalBossInstructions } from "./finalboss_instructions";
 
 console.log("Script started");
 
@@ -135,6 +136,8 @@ WA.onInit().then(async () => {
     initFinalBossCipherX();     // boss popup → SPACE to quiz (Twine)
     initEndingMessage();        // post-quiz congrats
     initSurvey();               // stairs area → survey popup
+	initFinalBossInstructions();
+
   } else {
     console.warn(
       "[Router] Unknown map; only common features started. " +
