@@ -557,8 +557,8 @@
                  "type":"area",
                  "visible":true,
                  "width":44.3333333333334,
-                 "x":367.333333333333,
-                 "y":270.333333333333
+                 "x":370.833333333333,
+                 "y":264.333333333333
                 }, 
                 {
                  "height":125,
@@ -609,6 +609,38 @@
                  "width":194.666666666667,
                  "x":323.333333333333,
                  "y":73.3333333333333
+                }, 
+                {
+                 "height":19.3281,
+                 "id":31,
+                 "name":"",
+                 "rotation":0,
+                 "text":
+                    {
+                     "text":"Peter Cole",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":81.0469,
+                 "x":363.47655,
+                 "y":259.33595
+                }, 
+                {
+                 "height":19.3281,
+                 "id":32,
+                 "name":"",
+                 "rotation":0,
+                 "text":
+                    {
+                     "text":"\ud83d\udca1",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":24.3802,
+                 "x":389.8099,
+                 "y":243.33595
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -913,7 +945,7 @@
          "y":0
         }],
  "nextlayerid":32,
- "nextobjectid":31,
+ "nextobjectid":33,
  "orientation":"orthogonal",
  "properties":[
         {
