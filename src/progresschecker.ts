@@ -60,84 +60,6 @@ let gateCooldown = 0;
 let exiting = false;
 let initializedForMap = ""; // prevent double init if script persists
 
-/* ------------ RIGHT-SIDE PANEL (DOM overlay) ------------ */
-const SIDEBAR_ID = "cr-progress-sidebar";
-
-function ensureSidebar(tasks: Task[]) {
-  if (document.getElementById(SIDEBAR_ID)) return;
-
-  const host = document.createElement("div");
-  host.id = SIDEBAR_ID;
-
-  // ICT302 look: purple rounded card, vertical list, Close button
-  host.innerHTML = `
-    <div class="ps-card">
-      <div class="ps-head">Progress</div>
-      <ul class="ps-list">
-        ${tasks.map(t => `
-          <li class="ps-item">
-            <input id="ps-${t.key}" type="checkbox" />
-            <label for="ps-${t.key}">${t.label}</label>
-          </li>`).join("")}
-      </ul>
-      <button id="ps-close" class="ps-close">Close</button>
-    </div>
-  `;
-
-  // container position
-  Object.assign(host.style, {
-    position: "fixed",
-    right: "18px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    zIndex: "9999",
-    pointerEvents: "auto",
-  } as Partial<CSSStyleDeclaration>);
-
-  // scoped styles
-  const style = document.createElement("style");
-  style.textContent = `
-    #${SIDEBAR_ID} .ps-card{
-      font-family: Inter, system-ui, sans-serif;
-      background: rgba(42,60,255,0.9);
-      color:#fff;
-      border-radius:16px;
-      padding:14px 16px;
-      min-width:220px;
-      box-shadow:0 8px 24px rgba(0,0,0,.3);
-    }
-    #${SIDEBAR_ID} .ps-head{font-weight:700;font-size:16px;margin-bottom:10px}
-    #${SIDEBAR_ID} .ps-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-    #${SIDEBAR_ID} .ps-item{display:flex;align-items:center;gap:8px;font-size:14px}
-    #${SIDEBAR_ID} input[type=checkbox]{width:16px;height:16px}
-    #${SIDEBAR_ID} .ps-close{
-      margin-top:10px;width:100%;
-      background:#4338CA;border:none;color:#fff;border-radius:8px;
-      padding:8px;cursor:pointer;font-weight:600
-    }
-    @media (max-width:900px){ #${SIDEBAR_ID} .ps-card{min-width:200px;padding:12px} }
-  `;
-  document.head.appendChild(style);
-
-  document.body.appendChild(host);
-
-  // Close button just hides the panel (state remains)
-  host.querySelector<HTMLButtonElement>("#ps-close")?.addEventListener("click", () => host.remove());
-}
-
-function updateSidebar(goals: Goals) {
-  const host = document.getElementById(SIDEBAR_ID);
-  if (!host) return;
-  for (const [k, v] of Object.entries(goals)) {
-    const box = document.getElementById(`ps-${k}`) as HTMLInputElement | null;
-    if (box) box.checked = !!v;
-  }
-}
-
-function removeSidebar() {
-  document.getElementById(SIDEBAR_ID)?.remove();
-}
-
 /* ------------ public API ------------ */
 export function initProgressChecker() {
   WA.onInit().then(async () => {
@@ -167,10 +89,6 @@ export function initProgressChecker() {
     const restored = loadGoals(mapId);
     const defaultGoals = Object.fromEntries(currentTasks.map(t => [t.key, false]));
     goals = { ...defaultGoals, ...(restored ?? {}) };
-
-    // Mount & reflect the right panel
-    ensureSidebar(currentTasks);
-    updateSidebar(goals);
 
     // Safety: close UI on unload
     window.addEventListener("beforeunload", () => hardCloseAllUi(), { passive: true });
@@ -246,7 +164,7 @@ export function initProgressChecker() {
       });
     }
 
-    // Initial reflect shortly after load
+    // Show initial progress shortly after load
     setTimeout(() => { if (!exiting) showProgress(); }, 300);
   });
 }
@@ -283,9 +201,11 @@ function showProgress() {
   if (now - toastCooldown < 150) return; // debounce
   toastCooldown = now;
 
-  // Reflect state in the right-side panel
-  ensureSidebar(currentTasks);
-  updateSidebar(goals);
+  const line = currentTasks
+    .map(t => (goals[t.key] ? `✅ ${t.label}` : `⬜ ${t.label}`))
+    .join("   ");
+
+  WA.ui.displayActionMessage({ message: `Progress:  ${line}`, callback: () => {} });
 }
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
@@ -293,7 +213,6 @@ function closeGatePopup() {
 }
 function hardCloseAllUi() {
   closeGatePopup();
-  removeSidebar();  // ensure no stacking across rooms
 }
 
 /* mapId helper */
