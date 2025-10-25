@@ -480,15 +480,15 @@
                  "y":173.5
                 }, 
                 {
-                 "height":145.5,
+                 "height":171.5,
                  "id":30,
                  "name":"idtheft_instructionsPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":207.5,
-                 "x":140.5,
-                 "y":142
+                 "width":245.5,
+                 "x":102.5,
+                 "y":116
                 }, 
                 {
                  "height":48,
@@ -524,8 +524,8 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":180,
-                 "x":90,
+                 "width":221,
+                 "x":49,
                  "y":274
                 }, 
                 {
@@ -562,8 +562,8 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":192,
-                 "x":322.833333333333,
+                 "width":240,
+                 "x":274.833333333333,
                  "y":334.666666666667
                 }],
          "opacity":1,
@@ -709,8 +709,8 @@
                          "rotation":0,
                          "type":"",
                          "visible":true,
-                         "width":159.75,
-                         "x":403.5,
+                         "width":203.75,
+                         "x":359.5,
                          "y":339.5
                         }],
                  "opacity":1,

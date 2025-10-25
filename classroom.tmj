@@ -521,15 +521,15 @@
                  "y":471.75
                 }, 
                 {
-                 "height":87,
+                 "height":126.5,
                  "id":19,
                  "name":"passwordsecurity_lmsaccountPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":157.5,
-                 "x":677.333333333333,
-                 "y":433.333333333333
+                 "width":224.5,
+                 "x":638.833333333333,
+                 "y":362.333333333333
                 }, 
                 {
                  "height":32,
