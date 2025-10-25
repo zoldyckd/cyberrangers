@@ -22,17 +22,12 @@ function openPopup() {
   // Prevent duplicates
   closePopup();
 
+  const playerName = WA.player.name || "Cyber Ranger";
+
   popupRef = WA.ui.openPopup(
     "finalboss_instructionsPopup",
-    `
-      🧑‍🏫 <b>Professor Byte:</b><br><br>
-      "Welcome to the <b>Final Challenge</b>, Cyber Ranger!<br><br>
-      Your mission in this room is simple:<br>
-      • Find <b>CipherX</b> hidden somewhere in this map.<br>
-      • Once you’ve completed the challenge,<br>
-      proceed to the <b>stairs</b> to finish your mission.<br><br>
-      Good luck — this is where everything you’ve learned comes together!"
-    `,
+    `🧑‍🏫 Welcome to the Final Challenge, ${playerName}!
+Your mission in this room is simple: Find CipherX, defeat him and proceed to the stairs to finish. Good luck! This is where everything you've learned comes together!`,
     [
       {
         label: "Got it!",
