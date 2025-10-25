@@ -30,13 +30,17 @@ const STORAGE_PREFIX = "cr:goals:";
 const storageKey = (mapId: string) => `${STORAGE_PREFIX}${mapId}`;
 
 function saveGoals(mapId: string, goals: Goals) {
-  try { localStorage.setItem(storageKey(mapId), JSON.stringify(goals)); } catch {}
+  try {
+    localStorage.setItem(storageKey(mapId), JSON.stringify(goals));
+  } catch {}
 }
 function loadGoals(mapId: string): Goals | null {
   try {
     const raw = localStorage.getItem(storageKey(mapId));
     return raw ? (JSON.parse(raw) as Goals) : null;
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }
 /** Remove goals from all *other* maps (prevents cross-map stacking). */
 function clearOtherMaps(currentMapId: string) {
@@ -53,12 +57,14 @@ function clearOtherMaps(currentMapId: string) {
 /* ------------ module state ------------ */
 let goals: Goals = {};
 let currentTasks: Task[] = [];
-let toastCooldown = 0;
-
 let gatePopupRef: ReturnType<typeof WA.ui.openPopup> | undefined;
 let gateCooldown = 0;
 let exiting = false;
 let initializedForMap = ""; // prevent double init if script persists
+
+// HUD state
+let hudEl: HTMLDivElement | null = null;
+let hudCssInjected = false;
 
 /* ------------ public API ------------ */
 export function initProgressChecker() {
@@ -127,8 +133,12 @@ export function initProgressChecker() {
         if (allDone()) {
           exiting = true;
           hardCloseAllUi();
-          try { WA.controls.disablePlayerControls(); } catch {}
-          try { localStorage.removeItem(storageKey(mapId)); } catch {}
+          try {
+            WA.controls.disablePlayerControls();
+          } catch {}
+          try {
+            localStorage.removeItem(storageKey(mapId));
+          } catch {}
           setTimeout(() => WA.nav.goToRoom(nextRoom), 40);
           return;
         }
@@ -165,7 +175,9 @@ export function initProgressChecker() {
     }
 
     // Show initial progress shortly after load
-    setTimeout(() => { if (!exiting) showProgress(); }, 300);
+    setTimeout(() => {
+      if (!exiting) showProgress();
+    }, 300);
   });
 }
 
@@ -195,34 +207,118 @@ function allDone(): boolean {
 function missingList(): string[] {
   return currentTasks.filter(t => !goals[t.key]).map(t => t.label);
 }
+
+/** Render non-blocking right-side HUD instead of bottom toasts */
 function showProgress() {
-  if (exiting) return;
-  const now = Date.now();
-  if (now - toastCooldown < 150) return; // debounce
-  toastCooldown = now;
-
-  const line = currentTasks
-    .map(t => (goals[t.key] ? `✅ ${t.label}` : `⬜ ${t.label}`))
-    .join("   ");
-
-  WA.ui.displayActionMessage({ message: `Progress:  ${line}`, callback: () => {} });
+  renderHud();
 }
+
+/* ------------ Gate popup + cleanup ------------ */
 function closeGatePopup() {
-  try { gatePopupRef?.close?.(); } catch {}
+  try {
+    gatePopupRef?.close?.();
+  } catch {}
   gatePopupRef = undefined;
 }
 function hardCloseAllUi() {
   closeGatePopup();
+  destroyHud();
 }
 
-/* mapId helper */
+/* ------------ HUD helpers ------------ */
+function ensureHud() {
+  if (!hudCssInjected) {
+    const style = document.createElement("style");
+    style.id = "cr-progress-hud-style";
+    style.textContent = `
+#cr-progress-hud {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 240px;
+  max-width: 36vw;
+  background: rgba(22, 24, 40, 0.85);
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+  font-size: 14px;
+  line-height: 1.35;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  z-index: 999999;
+  pointer-events: none; /* never block gameplay */
+  backdrop-filter: blur(4px);
+}
+#cr-progress-hud .hdr {
+  opacity: .85;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+#cr-progress-hud .item {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  opacity: .9;
+}
+#cr-progress-hud .box {
+  width: 14px; height: 14px; border-radius: 4px;
+  border: 2px solid rgba(255,255,255,.55);
+  display: inline-block;
+}
+#cr-progress-hud .item.done .box {
+  border-color: transparent;
+  background: #4ade80; /* green when done */
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.15);
+}
+#cr-progress-hud .label { user-select: none; }
+@media (max-width: 900px) {
+  #cr-progress-hud { right: 8px; width: 54vw; font-size: 13px; }
+}
+`;
+    document.head.appendChild(style);
+    hudCssInjected = true;
+  }
+  if (!hudEl) {
+    hudEl = document.createElement("div");
+    hudEl.id = "cr-progress-hud";
+    document.body.appendChild(hudEl);
+  }
+}
+function renderHud() {
+  if (exiting) return;
+  ensureHud();
+  const html = [
+    `<div class="hdr">Progress</div>`,
+    ...currentTasks.map(t => {
+      const done = !!goals[t.key];
+      return `<div class="item ${done ? "done" : ""}">
+        <span class="box"></span>
+        <span class="label">${t.label}</span>
+      </div>`;
+    }),
+  ].join("");
+  if (hudEl) hudEl.innerHTML = html;
+}
+function destroyHud() {
+  try {
+    hudEl?.remove();
+  } catch {}
+  hudEl = null;
+}
+
+/* ------------ mapId helper ------------ */
 async function getMapId(): Promise<string> {
   try {
     const m = decodeURIComponent(location.href).match(/\/([^\/?#]+)\.tmj/i);
     if (m?.[1]) return m[1].toLowerCase();
   } catch {}
   try {
-    const tiled: any = await WA.room.getTiledMap?.();
+    const tiled: any = await (WA.room as any).getTiledMap?.();
     const props = tiled?.properties as Array<{ name: string; value: any }> | undefined;
     const fromProp = props?.find(p => p?.name === "mapId")?.value;
     if (typeof fromProp === "string" && fromProp.trim()) return fromProp.trim().toLowerCase();
