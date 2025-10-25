@@ -617,14 +617,15 @@
                  "rotation":0,
                  "text":
                     {
+                     "halign":"center",
                      "text":"Peter Cole",
                      "wrap":true
                     },
                  "type":"",
                  "visible":true,
-                 "width":93.5469,
-                 "x":368.47655,
-                 "y":259.33595
+                 "width":122.0469,
+                 "x":335.97655,
+                 "y":260.33595
                 }, 
                 {
                  "height":19.3281,
