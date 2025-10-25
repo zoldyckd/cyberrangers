@@ -4,9 +4,9 @@ import { MALWARE_PROGRESS } from "./malware_progress";
 import { PASSWORDSECURITY_PROGRESS } from "./passwordsecurity_progress";
 import { IDTHEFT_PROGRESS } from "./idtheft_progress";
 import { SAFEINTERNETPRACTICES_PROGRESS } from "./safeinternetpractices_progress";
-import { FINALBOSS_PROGRESS } from "./finalboss_progress"; // ← NEW
+import { FINALBOSS_PROGRESS } from "./finalboss_progress";
 
-/* ------------ types (local to this file) ------------ */
+/* ------------ types ------------ */
 type Task = { key: string; label: string; area: string };
 type SingleMapConfig = {
   tasks: Task[];
@@ -15,14 +15,14 @@ type SingleMapConfig = {
 type MapConfigRecord = Record<string, SingleMapConfig>;
 type Goals = Record<string, boolean>;
 
-/* ------------ merge per-room configs ------------ */
+/* ------------ config merge ------------ */
 const MAP_CONFIG: MapConfigRecord = {
   ...PHISHING_PROGRESS,
   ...MALWARE_PROGRESS,
   ...PASSWORDSECURITY_PROGRESS,
   ...IDTHEFT_PROGRESS,
   ...SAFEINTERNETPRACTICES_PROGRESS,
-  ...FINALBOSS_PROGRESS, // ← NEW
+  ...FINALBOSS_PROGRESS,
 };
 
 /* ------------ storage helpers ------------ */
@@ -30,17 +30,13 @@ const STORAGE_PREFIX = "cr:goals:";
 const storageKey = (mapId: string) => `${STORAGE_PREFIX}${mapId}`;
 
 function saveGoals(mapId: string, goals: Goals) {
-  try {
-    localStorage.setItem(storageKey(mapId), JSON.stringify(goals));
-  } catch {}
+  try { localStorage.setItem(storageKey(mapId), JSON.stringify(goals)); } catch {}
 }
 function loadGoals(mapId: string): Goals | null {
   try {
     const raw = localStorage.getItem(storageKey(mapId));
     return raw ? (JSON.parse(raw) as Goals) : null;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 /** Remove goals from all *other* maps (prevents cross-map stacking). */
 function clearOtherMaps(currentMapId: string) {
@@ -60,18 +56,22 @@ let currentTasks: Task[] = [];
 let gatePopupRef: ReturnType<typeof WA.ui.openPopup> | undefined;
 let gateCooldown = 0;
 let exiting = false;
-let initializedForMap = ""; // prevent double init if script persists
+let initializedForMap = "";
 
-// HUD state
 let hudEl: HTMLDivElement | null = null;
 let hudCssInjected = false;
+let hudVisible = true;
+let renderRetryTimer: number | null = null;
+
+// @ts-ignore – optional debug flag
+const DEBUG = (window as any).__CR_DEBUG__ === true;
 
 /* ------------ public API ------------ */
 export function initProgressChecker() {
   WA.onInit().then(async () => {
     const mapId = (await getMapId()) || "";
     if (!mapId) {
-      console.log("[ProgressChecker] No mapId resolved.");
+      log("[ProgressChecker] No mapId resolved.");
       return;
     }
     if (initializedForMap === mapId) return;
@@ -79,37 +79,32 @@ export function initProgressChecker() {
 
     const cfg = MAP_CONFIG[mapId];
 
-    // Clean slate on map load
     hardCloseAllUi();
     clearOtherMaps(mapId);
 
     if (!cfg) {
-      console.log("[ProgressChecker] No config for map:", mapId);
+      log("[ProgressChecker] No config for map:", mapId);
       return;
     }
 
-    console.log("[ProgressChecker] Init for map:", mapId);
+    log("[ProgressChecker] Init for map:", mapId);
     currentTasks = cfg.tasks;
 
-    // Restore progress (clamped to current task keys)
     const restored = loadGoals(mapId);
     const defaultGoals = Object.fromEntries(currentTasks.map(t => [t.key, false]));
     goals = { ...defaultGoals, ...(restored ?? {}) };
 
-    // Safety: close UI on unload
     window.addEventListener("beforeunload", () => hardCloseAllUi(), { passive: true });
 
-    // --- Task listeners ---
+    // Task listeners
     currentTasks.forEach(t => {
       try {
         WA.room.area.onEnter(t.area).subscribe(() => {
           if (exiting) return;
-
           if (!goals[t.key]) {
             goals[t.key] = true;
             saveGoals(mapId, goals);
             showProgress();
-
             if (allDone()) {
               WA.ui.displayActionMessage({
                 message: "✅ All tasks done! You may proceed to the exit.",
@@ -123,7 +118,7 @@ export function initProgressChecker() {
       }
     });
 
-    // --- Exit gate listener ---
+    // Exit gate
     if (cfg.exitGate) {
       const { area, nextRoom, warnAnchorId } = cfg.exitGate;
 
@@ -133,18 +128,14 @@ export function initProgressChecker() {
         if (allDone()) {
           exiting = true;
           hardCloseAllUi();
-          try {
-            WA.controls.disablePlayerControls();
-          } catch {}
-          try {
-            localStorage.removeItem(storageKey(mapId));
-          } catch {}
+          try { WA.controls.disablePlayerControls(); } catch {}
+          try { localStorage.removeItem(storageKey(mapId)); } catch {}
           setTimeout(() => WA.nav.goToRoom(nextRoom), 40);
           return;
         }
 
         const now = Date.now();
-        if (now - gateCooldown < 500) return; // debounce
+        if (now - gateCooldown < 500) return;
         gateCooldown = now;
 
         const missing = missingList();
@@ -157,11 +148,8 @@ export function initProgressChecker() {
               [{ label: "Close", className: "primary", callback: () => closeGatePopup() }]
             );
             return;
-          } catch {
-            // fall back to toast
-          }
+          } catch { /* fall back to toast */ }
         }
-
         WA.ui.displayActionMessage({
           message: `🚧 Hold up! Missing: ${missing.join(", ")}`,
           callback: () => {},
@@ -174,10 +162,8 @@ export function initProgressChecker() {
       });
     }
 
-    // Show initial progress shortly after load
-    setTimeout(() => {
-      if (!exiting) showProgress();
-    }, 300);
+    // Initial paint (with retries in case DOM not ready yet)
+    scheduleRenderRetries();
   });
 }
 
@@ -188,9 +174,7 @@ export function markTaskDone(taskKey: string) {
     goals[taskKey] = true;
     const mapId = initializedForMap || "";
     if (mapId) saveGoals(mapId, goals);
-
     showProgress();
-
     if (allDone()) {
       WA.ui.displayActionMessage({
         message: "✅ All tasks done! You may proceed to the exit.",
@@ -208,25 +192,31 @@ function missingList(): string[] {
   return currentTasks.filter(t => !goals[t.key]).map(t => t.label);
 }
 
-/** Render non-blocking right-side HUD instead of bottom toasts */
+/** Non-blocking HUD + safe fallback */
 function showProgress() {
-  renderHud();
+  const ok = renderHud();
+  if (!ok) {
+    // Fallback so you still see progress while we sort out the HUD
+    const line = currentTasks.map(t => (goals[t.key] ? `✅ ${t.label}` : `⬜ ${t.label}`)).join("   ");
+    WA.ui.displayActionMessage({ message: `Progress:  ${line}`, callback: () => {} });
+  }
 }
 
 /* ------------ Gate popup + cleanup ------------ */
 function closeGatePopup() {
-  try {
-    gatePopupRef?.close?.();
-  } catch {}
+  try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
 }
 function hardCloseAllUi() {
   closeGatePopup();
   destroyHud();
+  stopRenderRetries();
 }
 
 /* ------------ HUD helpers ------------ */
-function ensureHud() {
+function ensureHud(): boolean {
+  if (!document || !document.body) return false;
+
   if (!hudCssInjected) {
     const style = document.createElement("style");
     style.id = "cr-progress-hud-style";
@@ -238,7 +228,7 @@ function ensureHud() {
   transform: translateY(-50%);
   width: 240px;
   max-width: 36vw;
-  background: rgba(22, 24, 40, 0.85);
+  background: rgba(22,24,40,0.85);
   color: #fff;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
   font-size: 14px;
@@ -246,8 +236,9 @@ function ensureHud() {
   border-radius: 14px;
   padding: 12px 14px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  z-index: 999999;
-  pointer-events: none; /* never block gameplay */
+  z-index: 1000000;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 #cr-progress-hud .hdr {
@@ -272,7 +263,7 @@ function ensureHud() {
 }
 #cr-progress-hud .item.done .box {
   border-color: transparent;
-  background: #4ade80; /* green when done */
+  background: #4ade80;
   box-shadow: inset 0 0 0 2px rgba(0,0,0,.15);
 }
 #cr-progress-hud .label { user-select: none; }
@@ -283,15 +274,22 @@ function ensureHud() {
     document.head.appendChild(style);
     hudCssInjected = true;
   }
+
   if (!hudEl) {
     hudEl = document.createElement("div");
     hudEl.id = "cr-progress-hud";
+    hudEl.style.display = hudVisible ? "block" : "none";
     document.body.appendChild(hudEl);
   }
+  return true;
 }
-function renderHud() {
-  if (exiting) return;
-  ensureHud();
+
+function renderHud(): boolean {
+  if (exiting) return true; // nothing to show, but not an error
+  if (!ensureHud()) {
+    log("[ProgressChecker] HUD skipped (body not ready yet).");
+    return false;
+  }
   const html = [
     `<div class="hdr">Progress</div>`,
     ...currentTasks.map(t => {
@@ -303,13 +301,39 @@ function renderHud() {
     }),
   ].join("");
   if (hudEl) hudEl.innerHTML = html;
+  return true;
 }
+
 function destroyHud() {
-  try {
-    hudEl?.remove();
-  } catch {}
+  try { hudEl?.remove(); } catch {}
   hudEl = null;
 }
+
+/* Retry rendering a few times after load in case WA/DOM mounts slowly */
+function scheduleRenderRetries() {
+  let tries = 0;
+  const max = 20;         // ~4s total
+  stopRenderRetries();
+  renderRetryTimer = window.setInterval(() => {
+    tries++;
+    const ok = renderHud();
+    if (ok || tries >= max) stopRenderRetries();
+  }, 200);
+}
+function stopRenderRetries() {
+  if (renderRetryTimer !== null) {
+    window.clearInterval(renderRetryTimer);
+    renderRetryTimer = null;
+  }
+}
+
+/* Optional: press P to hide/show */
+window.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "p") {
+    hudVisible = !hudVisible;
+    if (hudEl) hudEl.style.display = hudVisible ? "block" : "none";
+  }
+});
 
 /* ------------ mapId helper ------------ */
 async function getMapId(): Promise<string> {
@@ -324,4 +348,9 @@ async function getMapId(): Promise<string> {
     if (typeof fromProp === "string" && fromProp.trim()) return fromProp.trim().toLowerCase();
   } catch {}
   return "";
+}
+
+/* ------------ tiny logger ------------ */
+function log(...args: any[]) {
+  if (DEBUG) console.log(...args);
 }
