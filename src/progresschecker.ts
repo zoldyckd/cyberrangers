@@ -53,14 +53,12 @@ function clearOtherMaps(currentMapId: string) {
 /* ------------ module state ------------ */
 let goals: Goals = {};
 let currentTasks: Task[] = [];
+let toastCooldown = 0;
+
 let gatePopupRef: ReturnType<typeof WA.ui.openPopup> | undefined;
 let gateCooldown = 0;
 let exiting = false;
 let initializedForMap = ""; // prevent double init if script persists
-
-// HUD state
-let hudEl: HTMLDivElement | null = null;
-let hudCssInjected = false;
 
 /* ------------ public API ------------ */
 export function initProgressChecker() {
@@ -197,112 +195,24 @@ function allDone(): boolean {
 function missingList(): string[] {
   return currentTasks.filter(t => !goals[t.key]).map(t => t.label);
 }
-
-/** Render non-blocking HUD in bottom-right corner */
 function showProgress() {
   if (exiting) return;
-  renderHud();
-}
+  const now = Date.now();
+  if (now - toastCooldown < 150) return; // debounce
+  toastCooldown = now;
 
-/* ------------ Gate popup + cleanup ------------ */
+  const line = currentTasks
+    .map(t => (goals[t.key] ? `✅ ${t.label}` : `⬜ ${t.label}`))
+    .join("   ");
+
+  WA.ui.displayActionMessage({ message: `Progress:  ${line}`, callback: () => {} });
+}
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
   gatePopupRef = undefined;
 }
 function hardCloseAllUi() {
   closeGatePopup();
-  destroyHud();
-}
-
-/* ------------ HUD helpers (bottom-right placement) ------------ */
-function ensureHud() {
-  if (!hudCssInjected) {
-    const style = document.createElement("style");
-    style.id = "cr-progress-hud-style";
-    style.textContent = `
-#cr-progress-hud {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  width: 260px;
-  max-width: 46vw;
-  background: rgba(22,24,40,0.85);
-  color: #fff;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-  font-size: 14px;
-  line-height: 1.35;
-  border-radius: 14px;
-  padding: 10px 14px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-  z-index: 9999999;           /* above WA canvas/UI */
-  pointer-events: none;       /* never block gameplay */
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  opacity: 0.96;
-}
-#cr-progress-hud .hdr {
-  opacity: .85;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  font-size: 11px;
-  margin-bottom: 6px;
-}
-#cr-progress-hud .item {
-  display: grid;
-  grid-template-columns: 18px 1fr;
-  align-items: center;
-  gap: 8px;
-  margin: 4px 0;
-  opacity: .95;
-}
-#cr-progress-hud .box {
-  width: 14px; height: 14px; border-radius: 4px;
-  border: 2px solid rgba(255,255,255,.55);
-  display: inline-block;
-}
-#cr-progress-hud .item.done .box {
-  border-color: transparent;
-  background: #4ade80; /* green when done */
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,.15);
-}
-#cr-progress-hud .label { user-select: none; }
-
-/* Compact on small screens */
-@media (max-width: 900px) {
-  #cr-progress-hud { right: 8px; bottom: 8px; width: 58vw; font-size: 13px; }
-}
-`;
-    document.head.appendChild(style);
-    hudCssInjected = true;
-  }
-  if (!hudEl) {
-    hudEl = document.createElement("div");
-    hudEl.id = "cr-progress-hud";
-    document.body.appendChild(hudEl);
-  }
-}
-
-function renderHud() {
-  ensureHud();
-  if (!hudEl) return;
-
-  const html = [
-    `<div class="hdr">Progress</div>`,
-    ...currentTasks.map(t => {
-      const done = !!goals[t.key];
-      return `<div class="item ${done ? "done" : ""}">
-        <span class="box"></span>
-        <span class="label">${t.label}</span>
-      </div>`;
-    }),
-  ].join("");
-
-  hudEl.innerHTML = html;
-}
-
-function destroyHud() {
-  try { hudEl?.remove(); } catch {}
-  hudEl = null;
 }
 
 /* mapId helper */
