@@ -4,7 +4,7 @@ import { MALWARE_PROGRESS } from "./malware_progress";
 import { PASSWORDSECURITY_PROGRESS } from "./passwordsecurity_progress";
 import { IDTHEFT_PROGRESS } from "./idtheft_progress";
 import { SAFEINTERNETPRACTICES_PROGRESS } from "./safeinternetpractices_progress";
-import { FINALBOSS_PROGRESS } from "./finalboss_progress"; // ← NEW
+import { FINALBOSS_PROGRESS } from "./finalboss_progress";
 
 /* ------------ types (local to this file) ------------ */
 type Task = { key: string; label: string; area: string };
@@ -22,7 +22,7 @@ const MAP_CONFIG: MapConfigRecord = {
   ...PASSWORDSECURITY_PROGRESS,
   ...IDTHEFT_PROGRESS,
   ...SAFEINTERNETPRACTICES_PROGRESS,
-  ...FINALBOSS_PROGRESS, // ← NEW
+  ...FINALBOSS_PROGRESS,
 };
 
 /* ------------ storage helpers ------------ */
@@ -60,6 +60,78 @@ let gateCooldown = 0;
 let exiting = false;
 let initializedForMap = ""; // prevent double init if script persists
 
+/* ------------ sidebar UI (right) ------------ */
+const SIDEBAR_ID = "cr-progress-sidebar";
+
+function ensureSidebar(tasks: Task[]) {
+  if (document.getElementById(SIDEBAR_ID)) return;
+
+  const host = document.createElement("div");
+  host.id = SIDEBAR_ID;
+  host.innerHTML = `
+    <div class="ps-head">
+      <span>Progress</span>
+      <button class="ps-toggle" aria-label="Collapse">–</button>
+    </div>
+    <ul class="ps-list">
+      ${tasks.map(t => `
+        <li class="ps-item">
+          <input id="ps-${t.key}" type="checkbox" />
+          <label for="ps-${t.key}">${t.label}</label>
+        </li>`).join("")}
+    </ul>
+  `;
+  Object.assign(host.style, {
+    position: "fixed",
+    right: "16px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "220px",
+    padding: "12px",
+    borderRadius: "14px",
+    background: "rgba(42,60,255,.9)",
+    color: "#fff",
+    boxShadow: "0 10px 24px rgba(0,0,0,.25)",
+    zIndex: "9999",
+    pointerEvents: "auto",
+    fontFamily: "Inter, system-ui, sans-serif",
+  } as Partial<CSSStyleDeclaration>);
+
+  const style = document.createElement("style");
+  style.textContent = `
+    #${SIDEBAR_ID} .ps-head{display:flex;justify-content:space-between;align-items:center;
+      font-weight:600;margin-bottom:8px}
+    #${SIDEBAR_ID} .ps-toggle{background:transparent;border:none;font-size:18px;cursor:pointer;color:#fff}
+    #${SIDEBAR_ID}.is-collapsed .ps-list{display:none}
+    #${SIDEBAR_ID} .ps-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+    #${SIDEBAR_ID} .ps-item{display:flex;align-items:center;gap:8px}
+    #${SIDEBAR_ID} input[type="checkbox"]{width:16px;height:16px}
+    @media (max-width: 900px){ #${SIDEBAR_ID}{right:8px;width:200px;padding:10px} }
+  `;
+  document.head.appendChild(style);
+
+  const toggle = host.querySelector<HTMLButtonElement>(".ps-toggle")!;
+  toggle.onclick = () => {
+    const collapsed = host.classList.toggle("is-collapsed");
+    toggle.textContent = collapsed ? "+" : "–";
+  };
+
+  document.body.appendChild(host);
+}
+
+function updateSidebar(goals: Goals) {
+  const host = document.getElementById(SIDEBAR_ID);
+  if (!host) return;
+  for (const [k, v] of Object.entries(goals)) {
+    const box = document.getElementById(`ps-${k}`) as HTMLInputElement | null;
+    if (box) box.checked = !!v;
+  }
+}
+
+function removeSidebar() {
+  document.getElementById(SIDEBAR_ID)?.remove();
+}
+
 /* ------------ public API ------------ */
 export function initProgressChecker() {
   WA.onInit().then(async () => {
@@ -89,6 +161,10 @@ export function initProgressChecker() {
     const restored = loadGoals(mapId);
     const defaultGoals = Object.fromEntries(currentTasks.map(t => [t.key, false]));
     goals = { ...defaultGoals, ...(restored ?? {}) };
+
+    // Mount the sidebar once for this map
+    ensureSidebar(currentTasks);
+    updateSidebar(goals);
 
     // Safety: close UI on unload
     window.addEventListener("beforeunload", () => hardCloseAllUi(), { passive: true });
@@ -164,7 +240,7 @@ export function initProgressChecker() {
       });
     }
 
-    // Show initial progress shortly after load
+    // Initial reflect
     setTimeout(() => { if (!exiting) showProgress(); }, 300);
   });
 }
@@ -176,7 +252,6 @@ export function markTaskDone(taskKey: string) {
     goals[taskKey] = true;
     const mapId = initializedForMap || "";
     if (mapId) saveGoals(mapId, goals);
-
     showProgress();
 
     if (allDone()) {
@@ -201,11 +276,9 @@ function showProgress() {
   if (now - toastCooldown < 150) return; // debounce
   toastCooldown = now;
 
-  const line = currentTasks
-    .map(t => (goals[t.key] ? `✅ ${t.label}` : `⬜ ${t.label}`))
-    .join("   ");
-
-  WA.ui.displayActionMessage({ message: `Progress:  ${line}`, callback: () => {} });
+  // Ensure/refresh the right sidebar (no bottom toast)
+  ensureSidebar(currentTasks);
+  updateSidebar(goals);
 }
 function closeGatePopup() {
   try { gatePopupRef?.close?.(); } catch {}
@@ -213,6 +286,7 @@ function closeGatePopup() {
 }
 function hardCloseAllUi() {
   closeGatePopup();
+  removeSidebar();
 }
 
 /* mapId helper */
