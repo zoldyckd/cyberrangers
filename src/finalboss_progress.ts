@@ -1,44 +1,44 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-import { initProgressChecker } from "./progresschecker";
 
-/** Progress config for the OFFICE (Final Boss) room */
-export const FINALBOSS_PROGRESS: Record<
-  string,
-  {
-    tasks: { key: string; label: string; area: string }[];
-    exitGate?: { area: string; nextRoom: string; warnAnchorId?: string };
-    /** Soft gate inside the room (no room change) */
-    blockGate?: {
-      area: string;
-      requireTaskKey: string;
-      warnAnchorId?: string;
-      pushBack?: { dx: number; dy: number };
-      /** NEW: custom message shown when blocked */
-      message?: string;
-    };
-  }
-> = {
-  office: {
-    tasks: [
-      // Boss encounter area (popup → Twine quiz)
-      { key: "finalboss", label: "Face CipherX", area: "finalboss_cipherx" },
-    ],
+/** --- CONFIG --- */
+const GATE_AREA = "finalboss_gate";              // rectangle area before Peter (Object layer)
+const POPUP_ANCHOR = "finalboss_gate_popup";     // tiny point/area near Peter for the bubble
+const TASK_KEY = "finalboss";                    // set true when CipherX is completed
+const BLOCK_MSG =
+  "🔒 You must finish the CipherX quiz before proceeding.\nPlease find CipherX in this room first!";
 
-    // Thin rectangle area before Peter named "finalboss_gate"
-    // Optional anchor point for popup named "finalboss_gate_popup"
-    blockGate: {
-      area: "finalboss_gate",
-      requireTaskKey: "finalboss",
-      warnAnchorId: "finalboss_gate_popup",
-      pushBack: { dx: -32, dy: 0 },
-      message:
-        "🔒 You must finish the CipherX quiz before proceeding. Please find CipherX in this room first!",
-    },
-  },
-};
+/** Internal state */
+let goals: Record<string, boolean> = {};
+let gateCooldown = false; // prevent spam push
 
-/** Helper to initialize this map’s progress */
-export function initFinalBossProgress() {
-  // @ts-ignore - generic checker accepts SingleMapConfig
-  initProgressChecker(FINALBOSS_PROGRESS.office);
+/** Call this from your office room bootstrap */
+export async function initFinalBossGate() {
+  goals = (await WA.state.loadVariable("goals")) || {};
+
+  WA.room.area.onEnter(GATE_AREA).subscribe(() => {
+    if (goals[TASK_KEY]) return; // already cleared → allow pass
+
+    // Show warning near Peter
+    if (POPUP_ANCHOR) {
+      WA.ui.displayBubble(POPUP_ANCHOR, BLOCK_MSG);
+    } else {
+      WA.ui.openPopup("finalbossGateWarn", BLOCK_MSG, [
+        { label: "OK", className: "primary", callback: (p) => p.close() },
+      ]);
+    }
+
+    // Nudge player back (DOWN one tile). Adjust if your corridor differs.
+    if (!gateCooldown) {
+      gateCooldown = true;
+      WA.player.moveBy(0, 32, 0.2);
+      setTimeout(() => (gateCooldown = false), 400);
+    }
+  });
+}
+
+/** Call this when CipherX quiz is successfully completed */
+export async function markFinalBossDone() {
+  goals = (await WA.state.loadVariable("goals")) || {};
+  goals[TASK_KEY] = true;
+  await WA.state.saveVariable("goals", goals);
 }
