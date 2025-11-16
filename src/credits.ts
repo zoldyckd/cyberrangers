@@ -26,7 +26,7 @@ export function initCredits() {
       closeCreditsPopup();
       creditsPopupRef = WA.ui.openPopup(
         CREDITS_ANCHOR,
-        "Team Credits (Cyber Rangers): Joyce Boey Yoke Leng, Rudolph Benjamin Maxwell, Tan Eng Kai, Alvin Teng You Rong, Seet He Ren",
+        "Team Credits (Cyber Rangers PT05): Joyce Boey Yoke Leng, Rudolph Benjamin Maxwell, Tan Eng Kai, Alvin Teng You Rong, Seet He Ren",
         [{ label: "Close", className: "primary", callback: () => closeCreditsPopup() }]
       );
     });
