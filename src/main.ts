@@ -20,11 +20,8 @@ import { initPhishingLibrarySpawnNote } from "./phishing_librarySpawnNote";
 import { initBillboard } from "./billboard";
 import { initSpawnIntro } from "./spawnIntro";
 import { initInstructions } from "./instructions";
-import { initPoster } from "./poster";
-import { initUsbDrive } from "./usbdrive";
-import { initStickyNote } from "./stickynote";
-import { initSafeInternetPractices } from "./instructions_safeinternetpractices";
-import { initOfficeProgress } from "./officeprogress"; // keep only if you still use it
+import { initCredits } from "./credits";
+
 
 // canteen - malware room
 import { initMalwareInstructions } from "./malware_instructions";
@@ -94,11 +91,7 @@ WA.onInit().then(async () => {
     initBillboard();
     initSpawnIntro();
     initInstructions();
-    initPoster();
-    initUsbDrive();
-    initStickyNote();
-    initSafeInternetPractices();
-    initOfficeProgress(); // keep here only if garden has the required objects
+	initCredits();
   } else if (mapId === "library") {
     console.log("[Router] Initializing LIBRARY (Phishing) features…");
     initphishing_QRcode();

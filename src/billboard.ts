@@ -26,7 +26,7 @@ export function initBillboard() {
       closePopup();
       popupRef = WA.ui.openPopup(
         ANCHOR,
-        "📜 The community billboard ➡️ Move towards the ladder on the right and begin your adventure! Team Credits: Joyce Boey, Rudolph Maxwell, Tan Eng Kai, Alvin Teng, Seet He Ren",
+        "📜 The community billboard ➡️ Move towards the ladder on the right and begin your adventure!",
         [{ label: "Close", className: "primary", callback: () => closePopup() }]
       );
     });
