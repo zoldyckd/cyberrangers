@@ -397,13 +397,13 @@
                  "y":96
                 }, 
                 {
-                 "height":96,
+                 "height":128,
                  "id":31,
                  "name":"creditsPopup",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":128,
+                 "width":192,
                  "x":224,
                  "y":0
                 }],
