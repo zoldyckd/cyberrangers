@@ -1,4 +1,4 @@
-s/// <reference types="@workadventure/iframe-api-typings" />
+/// <reference types="@workadventure/iframe-api-typings" />
 
 let creditsPopupRef: any | undefined;
 let creditsEnterSub: any | undefined;
